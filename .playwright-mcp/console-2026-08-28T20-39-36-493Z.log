@@ -1,0 +1,23 @@
+[    2763ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://127.0.0.1:8080/index.html?v=4:0
+[ 1489056ms] [ERROR] Failed to load resource: net::ERR_INTERNET_DISCONNECTED @ https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js:0
+[ 1489079ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://127.0.0.1:8080/index.html?v=4:0
+[ 1489199ms] [WARNING] Network fetch failed for ./.netlify/Web%20root.xlsx ReferenceError: XLSX is not defined
+    at loadWorkbook (http://127.0.0.1:8080/index.html?v=4:359:20)
+    at autoConnect (http://127.0.0.1:8080/index.html?v=4:536:7) @ http://127.0.0.1:8080/index.html?v=4:539
+[ 1489311ms] [WARNING] Network fetch failed for ./.netlify/Web root.xlsx ReferenceError: XLSX is not defined
+    at loadWorkbook (http://127.0.0.1:8080/index.html?v=4:359:20)
+    at autoConnect (http://127.0.0.1:8080/index.html?v=4:536:7) @ http://127.0.0.1:8080/index.html?v=4:539
+[ 1489315ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8080/Web%20root.xlsx:0
+[ 1489318ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8080/Web%20root.xlsx:0
+[ 6714733ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://127.0.0.1:8080/index.html?v=4:0
+[77248842ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_CLOSED @ https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js:0
+[77248892ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://127.0.0.1:8000/index.html?v=4:0
+[77249050ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8000/favicon.ico:0
+[77249056ms] [WARNING] Network fetch failed for ./.netlify/Web%20root.xlsx ReferenceError: XLSX is not defined
+    at loadWorkbook (http://127.0.0.1:8000/index.html?v=4:359:20)
+    at autoConnect (http://127.0.0.1:8000/index.html?v=4:536:7) @ http://127.0.0.1:8000/index.html?v=4:539
+[77249228ms] [WARNING] Network fetch failed for ./.netlify/Web root.xlsx ReferenceError: XLSX is not defined
+    at loadWorkbook (http://127.0.0.1:8000/index.html?v=4:359:20)
+    at autoConnect (http://127.0.0.1:8000/index.html?v=4:536:7) @ http://127.0.0.1:8000/index.html?v=4:539
+[77249240ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8000/Web%20root.xlsx:0
+[77249252ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8000/Web%20root.xlsx:0

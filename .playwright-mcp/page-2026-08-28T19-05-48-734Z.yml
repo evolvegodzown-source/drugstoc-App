@@ -1,0 +1,11 @@
+- generic [ref=f4e2]:
+  - img "Drugstoc logo" [ref=f4e3]
+  - heading "Drugstoc Analytics" [level=2] [ref=f4e4]
+  - paragraph [ref=f4e5]: Sign in to continue
+  - generic [ref=f4e6]:
+    - text: Username
+    - textbox "Username" [ref=f4e7]
+  - generic [ref=f4e8]:
+    - text: Password
+    - textbox "Password" [ref=f4e9]
+  - button "Sign in" [ref=f4e10] [cursor=pointer]

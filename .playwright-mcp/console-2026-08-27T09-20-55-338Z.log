@@ -1,0 +1,7 @@
+[    1304ms] [VERBOSE] [DOM] Password field is not contained in a form: (More info: https://goo.gl/9p2vKq) %o @ http://127.0.0.1:8080/index.html:0
+[    1306ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8080/.netlify/Web%20root.xlsx:0
+[    1306ms] [WARNING] Network fetch failed: Error: File not found on local path
+    at autoConnect (http://127.0.0.1:8080/index.html:479:29) @ http://127.0.0.1:8080/index.html:484
+[    1597ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://127.0.0.1:8080/favicon.ico:0
+[  187815ms] [WARNING] File picker cancelled or failed: AbortError: Failed to execute 'showOpenFilePicker' on 'Window': Intercepted by Page.setInterceptFileChooserDialog().
+    at HTMLButtonElement.pickAndSaveWorkbook (http://127.0.0.1:8080/index.html:462:39) @ http://127.0.0.1:8080/index.html:467
