@@ -12,7 +12,7 @@
 <body>
 <div class="login-overlay" id="loginOverlay">
   <div class="login-card">
-    <img src="./.netlify/Drug.logo.png" alt="Drugstoc logo">
+    <img src="./Drug.logo.png" alt="Drugstoc logo">
     <h2>Drugstoc Analytics</h2>
     <p>Sign in to continue</p>
     <label>Username <input id="loginUser" type="text" placeholder="Username"></label>
@@ -22,8 +22,8 @@
   </div>
 </div>
 <main class="shell hidden" id="appShell">
-<aside class="sidebar"><div class="sidebar-header"><img class="sidebar-logo" src="./.netlify/Drug.logo.png" alt="Drugstoc logo"><strong>Drugstoc App Analytics</strong></div><nav class="sidebar-nav"><button type="button" data-page="executive-summary" class="active"><i data-lucide="layout-grid"></i>Executive Summary<span class="nav-num">01</span></button><button type="button" data-page="client-analysis"><i data-lucide="bar-chart-3"></i>Client Analysis<span class="nav-num">02</span></button><button type="button" data-page="product-analysis"><i data-lucide="package"></i>Product Analysis<span class="nav-num">03</span></button><button type="button" data-page="customer-segments"><i data-lucide="users"></i>Customer Segments<span class="nav-num">04</span></button><button type="button" data-page="dictionary"><i data-lucide="book-open"></i>Dictionary<span class="nav-num">05</span></button></nav></aside>
-<header><img class="header-cover" src="./.netlify/drugstoc_cover.jpg" alt="Drugstoc healthcare banner"><div class="brand"><div><strong>Drugstoc</strong><span>Commerce intelligence</span></div></div><div class="source"><i class="pulse"></i><span id="sourceText">Connecting to Web root.xlsx</span></div></header>
+<aside class="sidebar"><div class="sidebar-header"><img class="sidebar-logo" src="./Drug.logo.png" alt="Drugstoc logo"><strong>Drugstoc App Analytics</strong></div><nav class="sidebar-nav"><button type="button" data-page="executive-summary" class="active"><i data-lucide="layout-grid"></i>Executive Summary<span class="nav-num">01</span></button><button type="button" data-page="client-analysis"><i data-lucide="bar-chart-3"></i>Client Analysis<span class="nav-num">02</span></button><button type="button" data-page="product-analysis"><i data-lucide="package"></i>Product Analysis<span class="nav-num">03</span></button><button type="button" data-page="customer-segments"><i data-lucide="users"></i>Customer Segments<span class="nav-num">04</span></button><button type="button" data-page="dictionary"><i data-lucide="book-open"></i>Dictionary<span class="nav-num">05</span></button></nav></aside>
+<header><img class="header-cover" src="./drugstoc_cover.jpg" alt="Drugstoc healthcare banner"><div class="brand"><div><strong>Drugstoc</strong><span>Commerce intelligence</span></div></div><div class="source"><i class="pulse"></i><span id="sourceText">Connecting to Web root.xlsx</span></div></header>
 <div class="upload" id="upload"><span id="uploadMsg">Auto-load requires browser permission for the workbook.</span><button id="retryBtn" type="button">Retry auto-load from server</button><button id="grantBtn" type="button">Grant access to Web root.xlsx</button><label><input id="fileInput" type="file" accept=".xlsx,.xls"> Choose workbook</label><pre id="uploadLog" style="margin-top:10px;white-space:pre-wrap;font-size:11px;color:var(--muted);max-height:120px;overflow:auto;width:100%;"></pre></div>
 <div class="loader" id="loader">Loading workbook...</div>
 <div id="dashboardPage" class="page">
@@ -603,12 +603,8 @@ async function pickAndSaveWorkbook() {
 }
 
 async function autoConnect() {
-  const expectedPath = "C:\\Users\\IT\\OneDrive - DrugStoc\\MARKETING\\E-COMMERCE\\.netlify\\Web root.xlsx";
+  const expectedPath = "C:\\Users\\IT\\OneDrive - DrugStoc\\MARKETING\\E-COMMERCE\\Web root.xlsx";
   const candidates = [
-    "./.netlify/Web%20root.xlsx",
-    "./.netlify/Web root.xlsx",
-    "/.netlify/Web%20root.xlsx",
-    "/.netlify/Web root.xlsx",
     "./Web%20root.xlsx",
     "./Web root.xlsx"
   ];
