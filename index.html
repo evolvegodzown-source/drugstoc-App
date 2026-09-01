@@ -23,7 +23,7 @@
 </div>
 <main class="shell hidden" id="appShell">
 <aside class="sidebar"><div class="sidebar-header"><img class="sidebar-logo" src="./Drug.logo.png" alt="Drugstoc logo"><strong>Drugstoc App Analytics</strong></div><nav class="sidebar-nav"><button type="button" data-page="executive-summary" class="active"><i data-lucide="layout-grid"></i>Executive Summary<span class="nav-num">01</span></button><button type="button" data-page="client-analysis"><i data-lucide="bar-chart-3"></i>Client Analysis<span class="nav-num">02</span></button><button type="button" data-page="product-analysis"><i data-lucide="package"></i>Product Analysis<span class="nav-num">03</span></button><button type="button" data-page="customer-segments"><i data-lucide="users"></i>Customer Segments<span class="nav-num">04</span></button><button type="button" data-page="dictionary"><i data-lucide="book-open"></i>Dictionary<span class="nav-num">05</span></button></nav></aside>
-<header><img class="header-cover" src="./drugstoc_cover.jpg" alt="Drugstoc healthcare banner"><div class="brand"><div><strong>Drugstoc</strong><span>Commerce intelligence</span></div></div><div class="source"><i class="pulse"></i><span id="sourceText">Connecting to Web root.xlsx</span></div><button id="refreshBtn" type="button" title="Reload live workbook"><i data-lucide="refresh-cw"></i> Refresh data</button></header>
+<header><img class="header-cover" src="./drugstoc_cover.jpg" alt="Drugstoc healthcare banner"><div class="brand"><div><strong>Drugstoc</strong><span>Commerce intelligence</span></div></div><div class="source"><i class="pulse"></i><span id="sourceText">Connecting to Web root.xlsx</span></div><button id="refreshBtn" type="button" title="Pull live data from Web root.xlsx"><i data-lucide="refresh-cw"></i> Pull live data from Web root</button></header>
 <div class="upload" id="upload"><span id="uploadMsg">Auto-load requires browser permission for the workbook.</span><button id="retryBtn" type="button">Retry auto-load from server</button><button id="grantBtn" type="button">Grant access to Web root.xlsx</button><label><input id="fileInput" type="file" accept=".xlsx,.xls"> Choose workbook</label><pre id="uploadLog" style="margin-top:10px;white-space:pre-wrap;font-size:11px;color:var(--muted);max-height:120px;overflow:auto;width:100%;"></pre></div>
 <div class="loader" id="loader">Loading workbook...</div>
 <div id="dashboardPage" class="page">
@@ -524,6 +524,7 @@ function loadWorkbook(buffer, source) {
     renderProductAnalysis();
     renderCustomerSegments();
     renderParetoDive();
+    recordLastRefresh();
   } catch (err) {
     console.error("loadWorkbook ERROR:", err.message);
     throw err;
@@ -673,7 +674,42 @@ fileInput.addEventListener("change", event => {
 
 grantBtn.addEventListener("click", pickAndSaveWorkbook);
 document.getElementById("retryBtn").addEventListener("click", autoConnect);
-refreshBtn.addEventListener("click", () => { loader.textContent = "Refreshing workbook..."; sourceText.textContent = "Reloading live data"; autoConnect(); });
+refreshBtn.addEventListener("click", () => { loader.textContent = "Refreshing workbook..."; sourceText.textContent = "Pulling live data from Web root"; autoConnect(); });
+
+// Daily auto-refresh: pull the workbook once per calendar day
+const LAST_REFRESH_KEY = "drugstoc_last_refresh";
+
+function getTodayKey() {
+  return new Date().toLocaleDateString("en-CA");
+}
+
+function recordLastRefresh() {
+  try { localStorage.setItem(LAST_REFRESH_KEY, new Date().toISOString()); } catch {}
+}
+
+function shouldAutoRefreshToday() {
+  try {
+    const last = localStorage.getItem(LAST_REFRESH_KEY);
+    if (!last) return true;
+    return getTodayKey() !== new Date(last).toLocaleDateString("en-CA");
+  } catch { return true; }
+}
+
+function scheduleDailyRefresh() {
+  if (shouldAutoRefreshToday()) {
+    loader.textContent = "Running daily workbook refresh...";
+    sourceText.textContent = "Pulling live data from Web root";
+    autoConnect();
+  }
+  // Recheck every hour so a long-running tab refreshes on a new day
+  setInterval(() => {
+    if (shouldAutoRefreshToday()) {
+      loader.textContent = "Running daily workbook refresh...";
+      sourceText.textContent = "Pulling live data from Web root";
+      autoConnect();
+    }
+  }, 60 * 60 * 1000);
+}
 
 [yearFilter, monthFilter, weekFilter, esStartDate, esEndDate].forEach(control => control.addEventListener("change", applyFilters));
 chartMode.addEventListener("change", () => renderChart(state.filtered));
@@ -1548,6 +1584,7 @@ loginBtn.addEventListener("click", login);
 loginPass.addEventListener("keydown", e => { if (e.key === "Enter") login(); });
 loginUser.addEventListener("keydown", e => { if (e.key === "Enter") login(); });
 
-// Load workbook in the background while login is shown
-autoConnect();
+// Load workbook in the background while login is shown;
+// scheduleDailyRefresh will pull live data once per day.
+scheduleDailyRefresh();
 </script></body></html>
