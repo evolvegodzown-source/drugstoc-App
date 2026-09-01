@@ -1543,9 +1543,9 @@ csExportBtn.addEventListener("click", () => {
 });
 
 clientMetric.addEventListener("change", renderClientMetricChart);
-[caYearFilter, caStartDate, caEndDate].forEach(control => control.addEventListener("change", renderClientAnalysis));
+[caYearFilter, caStartDate, caEndDate].forEach(control => control.addEventListener("change", () => { renderClientAnalysis(); renderParetoDive(); }));
 [paYearFilter, paStartDate, paEndDate].forEach(control => control.addEventListener("change", renderProductAnalysis));
-caResetBtn.addEventListener("click", () => { caYearFilter.value = "all"; caStartDate.value = ""; caEndDate.value = ""; renderClientAnalysis(); });
+caResetBtn.addEventListener("click", () => { caYearFilter.value = "all"; caStartDate.value = ""; caEndDate.value = ""; renderClientAnalysis(); renderParetoDive(); });
 paResetBtn.addEventListener("click", () => { paYearFilter.value = "all"; paStartDate.value = ""; paEndDate.value = ""; renderProductAnalysis(); });
 dictYearFilter.addEventListener("change", renderDictionary);
 dropOffFilterBtn.addEventListener("click", () => {
