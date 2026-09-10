@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Drugstoc | Order intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet"><script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script><script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+<style>
+:root{--ink:#18354b;--muted:#708493;--line:#dce7ee;--paper:#f5f9fc;--white:#fff;--teal:#5a9ed3;--mint:#e1f0f8;--coral:#1eaa72;--yellow:#f4c85c}*{box-sizing:border-box}body{margin:0;color:var(--ink);background:var(--paper);font:14px/1.45 "Montserrat","Segoe UI",sans-serif}.shell{max-width:1540px;margin:auto;padding:28px 36px 48px}header,.intro,.panel-head{display:flex;align-items:center;justify-content:space-between;gap:20px}header{margin-bottom:34px}.brand{display:flex;align-items:center;gap:13px}.brand img{width:165px;height:auto}.brand strong{display:block;color:var(--teal);font-weight:700}.brand span{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:1.2px}.source{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px}.pulse{width:8px;height:8px;border-radius:50%;background:#47b878;box-shadow:0 0 0 5px #d8f1e2}h1{max-width:720px;margin:0 0 9px;font:700 clamp(34px,4.5vw,66px)/.98 Georgia,serif;letter-spacing:-2px}.intro{align-items:end;margin-bottom:28px}.intro p{color:var(--muted);margin:0;max-width:540px;font-size:15px}.loader{color:var(--teal);font-weight:bold}.filters{display:flex;flex-wrap:wrap;gap:10px;padding:13px;margin-bottom:20px;border:1px solid var(--line);background:#fff;border-radius:12px}label{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.8px;display:flex;align-items:center;gap:7px;padding-left:7px}select,input,button{border:1px solid var(--line);background:#fbfdfc;color:var(--ink);border-radius:7px;padding:9px 11px;font:inherit}input{min-width:210px}button{cursor:pointer;color:var(--teal);font-weight:bold}.kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-bottom:18px}.kpi{padding:20px 21px;min-height:128px;background:#fff;border:1px solid var(--line);border-radius:12px;position:relative;overflow:hidden}.kpi:first-child{background:var(--teal);color:#fff;border-color:var(--teal)}.kpi:first-child .kpi-label,.kpi:first-child .kpi-note{color:#e4f4fb}.kpi-label{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:1.1px}.kpi-value{margin:12px 0 7px;font-weight:700;font-size:25px}.kpi-note{color:var(--muted);font-size:12px}.kpi-change{margin-top:10px;color:var(--coral);font-size:11px;font-weight:700}.kpi:first-child .kpi-change{color:#d9f4e8}.kpi.demand{background:#eaf5fb}.kpi.revenue{background:#eef9f4}.grid{display:grid;grid-template-columns:1.65fr 1fr;gap:18px;margin-bottom:18px}.panel{border:1px solid var(--line);border-radius:12px;background:#fff;padding:20px;min-width:0}h2{margin:0;font:700 21px Georgia,serif}.caption{color:var(--muted);font-size:12px;margin-top:4px}.chart{height:246px;display:flex;align-items:stretch;gap:10px;padding:12px 0 0;border-bottom:1px solid var(--line)}.bar-group{flex:1;min-width:22px;display:flex;flex-direction:column;justify-content:end;gap:7px;text-align:center}.bar{min-height:2px;background:var(--teal);border-radius:5px 5px 0 0}.bar-label{color:var(--muted);font-size:10px;transform:rotate(-42deg);white-space:nowrap}.rank{display:grid;gap:13px}.rank-row{display:grid;grid-template-columns:25px 1fr auto;align-items:center;gap:8px;font-size:12px}.rank-num{color:var(--coral);font:700 16px Georgia,serif}.rank-track{height:6px;margin-top:5px;background:#edf2ef;border-radius:10px;overflow:hidden}.rank-fill{display:block;height:100%;background:var(--coral);border-radius:inherit}.rank-amount{font-weight:bold}.table-wrap{overflow:auto;max-height:420px}table{width:100%;border-collapse:collapse;min-width:720px}th{position:sticky;top:0;background:#f8fbf9;color:var(--muted);text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.8px}th,td{padding:12px 10px;border-bottom:1px solid #edf1ef}td{font-size:12px}td.amount{color:var(--teal);font-weight:bold;text-align:right}.empty{text-align:center;color:var(--muted);padding:35px}.upload{display:none;margin:18px 0;padding:18px;background:#fff8e9;border:1px solid #f0d693;border-radius:10px}.upload.show{display:flex;justify-content:space-between;align-items:center;gap:15px}@media(max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}}@media(max-width:900px){.shell{padding:22px 18px 35px}.kpis{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.intro{display:block}}@media(max-width:520px){header{align-items:start}.source{font-size:0}.brand img{width:135px}.kpis{gap:8px}.kpi{padding:15px}.filters label{width:100%;justify-content:space-between}}
+</style><style>.intro-side{display:flex;align-items:center;gap:28px}.fulfilment-panel{min-width:360px;padding:14px 16px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 18px rgba(24,53,75,.06)}h1{font-size:clamp(30px,3.7vw,54px);letter-spacing:-1px}.kpi-label{display:flex;align-items:center;gap:7px}
+</style><style>.kpi-label{display:flex;align-items:center;gap:7px}.kpi-label svg{width:15px;height:15px;stroke-width:2.4}.kpi-change{display:flex;align-items:center;gap:4px}.kpi-change svg{width:14px;height:14px;stroke-width:3}.kpi-change span.up{color:#16844f}.kpi-change span.down{color:#cf3f3f}.filters{position:fixed;left:0;top:0;bottom:0;width:230px;z-index:5;display:flex;align-content:flex-start;flex-direction:column;padding:26px 16px;margin:0;border:0;border-right:1px solid var(--line);border-radius:0;box-shadow:5px 0 20px rgba(24,53,75,.05)}.filters label{width:100%;display:flex;flex-direction:column;align-items:stretch;gap:6px;padding:0}.filters select,.filters input,.filters button{width:100%}.shell{margin-left:230px}.chart{height:260px;display:block;border:0}.chart svg{width:100%;height:100%;overflow:visible}.chart-grid{stroke:#e6eef2;stroke-width:1}.chart-line{fill:none;stroke:var(--teal);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.chart-point{fill:#fff;stroke:var(--teal);stroke-width:3}.chart-label{fill:var(--muted);font:10px Montserrat,sans-serif}@media(max-width:600px){.filters{position:static;width:auto;display:flex;flex-direction:row;padding:13px;margin-bottom:20px;border:1px solid var(--line);border-radius:12px;box-shadow:none}.filters label{width:auto;display:flex;flex-direction:row;align-items:center;gap:7px;padding-left:7px}.filters select,.filters input,.filters button{width:auto}.shell{margin-left:0}}@media(max-width:520px){.filters label{width:100%;flex-direction:row;justify-content:space-between}.filters select,.filters input{flex:1}}</style><style>.sidebar{position:fixed;left:0;top:0;bottom:0;width:260px;background:linear-gradient(160deg,#0d1b2a 0%,#0f2333 45%,#143047 100%);z-index:10;display:flex;flex-direction:column;padding:24px 16px;color:#fff;box-shadow:5px 0 20px rgba(0,0,0,.25)}.sidebar-header{text-align:center;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.1)}.sidebar-header strong{display:block;font-size:16px;font-weight:700;color:#fff}.sidebar-header span{font-size:10px;opacity:.7;text-transform:uppercase;letter-spacing:1.2px}.sidebar-logo{width:70%;max-width:120px;height:auto;margin:0 auto 14px;display:block;background:#fff;padding:10px 12px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.2)}.sidebar-nav{display:flex;flex-direction:column;gap:6px}.sidebar-nav button{width:100%;display:flex;align-items:center;gap:12px;text-align:left;background:transparent;color:#c9d6e3;border:0;border-radius:10px;padding:12px 14px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s,color .15s;position:relative}.sidebar-nav button svg{width:18px;height:18px;stroke-width:2;flex-shrink:0}.sidebar-nav button:hover{background:rgba(255,255,255,.06);color:#fff}.sidebar-nav button.active{background:rgba(90,158,211,.14);color:#fff;box-shadow:inset 4px 0 0 0 var(--teal)}.nav-num{margin-left:auto;font-size:12px;font-weight:700;color:rgba(255,255,255,.55)}.shell{margin-left:280px}.filters{position:static;width:auto;flex-direction:row;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:10px;padding:12px 14px;margin:0 0 20px 0;border:1px solid var(--line);background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(24,53,75,.05)}.filters label{width:auto;flex-direction:row;align-items:center;gap:7px;padding-left:0}.filters select,.filters input,.filters button{width:auto}header{margin-bottom:20px}@media(max-width:1000px){.sidebar{width:220px}.shell{margin-left:240px}}@media(max-width:768px){.sidebar{position:static;width:100%;flex-direction:row;flex-wrap:wrap;padding:16px}.sidebar-header{width:100%;margin-bottom:14px;padding-bottom:0;border-bottom:0}.sidebar-nav{flex-direction:row;flex-wrap:wrap;flex:1}.sidebar-nav button{width:auto;flex:1;min-width:160px;box-shadow:none!important}.shell{margin-left:0}.filters{justify-content:flex-start}}</style></head>
+<body><main class="shell">
+<aside class="sidebar"><div class="sidebar-header"><img class="sidebar-logo" src="./.netlify/Drug.logo.png" alt="Drugstoc logo"><strong>Drugstoc App Analytics</strong></div><nav class="sidebar-nav"><button type="button" data-page="executive-summary" class="active"><i data-lucide="layout-grid"></i>Executive Summary<span class="nav-num">01</span></button><button type="button" data-page="client-analysis"><i data-lucide="bar-chart-3"></i>Client Analysis<span class="nav-num">02</span></button><button type="button" data-page="product-analysis"><i data-lucide="package"></i>Product Analysis<span class="nav-num">03</span></button><button type="button" data-page="dictionary"><i data-lucide="book-open"></i>Dictionary<span class="nav-num">04</span></button><button type="button" data-page="sources"><i data-lucide="calculator"></i>Sources and Calculations<span class="nav-num">05</span></button></nav></aside>
+<header><img class="header-cover" src="./.netlify/drugstoc_cover.jpg" alt="Drugstoc healthcare banner"><div class="brand"><div><strong>Drugstoc</strong><span>Commerce intelligence</span></div></div><div class="source"><i class="pulse"></i><span id="sourceText">Connecting to Web root.xlsx</span></div></header>
+<div class="upload" id="upload"><span>Auto-load requires browser permission for the workbook.</span><button id="grantBtn" type="button">Grant access to Web root.xlsx</button><label><input id="fileInput" type="file" accept=".xlsx,.xls"> Choose workbook</label></div>
+<div class="loader" id="loader">Loading workbook...</div>
+<div id="dashboardPage" class="page">
+<section class="intro"><div><h1>Drugstoc App performance Dashboard</h1><p>Live visibility into pharmacy commerce performance, powered by the Orders sheet and shaped for quick decisions.</p></div><div class="intro-side"><div class="fulfilment-panel"><div class="panel-head"><div><h2>Fulfilment overview</h2><div class="caption">App Revenue against App Demand</div></div></div><div class="fulfilment-content"><div class="donut" id="fulfilmentDonut"><div><strong id="fulfilmentValue">--</strong><span>Fulfilment</span></div></div></div></div></div></section>
+<section class="filters"><label>Year <select id="yearFilter"><option value="all">All years</option></select></label><label>Month <select id="monthFilter"><option value="all">All months</option></select></label><label>Week <select id="weekFilter"><option value="all">All weeks</option></select></label><label>Search <input id="searchFilter" type="search" placeholder="Order, client, status..."></label><button id="resetBtn" type="button">Reset filters</button></section>
+<section class="kpis"><article class="kpi"><div class="kpi-label">Total App Orders</div><div class="kpi-value" id="webTotal">--</div><div class="kpi-note">Distinct Order Number where SalesRep = Web Order</div><div class="kpi-change" id="ordersChange">WoW --</div></article><article class="kpi demand"><div class="kpi-label">App Demand</div><div class="kpi-value" id="appDemand">--</div><div class="kpi-note">Sum of Order Amount where SalesRep = Web Order</div><div class="kpi-change" id="demandChange">WoW --</div></article><article class="kpi revenue"><div class="kpi-label">App Revenue</div><div class="kpi-value" id="appRevenue">--</div><div class="kpi-note">Sum of Total Invoiced from Revenue Sheet</div><div class="kpi-change" id="revenueChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Fufilment Rate</div><div class="kpi-value" id="revenueRate">--</div><div class="kpi-note">App Revenue / App Demand</div><div class="kpi-change">Revenue mix</div></article><article class="kpi"><div class="kpi-label">B2B Contribution</div><div class="kpi-value" id="b2bContribution">--</div><div class="kpi-note">Web Order Amount / Total Order Amount</div></article><article class="kpi"><div class="kpi-label">Orders processed</div><div class="kpi-value" id="orderCount">--</div><div class="kpi-note">Unique order records</div></article><article class="kpi"><div class="kpi-label">Clients Invoiced</div><div class="kpi-value" id="clientsInvoiced">--</div><div class="kpi-note">Distinct Client Name in Revenue</div></article><article class="kpi"><div class="kpi-label">Clients Ordering</div><div class="kpi-value" id="clientsOrdering">--</div><div class="kpi-note">Distinct Client in Orders</div></article><article class="kpi"><div class="kpi-label">Average Basket Size</div><div class="kpi-value" id="average">--</div><div class="kpi-note">Order value per record</div></article></section>
+<section class="grid"><article class="panel"><div class="panel-head"><div><h2 id="chartTitle">Weekly App Revenue</h2><div class="caption" id="chartCaption">Invoice Total from Revenue sheet, NGN</div></div><div><select id="chartMetric" aria-label="Chart metric"><option value="revenue">App Revenue</option><option value="demand">App Demand</option><option value="orders">App Orders</option></select><select id="chartMode" aria-label="Chart drill level"><option value="week">Weekly</option><option value="month">Monthly</option></select><div class="caption" id="rangeNote">All available history</div></div></div><div class="chart" id="chart"></div></article><article class="panel"><div class="panel-head"><div><h2>Client by revenue</h2><div class="caption">Total Invoiced by Client Name</div></div></div><div class="rank" id="rank"></div></article></section>
+<section class="panel"><div class="panel-head"><div><h2>Order ledger</h2><div class="caption" id="tableNote">Showing the latest matching records</div></div></div><div class="table-wrap"><table><thead><tr><th>Order number</th><th>Date</th><th>Client</th><th>Sales rep</th><th>Status</th><th style="text-align:right">Order amount</th></tr></thead><tbody id="tableBody"></tbody></table></div></section>
+</div>
+<section class="page" id="clientAnalysisPage" style="display:none">
+<section class="intro"><div><h1>Client Analysis</h1><p>Insights from the Drop off sheet: active clients, drop-offs, and churn.</p></div></section>
+<section class="kpis"><article class="kpi"><div class="kpi-label">Total App Users</div><div class="kpi-value" id="caTotalAppUsers">--</div><div class="kpi-note">Count of Client rows in Drop off sheet</div></article><article class="kpi"><div class="kpi-label">Total Active Client</div><div class="kpi-value" id="caTotalActive">--</div><div class="kpi-note">Rows where Status is Active</div></article><article class="kpi"><div class="kpi-label">Total Drop Offs</div><div class="kpi-value" id="caTotalDropOffs">--</div><div class="kpi-note">Rows where Status is Drop Off</div></article><article class="kpi"><div class="kpi-label">Churning Customers</div><div class="kpi-value" id="caChurning">--</div><div class="kpi-note">Rows where Status is Churn</div></article><article class="kpi"><div class="kpi-label">Churn Percentage</div><div class="kpi-value" id="caChurnPct">--</div><div class="kpi-note">Churning / Total App Users &times; 100</div></article></section>
+<section class="panel"><div class="panel-head"><div><h2>Client metric</h2><div class="caption">Revenue, Sales order, or Demand by Client</div></div><select id="clientMetric" aria-label="Client metric"><option value="revenue">Revenue</option><option value="sales">Sales order</option><option value="demand">Demand</option></select></div><div class="chart" id="clientMetricChart" style="height:360px"></div></section>
+<section class="panel"><div class="panel-head"><div><h2>Drop off ledger</h2><div class="caption" id="dropOffTableNote">Showing the latest matching records</div></div><button id="exportBtn" type="button">Export CSV</button></div><div class="table-wrap"><table><thead id="dropOffTableHead"></thead><tbody id="dropOffTableBody"></tbody></table></div></section>
+</section>
+</main>
+<script>
+const kpiLayoutStyle = document.createElement("style");
+kpiLayoutStyle.textContent = ".kpis{grid-template-columns:repeat(5,minmax(0,1fr))}.client-bars{height:380px}.client-value{font-size:11px;font-weight:700}@media(max-width:1100px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:700px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}";
+document.head.appendChild(kpiLayoutStyle);
+const clientBarStyle = document.createElement("style");
+clientBarStyle.textContent = ".header-cover{width:100%;height:112px;object-fit:cover;object-position:center;border-radius:12px;margin-bottom:18px;display:block}.fulfilment-panel{margin-bottom:18px}.fulfilment-content{display:flex;align-items:center;gap:28px}.donut{--fulfilment:0%;width:150px;height:150px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--coral) var(--fulfilment),var(--mint) 0)}.donut:before{content:'';position:absolute;width:112px;height:112px;border-radius:50%;background:#fff}.donut>div{position:relative;text-align:center}.donut strong{display:block;font-size:22px}.donut span{color:var(--muted);font-size:10px;text-transform:uppercase}.fulfilment-legend{display:grid;gap:12px;color:var(--muted);font-size:12px}.fulfilment-legend span{display:flex;align-items:center;gap:8px}.legend-dot{width:9px;height:9px;border-radius:50%;display:inline-block}.revenue-dot{background:var(--coral)}.demand-dot{background:var(--mint);border:1px solid var(--line)}.fulfilment-legend strong{color:var(--ink);margin-left:4px}.client-bars{width:100%;height:300px}.client-bar{fill:#1eaa72;opacity:.9}.client-bar:hover{fill:#5a9ed3;opacity:1}.client-value{fill:var(--ink);font:700 10px Montserrat,sans-serif}.chart-grid{display:none}@media(max-width:600px){.fulfilment-content{align-items:flex-start;flex-direction:column}}";
+document.head.appendChild(clientBarStyle);
+const kpiTheme = document.createElement("style");
+kpiTheme.textContent = `.kpi{background:#fff!important;color:var(--ink);border:1px solid var(--line);border-top:5px solid var(--teal);padding:19px 20px 18px;box-shadow:0 8px 18px rgba(24,53,75,.06)}.kpi:nth-child(2){border-top-color:#1eaa72}.kpi:nth-child(3){border-top-color:#f4c85c}.kpi:nth-child(4){border-top-color:#8a73c6}.kpi:nth-child(5){border-top-color:#e8785f}.kpi:nth-child(6){border-top-color:#5a9ed3}.kpi:nth-child(7){border-top-color:#31a6a0}.kpi:after{width:70px;height:70px;right:-25px;bottom:-38px;border-width:13px;opacity:.32}.kpi:first-child{background:#fff!important;color:var(--ink);border-color:var(--line);border-top-color:var(--teal)}.kpi:first-child .kpi-label,.kpi:first-child .kpi-note,.kpi:first-child .kpi-change{color:inherit}.kpi-label{color:var(--muted);font-weight:700}.kpi-value{color:var(--ink)}.kpi-change{color:var(--muted)}`;
+document.head.appendChild(kpiTheme);
+const kpiGrid = document.querySelector(".kpis");
+const ordersProcessedCard = document.getElementById("orderCount").closest(".kpi");
+kpiGrid.insertBefore(ordersProcessedCard, kpiGrid.children[1]);
+const kpiIcons = ["shopping-bag", "clipboard-list", "trending-up", "receipt", "percent", "briefcase-business", "calculator"];
+document.querySelectorAll(".kpi-label").forEach((label, index) => {
+  const icon = document.createElement("i");
+  icon.setAttribute("data-lucide", kpiIcons[index] || "activity");
+  label.prepend(icon);
+});
+if (window.lucide) lucide.createIcons();
+const yearFilter = document.getElementById("yearFilter");
+const monthFilter = document.getElementById("monthFilter");
+const weekFilter = document.getElementById("weekFilter");
+const searchFilter = document.getElementById("searchFilter");
+const resetBtn = document.getElementById("resetBtn");
+const fileInput = document.getElementById("fileInput");
+const upload = document.getElementById("upload");
+const grantBtn = document.getElementById("grantBtn");
+const loader = document.getElementById("loader");
+const sourceText = document.getElementById("sourceText");
+const webTotal = document.getElementById("webTotal");
+const appDemand = document.getElementById("appDemand");
+const appRevenue = document.getElementById("appRevenue");
+const revenueRate = document.getElementById("revenueRate");
+const ordersChange = document.getElementById("ordersChange");
+const demandChange = document.getElementById("demandChange");
+const revenueChange = document.getElementById("revenueChange");
+const b2bContribution = document.getElementById("b2bContribution");
+const orderCount = document.getElementById("orderCount");
+const average = document.getElementById("average");
+const chart = document.getElementById("chart");
+const chartMetric = document.getElementById("chartMetric");
+const chartMode = document.getElementById("chartMode");
+const chartTitle = document.getElementById("chartTitle");
+const rank = document.getElementById("rank");
+const clientMetric = document.getElementById("clientMetric");
+const clientMetricChart = document.getElementById("clientMetricChart");
+const tableNote = document.getElementById("tableNote");
+const tableBody = document.getElementById("tableBody");
+const fulfilmentDonut = document.getElementById("fulfilmentDonut");
+const fulfilmentValue = document.getElementById("fulfilmentValue");
+const clientsInvoiced = document.getElementById("clientsInvoiced");
+const clientsOrdering = document.getElementById("clientsOrdering");
+const exportBtn = document.getElementById("exportBtn");
+const state = { rows: [], filtered: [], revenueRows: [], dropOffRows: [] };
+
+const money = value => new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 }).format(value || 0);
+const moneyCompact = value => {
+  const num = value || 0;
+  if (Math.abs(num) >= 1e9) return `₦${(num / 1e9).toFixed(2)}B`;
+  if (Math.abs(num) >= 1e6) return `₦${(num / 1e6).toFixed(2)}M`;
+  if (Math.abs(num) >= 1e3) return `₦${(num / 1e3).toFixed(2)}k`;
+  return `₦${num.toFixed(2)}`;
+};
+const moneyMillions = value => moneyCompact(value);
+const percent = value => `${(value || 0).toFixed(2)}%`;
+const dateText = value => {
+  const date = value instanceof Date ? value : new Date(value);
+  return Number.isNaN(date.getTime()) ? "-" : date.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+};
+const clean = value => String(value ?? "").toLowerCase().replace(/[^a-z0-9]/g, "");
+const isWebOrder = value => clean(value) === "weborder";
+const distinctCount = (rows, key) => new Set(rows.map(row => row[key]).filter(Boolean)).size;
+const revenueMatchesFilters = row => {
+  const date = new Date(row["Invoice Date"]);
+  return (yearFilter.value === "all" || String(row.Year) === yearFilter.value) &&
+         (monthFilter.value === "all" || date.getMonth() + 1 === Number(monthFilter.value)) &&
+         (weekFilter.value === "all" || String(row.Week) === weekFilter.value);
+};
+
+function populateFilters() {
+  const years = [...new Set(state.rows.map(row => row.Year).filter(Boolean))].sort((a, b) => b - a);
+  const months = [...new Set(state.rows.map(row => new Date(row["Order Date"]).getMonth() + 1).filter(Boolean))].sort((a, b) => a - b);
+  const weeks = [...new Set(state.rows.map(row => row.Week).filter(Boolean))].sort((a, b) => a - b);
+
+  yearFilter.innerHTML += [...years].map(year => `<option value="${year}">${year}</option>`).join("");
+  monthFilter.innerHTML += [...months].map(month => `<option value="${month}">${new Date(2000, month - 1).toLocaleString("en", { month: "long" })}</option>`).join("");
+  weekFilter.innerHTML += [...weeks].map(week => `<option value="${week}">Week ${week}</option>`).join("");
+}
+
+function applyFilters() {
+  const year = yearFilter.value, month = monthFilter.value, week = weekFilter.value, query = searchFilter.value.trim().toLowerCase();
+  state.filtered = state.rows.filter(row => {
+    const date = new Date(row["Order Date"]);
+    return (year === "all" || String(row.Year) === year) &&
+           (month === "all" || date.getMonth() + 1 === Number(month)) &&
+           (week === "all" || String(row.Week) === week) &&
+           (!query || [row["Order Number"], row.Client, row.SalesRep, row.Status].join(" ").toLowerCase().includes(query));
+  });
+  render();
+}
+
+function wowText(current, previous) {
+  if (!previous) return "WoW --";
+  const change = ((current - previous) / previous) * 100;
+  const direction = change >= 0 ? "up" : "down";
+  const icon = change >= 0 ? "arrow-up-right" : "arrow-down-right";
+  return `<span class="${direction}"><i data-lucide="${icon}"></i>WoW ${change >= 0 ? "+" : ""}${change.toFixed(1)}%</span>`;
+}
+
+function previousWeekRows() {
+  const weeks = state.rows.map(row => Number(row.Week)).filter(Boolean),
+        selected = weekFilter.value === "all" ? weeks.reduce((max, week) => Math.max(max, week), 0) : Number(weekFilter.value);
+  return state.rows.filter(row => Number(row.Week) === selected - 1 && isWebOrder(row.SalesRep) &&
+    (yearFilter.value === "all" || String(row.Year) === yearFilter.value) &&
+    (monthFilter.value === "all" || new Date(row["Order Date"]).getMonth() + 1 === Number(monthFilter.value)));
+}
+
+function render() {
+  const rows = state.filtered,
+        webRows = rows.filter(row => isWebOrder(row.SalesRep)),
+        total = rows.reduce((sum, row) => sum + (Number(row["Order Amount"]) || 0), 0),
+        webDemand = webRows.reduce((sum, row) => sum + (Number(row["Order Amount"]) || 0), 0),
+        filteredRevenueRows = state.revenueRows.filter(revenueMatchesFilters),
+        revenueTotal = filteredRevenueRows.reduce((sum, row) => sum + (Number(row["Invoice Total"]) || 0), 0),
+        currentWeek = weekFilter.value === "all" ? state.rows.map(row => Number(row.Week)).filter(Boolean).reduce((max, week) => Math.max(max, week), 0) : Number(weekFilter.value),
+        currentWeekRows = rows.filter(row => Number(row.Week) === currentWeek),
+        previousRows = previousWeekRows(),
+        previousDemand = previousRows.reduce((sum, row) => sum + (Number(row["Order Amount"]) || 0), 0),
+        activeWeek = weekFilter.value === "all" ? state.rows.map(row => Number(row.Week)).filter(Boolean).reduce((max, week) => Math.max(max, week), 0) : Number(weekFilter.value),
+        currentRevenueRows = state.revenueRows.filter(row => Number(row.Week) === activeWeek && (yearFilter.value === "all" || String(row.Year) === yearFilter.value) && (monthFilter.value === "all" || new Date(row["Invoice Date"]).getMonth() + 1 === Number(monthFilter.value))),
+        previousRevenueRows = state.revenueRows.filter(row => Number(row.Week) === activeWeek - 1 && (yearFilter.value === "all" || String(row.Year) === yearFilter.value) && (monthFilter.value === "all" || new Date(row["Invoice Date"]).getMonth() + 1 === Number(monthFilter.value))),
+        currentRevenue = currentRevenueRows.reduce((sum, row) => sum + (Number(row["Invoice Total"]) || 0), 0),
+        previousRevenue = previousRevenueRows.reduce((sum, row) => sum + (Number(row["Invoice Total"]) || 0), 0),
+        totalOrderAmount = rows.reduce((sum, row) => sum + (Number(row["Order Amount"]) || 0), 0);
+
+  webTotal.textContent = distinctCount(webRows, "Order Number").toLocaleString();
+  appDemand.textContent = moneyCompact(webDemand);
+  appRevenue.textContent = state.revenueRows.length ? moneyCompact(revenueTotal) : "Unavailable";
+  revenueRate.textContent = filteredRevenueRows.length && webDemand ? percent((revenueTotal / webDemand) * 100) : "Unavailable";
+  ordersChange.innerHTML = wowText(distinctCount(currentWeekRows.filter(row => isWebOrder(row.SalesRep)), "Order Number"), distinctCount(previousRows, "Order Number"));
+  demandChange.innerHTML = wowText(currentWeekRows.filter(row => isWebOrder(row.SalesRep)).reduce((sum, row) => sum + (Number(row["Order Amount"]) || 0), 0), previousDemand);
+  revenueChange.innerHTML = state.revenueRows.length ? wowText(currentRevenue, previousRevenue) : "WoW unavailable";
+  b2bContribution.textContent = totalOrderAmount ? percent((webDemand / totalOrderAmount) * 100) : "Unavailable";
+  orderCount.textContent = rows.length.toLocaleString();
+  average.textContent = moneyCompact(rows.length ? total / rows.length : 0);
+  const fulfilment = webDemand ? Math.min((revenueTotal / webDemand) * 100, 100) : 0;
+  fulfilmentDonut.style.setProperty("--fulfilment", `${fulfilment}%`);
+  fulfilmentValue.textContent = state.revenueRows.length ? percent(fulfilment) : "--";
+  clientsInvoiced.textContent = distinctCount(filteredRevenueRows, "Client").toLocaleString();
+  clientsOrdering.textContent = distinctCount(webRows, "Client").toLocaleString();
+
+  renderChart(rows);
+  renderRank(rows);
+  renderTable(rows);
+  document.querySelectorAll(".kpi-change [data-lucide]").forEach(icon => lucide.createIcons({nodes:[icon]}));
+}
+
+function renderChart(rows) {
+  const totals = {};
+  const mode = chartMode.value;
+  const metric = chartMetric.value;
+  const add = (row, date, amount, key) => { totals[key] = (totals[key] || 0) + amount; };
+  if (metric === "revenue") state.revenueRows.filter(revenueMatchesFilters).forEach(row => { const date = new Date(row["Invoice Date"]); if (Number.isNaN(date.getTime()) || (mode === "week" && !row.Week)) return; const key = mode === "week" ? `${row.Year || date.getFullYear()}-W${String(row.Week || "").padStart(2, "0")}` : `${row.Year || date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`; add(row, date, Number(row["Invoice Total"]) || 0, key); });
+  else rows.forEach(row => { const date = new Date(row["Order Date"]); const key = mode === "week" ? `${row.Year || date.getFullYear()}-W${String(row.Week || "").padStart(2, "0")}` : `${row.Year || date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`; if (metric === "orders") { if (!totals[key]) totals[key] = new Set(); totals[key].add(row["Order Number"]); } else if (isWebOrder(row.SalesRep)) add(row, date, Number(row["Order Amount"]) || 0, key); });
+  if (metric === "orders") Object.keys(totals).forEach(key => totals[key] = totals[key].size);
+  const entries = Object.entries(totals).sort((a, b) => a[0].localeCompare(b[0])), max = Math.max(...entries.map(item => item[1]), 1), width = 760, height = 220, pad = 28;
+  const metricName = chartMetric.options[chartMetric.selectedIndex].text;
+  chartTitle.textContent = mode === "week" ? `Weekly ${metricName}` : `Monthly ${metricName}`;
+  chartCaption.textContent = metric === "orders" ? "Distinct Order Number" : `${metricName} from ${metric === "revenue" ? "Revenue sheet" : "Orders sheet"}, NGN`;
+  rangeNote.textContent = entries.length ? `${entries[0][0]} - ${entries[entries.length - 1][0]}` : "No matching periods";
+  if (!entries.length) { chart.innerHTML = `<div class="empty">No data for these filters.</div>`; return; }
+  const points = entries.map(([label, total], index) => { const x = pad + (index / Math.max(entries.length - 1, 1)) * (width - pad * 2); const y = height - pad - (total / max) * (height - pad * 2); return { label, total, x, y }; });
+  const labels = points.map(point => { const displayLabel = mode === "week" ? `Wk${Number(point.label.split("-W")[1])}` : point.label; const angle = mode === "week" ? -45 : 0; return `<text class="chart-label chart-axis-label" x="${point.x}" y="${height - 4}" text-anchor="${mode === "week" ? "end" : "middle"}" transform="rotate(${angle} ${point.x} ${height - 4})">${displayLabel}</text>`; }).join("");
+  chart.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${mode} App Revenue line chart"><line class="chart-grid" x1="${pad}" y1="${pad}" x2="${width - pad}" y2="${pad}"/><line class="chart-grid" x1="${pad}" y1="${height - pad}" x2="${width - pad}" y2="${height - pad}"/><polyline class="chart-line" points="${points.map(point => `${point.x},${point.y}`).join(" ")}"/>${points.map(point => `<circle class="chart-point" cx="${point.x}" cy="${point.y}" r="4"><title>${point.label}: ${money(point.total)}</title></circle>`).join("")}${labels}</svg>`;
+}
+
+function renderRank(rows) {
+  const totals = {};
+  state.revenueRows.filter(revenueMatchesFilters).forEach(row => {
+    const client = row.Client || "Unknown";
+    totals[client] = (totals[client] || 0) + (Number(row["Invoice Total"]) || 0);
+  });
+  const entries = Object.entries(totals).sort((a, b) => b[1] - a[1]).slice(0, 6),
+        max = Math.max(...entries.map(item => item[1]), 1);
+  const width = 760, height = 360, pad = 42, visible = entries.slice(0, 10), barWidth = (width - pad * 2) / Math.max(visible.length, 1) - 8;
+  const rowHeight = (height - pad * 2) / Math.max(visible.length, 1), maxBarWidth = width - pad * 2 - 145;
+  rank.innerHTML = visible.length ? `<svg class="client-bars" viewBox="0 0 ${width} ${height}" role="img" aria-label="Total Invoiced by Client Name horizontal bar chart">${visible.map(([client,total], index) => { const y = pad + index * rowHeight + 4; const barWidth = Math.max((total / max) * maxBarWidth, 2); return `<text class="chart-label" x="${pad}" y="${y + 13}">${client.slice(0, 18)}</text><rect class="client-bar" x="${pad + 145}" y="${y}" width="${barWidth}" height="${Math.max(rowHeight - 10, 8)}" rx="4"><title>${client}: ${money(total)}</title></rect><text class="client-value" x="${pad + 150 + barWidth}" y="${y + 13}">${moneyMillions(total)}</text>`; }).join("")}</svg>` : `<div class="empty">No Total Invoiced client data found.</div>`;
+}
+
+function renderTable(rows) {
+  const visible = [...rows].sort((a, b) => new Date(b["Order Date"]) - new Date(a["Order Date"])).slice(0, 100);
+  tableNote.textContent = `Showing ${visible.length.toLocaleString()} of ${rows.length.toLocaleString()} matching records`;
+  tableBody.innerHTML = visible.length ? visible.map(row => `<tr><td><strong>${row["Order Number"] || "-"}</strong></td><td>${dateText(row["Order Date"])}</td><td>${row.Client || "-"}</td><td>${row.SalesRep || "-"}</td><td>${row.Status || "-"}</td><td class="amount">${money(Number(row["Order Amount"]) || 0)}</td></tr>`).join("") : `<tr><td colspan="6" class="empty">No matching orders.</td></tr>`;
+}
+
+function loadWorkbook(buffer, source) {
+  const workbook = XLSX.read(buffer, { type: "array", cellDates: true });
+
+  // 1. Load Orders Sheet
+  const ordersSheetName = workbook.SheetNames.find(name => clean(name) === "orders") || workbook.SheetNames[0];
+  state.rows = XLSX.utils.sheet_to_json(workbook.Sheets[ordersSheetName], { defval: "" }).filter(row => [2025, 2026].includes(Number(row.Year)));
+
+  // 2. Load Revenue Sheet & map invoice totals
+  state.revenueRows = [];
+  const revenueSheetName = workbook.SheetNames.find(name => ["revenue", "revenuesheet", "sheet3"].includes(clean(name))) || workbook.SheetNames[2];
+
+  if (revenueSheetName) {
+    const rawRevenueRows = XLSX.utils.sheet_to_json(workbook.Sheets[revenueSheetName], { defval: "" });
+    if (rawRevenueRows.length) {
+      const totalKey = Object.keys(rawRevenueRows[0]).find(key => 
+        ["invoicetotal", "totalinvoice", "totalinvoiced"].includes(clean(key))
+      );
+      const clientKey = Object.keys(rawRevenueRows[0]).find(key => 
+        ["client", "clientname", "customer", "customername"].includes(clean(key))
+      );
+
+      if (totalKey) {
+        state.revenueRows = rawRevenueRows.map(row => ({
+          ...row,
+          "Invoice Total": Number(row[totalKey]) || 0,
+          Client: clientKey ? row[clientKey] : "Unknown",
+          "Invoice Date": row[Object.keys(row).find(key => clean(key) === "invoicedate")]
+        })).filter(row => !row.Year || [2025, 2026].includes(Number(row.Year)));
+      }
+    }
+  }
+
+  // 3. Load Drop off Sheet
+  state.dropOffRows = [];
+  const dropOffSheetName = workbook.SheetNames.find(name => 
+    ["dropoff", "dropoffs"].includes(clean(name))
+  );
+  if (dropOffSheetName) {
+    state.dropOffRows = XLSX.utils.sheet_to_json(workbook.Sheets[dropOffSheetName], { defval: "" });
+  }
+
+  if (!state.rows.length || !("Order Amount" in state.rows[0])) {
+    throw new Error("The workbook does not contain an Orders sheet with an 'Order Amount' column.");
+  }
+
+  populateFilters();
+  state.filtered = state.rows;
+  loader.textContent = `${state.rows.length.toLocaleString()} order records loaded`;
+  sourceText.textContent = state.revenueRows.length ? `${source} | ${revenueSheetName} connected` : `${source} | ${revenueSheetName || "Revenue sheet"} has no Total Invoiced column`;
+  applyFilters();
+  renderClientAnalysis();
+}
+
+// AUTO-LOAD INSTRUCTION
+const FILE_HANDLE_DB = "drugstoc-file-handle";
+const FILE_HANDLE_STORE = "handle";
+
+function openIndexedDB() {
+  return new Promise((resolve) => {
+    if (!window.indexedDB) return resolve(null);
+    const request = indexedDB.open(FILE_HANDLE_DB, 1);
+    request.onupgradeneeded = (event) => {
+      try { event.target.result.createObjectStore(FILE_HANDLE_STORE); } catch {}
+    };
+    request.onsuccess = (event) => resolve(event.target.result);
+    request.onerror = () => resolve(null);
+  });
+}
+
+async function getSavedFileHandle() {
+  const db = await openIndexedDB();
+  if (!db) return null;
+  return new Promise((resolve) => {
+    try {
+      const tx = db.transaction(FILE_HANDLE_STORE, "readonly");
+      const store = tx.objectStore(FILE_HANDLE_STORE);
+      const request = store.get("workbook");
+      request.onsuccess = () => resolve(request.result || null);
+      request.onerror = () => resolve(null);
+    } catch {
+      resolve(null);
+    }
+  });
+}
+
+async function saveFileHandle(handle) {
+  const db = await openIndexedDB();
+  if (!db) return;
+  try {
+    const tx = db.transaction(FILE_HANDLE_STORE, "readwrite");
+    const store = tx.objectStore(FILE_HANDLE_STORE);
+    store.put(handle, "workbook");
+  } catch {}
+}
+
+async function verifyPermission(fileHandle) {
+  if (!fileHandle) return false;
+  const options = { mode: "read" };
+  if ((await fileHandle.queryPermission(options)) === "granted") return true;
+  if ((await fileHandle.requestPermission(options)) === "granted") return true;
+  return false;
+}
+
+async function loadFromFileHandle(fileHandle, source) {
+  if (!(await verifyPermission(fileHandle))) throw new Error("Permission denied");
+  const file = await fileHandle.getFile();
+  const buffer = await file.arrayBuffer();
+  loadWorkbook(buffer, source);
+  upload.classList.remove("show");
+}
+
+async function pickAndSaveWorkbook() {
+  if (!window.showOpenFilePicker) {
+    alert("Your browser does not support file system access. Please use the Choose workbook button instead.");
+    return;
+  }
+  try {
+    const [fileHandle] = await window.showOpenFilePicker({
+      types: [{ description: "Excel workbook", accept: { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx", ".xls"] } }]
+    });
+    await saveFileHandle(fileHandle);
+    await loadFromFileHandle(fileHandle, `Local: ${(await fileHandle.getFile()).name}`);
+  } catch (error) {
+    console.warn("File picker cancelled or failed:", error);
+  }
+}
+
+async function autoConnect() {
+  const fileUrl = "./.netlify/Web%20root.xlsx";
+  loader.textContent = "Auto-loading workbook...";
+
+  // 1. Try network fetch (works when served via HTTP server)
+  try {
+    const response = await fetch(fileUrl, { cache: "no-store" });
+    if (!response.ok) throw new Error("File not found on local path");
+    const buffer = await response.arrayBuffer();
+    loadWorkbook(buffer, "Loaded automatically from .netlify/Web root.xlsx");
+    upload.classList.remove("show");
+    return;
+  } catch (error) {
+    console.warn("Network fetch failed:", error);
+  }
+
+  // 2. Try a previously saved File System Access handle
+  const savedHandle = await getSavedFileHandle();
+  if (savedHandle) {
+    try {
+      await loadFromFileHandle(savedHandle, "Loaded from saved workbook handle");
+      return;
+    } catch (err) {
+      console.warn("Saved handle failed:", err);
+    }
+  }
+
+  // 3. Show permission prompt
+  loader.textContent = "Workbook access required";
+  sourceText.textContent = "Waiting for workbook file";
+  upload.classList.add("show");
+}
+
+fileInput.addEventListener("change", event => {
+  const file = event.target.files[0];
+  if (file) file.arrayBuffer().then(buffer => loadWorkbook(buffer, `Local: ${file.name}`)).catch(error => { loader.textContent = error.message; });
+});
+
+grantBtn.addEventListener("click", pickAndSaveWorkbook);
+
+[yearFilter, monthFilter, weekFilter].forEach(control => control.addEventListener("change", applyFilters));
+chartMode.addEventListener("change", () => renderChart(state.filtered));
+chartMetric.addEventListener("change", () => renderChart(state.filtered));
+searchFilter.addEventListener("input", applyFilters);
+resetBtn.addEventListener("click", () => {
+  yearFilter.value = "all";
+  monthFilter.value = "all";
+  weekFilter.value = "all";
+  searchFilter.value = "";
+  applyFilters();
+});
+
+function showPage(pageName) {
+  const dashboard = document.getElementById("dashboardPage");
+  const clientAnalysis = document.getElementById("clientAnalysisPage");
+  if (pageName === "client-analysis") {
+    dashboard.style.display = "none";
+    clientAnalysis.style.display = "block";
+    renderClientAnalysis();
+  } else {
+    dashboard.style.display = "block";
+    clientAnalysis.style.display = "none";
+  }
+  document.querySelectorAll(".sidebar-nav button").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.page === pageName);
+  });
+  if (window.lucide) lucide.createIcons();
+}
+
+function renderClientAnalysis() {
+  const rows = state.dropOffRows;
+  const totalUsers = rows.filter(row => row.Client).length;
+  const totalActive = rows.filter(row => clean(row.Status) === "active").length;
+  const totalDropOffs = rows.filter(row => clean(row.Status) === "dropoff").length;
+  const churning = rows.filter(row => clean(row.Status) === "churn").length;
+  const churnPct = totalUsers ? (churning / totalUsers) * 100 : 0;
+
+  document.getElementById("caTotalAppUsers").textContent = totalUsers.toLocaleString();
+  document.getElementById("caTotalActive").textContent = totalActive.toLocaleString();
+  document.getElementById("caTotalDropOffs").textContent = totalDropOffs.toLocaleString();
+  document.getElementById("caChurning").textContent = churning.toLocaleString();
+  document.getElementById("caChurnPct").textContent = percent(churnPct);
+
+  const thead = document.getElementById("dropOffTableHead");
+  const tbody = document.getElementById("dropOffTableBody");
+  const note = document.getElementById("dropOffTableNote");
+
+  if (!rows.length) {
+    thead.innerHTML = "";
+    tbody.innerHTML = `<tr><td colspan="100" class="empty">No drop off data loaded.</td></tr>`;
+    note.textContent = "No matching records";
+    return;
+  }
+
+  const allKeys = Object.keys(rows[0]);
+  const priority = ["Client", "Status"];
+  const keys = [...new Set([...priority.filter(k => allKeys.includes(k)), ...allKeys])];
+
+  thead.innerHTML = `<tr>${keys.map(k => `<th>${k}</th>`).join("")}</tr>`;
+  tbody.innerHTML = rows.slice(0, 100).map(row =>
+    `<tr>${keys.map(k => `<td>${row[k] ?? "-"}</td>`).join("")}</tr>`
+  ).join("");
+  note.textContent = `Showing ${Math.min(rows.length, 100).toLocaleString()} of ${rows.length.toLocaleString()} records`;
+  renderClientMetricChart();
+}
+
+function renderClientMetricChart() {
+  const metric = clientMetric.value;
+  const totals = {};
+  let label = "";
+
+  if (metric === "revenue") {
+    label = "Revenue";
+    state.revenueRows.forEach(row => {
+      const client = row.Client || "Unknown";
+      totals[client] = (totals[client] || 0) + (Number(row["Invoice Total"]) || 0);
+    });
+  } else if (metric === "sales") {
+    label = "Sales order";
+    state.rows.forEach(row => {
+      const client = row.Client || "Unknown";
+      totals[client] = (totals[client] || 0) + (Number(row["Order Amount"]) || 0);
+    });
+  } else if (metric === "demand") {
+    label = "Demand";
+    state.rows.forEach(row => {
+      if (isWebOrder(row.SalesRep)) {
+        const client = row.Client || "Unknown";
+        totals[client] = (totals[client] || 0) + (Number(row["Order Amount"]) || 0);
+      }
+    });
+  }
+
+  const entries = Object.entries(totals).sort((a, b) => b[1] - a[1]).slice(0, 10);
+  const max = Math.max(...entries.map(item => item[1]), 1);
+  const width = 760, height = 360, pad = 42;
+  const rowHeight = (height - pad * 2) / Math.max(entries.length, 1);
+  const maxBarWidth = width - pad * 2 - 145;
+
+  clientMetricChart.innerHTML = entries.length ? `<svg class="client-bars" viewBox="0 0 ${width} ${height}" role="img" aria-label="${label} by Client horizontal bar chart">${entries.map(([client, total], index) => { const y = pad + index * rowHeight + 4; const barWidth = Math.max((total / max) * maxBarWidth, 2); return `<text class="chart-label" x="${pad}" y="${y + 13}">${client.slice(0, 18)}</text><rect class="client-bar" x="${pad + 145}" y="${y}" width="${barWidth}" height="${Math.max(rowHeight - 10, 8)}" rx="4"><title>${client}: ${moneyCompact(total)}</title></rect><text class="client-value" x="${pad + 150 + barWidth}" y="${y + 13}">${moneyCompact(total)}</text>`; }).join("")}</svg>` : `<div class="empty">No ${label} data for clients.</div>`;
+}
+
+function exportToCsv(rows, filename) {
+  if (!rows.length) return;
+  const keys = Object.keys(rows[0]);
+  const csv = [
+    keys.join(","),
+    ...rows.map(row => keys.map(k => {
+      const val = row[k] ?? "";
+      const str = String(val).replace(/"/g, '""');
+      return /[",\n]/.test(str) ? `"${str}"` : str;
+    }).join(","))
+  ].join("\n");
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(link.href);
+}
+
+exportBtn.addEventListener("click", () => {
+  const filename = `drop-off-export-${new Date().toISOString().slice(0, 10)}.csv`;
+  exportToCsv(state.dropOffRows, filename);
+});
+
+clientMetric.addEventListener("change", renderClientMetricChart);
+
+document.querySelectorAll(".sidebar-nav button").forEach(btn => {
+  btn.addEventListener("click", () => showPage(btn.dataset.page));
+});
+
+// Run auto-connect immediately on page load
+autoConnect();
+renderClientAnalysis();
+</script></body></html>
