@@ -2,11 +2,33 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Drugstoc | Order intelligence</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet"><script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script><script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet"><script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script><script src="https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
-:root{--ink:#18354b;--muted:#708493;--line:#dce7ee;--paper:#f5f9fc;--white:#fff;--teal:#5a9ed3;--mint:#e1f0f8;--coral:#1eaa72;--yellow:#f4c85c}*{box-sizing:border-box}body{margin:0;color:var(--ink);background:var(--paper);font:14px/1.45 "Montserrat","Segoe UI",sans-serif}.shell{max-width:1540px;margin:auto;padding:28px 36px 48px}header,.intro,.panel-head{display:flex;align-items:center;justify-content:space-between;gap:20px}header{margin-bottom:34px}.brand{display:flex;align-items:center;gap:13px}.brand img{width:165px;height:auto}.brand strong{display:block;color:var(--teal);font-weight:700}.brand span{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:1.2px}.source{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px}#refreshBtn{display:flex;align-items:center;gap:7px}.pulse{width:8px;height:8px;border-radius:50%;background:#47b878;box-shadow:0 0 0 5px #d8f1e2}h1{max-width:720px;margin:0 0 9px;font:700 clamp(34px,4.5vw,66px)/.98 Georgia,serif;letter-spacing:-2px}.intro{align-items:end;margin-bottom:28px}.intro p{color:var(--muted);margin:0;max-width:540px;font-size:15px}.loader{color:var(--teal);font-weight:bold}.filters{display:flex;flex-wrap:wrap;gap:10px;padding:13px;margin-bottom:20px;border:1px solid var(--line);background:#fff;border-radius:12px}label{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.8px;display:flex;align-items:center;gap:7px;padding-left:7px}select,input,button{border:1px solid var(--line);background:#fbfdfc;color:var(--ink);border-radius:7px;padding:9px 11px;font:inherit}input{min-width:210px}button{cursor:pointer;color:var(--teal);font-weight:bold}.kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-bottom:18px}.kpi{padding:20px 21px;min-height:128px;background:#fff;border:1px solid var(--line);border-radius:12px;position:relative;overflow:hidden}.kpi:first-child{background:var(--teal);color:#fff;border-color:var(--teal)}.kpi:first-child .kpi-label,.kpi:first-child .kpi-note{color:#e4f4fb}.kpi-label{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:1.1px}.kpi-value{margin:12px 0 7px;font-weight:700;font-size:25px}.kpi-note{color:var(--muted);font-size:12px}.kpi-change{margin-top:10px;color:var(--coral);font-size:11px;font-weight:700}.kpi:first-child .kpi-change{color:#d9f4e8}.kpi.demand{background:#eaf5fb}.kpi.revenue{background:#eef9f4}.grid{display:grid;grid-template-columns:1.65fr 1fr;gap:18px;margin-bottom:18px}.panel{border:1px solid var(--line);border-radius:12px;background:#fff;padding:20px;min-width:0}h2{margin:0;font:700 21px Georgia,serif}.caption{color:var(--muted);font-size:12px;margin-top:4px}.chart{height:246px;display:flex;align-items:stretch;gap:10px;padding:12px 0 0;border-bottom:1px solid var(--line)}.bar-group{flex:1;min-width:22px;display:flex;flex-direction:column;justify-content:end;gap:7px;text-align:center}.bar{min-height:2px;background:var(--teal);border-radius:5px 5px 0 0}.bar-label{color:var(--muted);font-size:10px;transform:rotate(-42deg);white-space:nowrap}.rank{display:grid;gap:13px}.rank-row{display:grid;grid-template-columns:25px 1fr auto;align-items:center;gap:8px;font-size:12px}.rank-num{color:var(--coral);font:700 16px Georgia,serif}.rank-track{height:6px;margin-top:5px;background:#edf2ef;border-radius:10px;overflow:hidden}.rank-fill{display:block;height:100%;background:var(--coral);border-radius:inherit}.rank-amount{font-weight:bold}.table-wrap{overflow:auto;max-height:420px}table{width:100%;border-collapse:collapse;min-width:720px}th{position:sticky;top:0;background:#f8fbf9;color:var(--muted);text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.8px}th,td{padding:12px 10px;border-bottom:1px solid #edf1ef}td{font-size:12px}td.amount{color:var(--teal);font-weight:bold;text-align:right}.empty{text-align:center;color:var(--muted);padding:35px}.upload{display:none;margin:18px 0;padding:18px;background:#fff8e9;border:1px solid #f0d693;border-radius:10px}.upload.show{display:flex;justify-content:space-between;align-items:center;gap:15px}@media(max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}}@media(max-width:900px){.shell{padding:22px 18px 35px}.kpis{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.intro{display:block}}@media(max-width:520px){header{align-items:start}.source{font-size:0}.brand img{width:135px}.kpis{gap:8px}.kpi{padding:15px}.filters label{width:100%;justify-content:space-between}}
+:root{--ink:#18354b;--muted:#708493;--line:#dce7ee;--paper:#f5f9fc;--white:#fff;--teal:#5a9ed3;--mint:#e1f0f8;--coral:#1eaa72;--yellow:#f4c85c}*{box-sizing:border-box}body{margin:0;color:var(--ink);background:var(--paper);font:14px/1.45 "Montserrat","Segoe UI",sans-serif}.shell{max-width:1540px;margin:auto;padding:28px 36px 48px}header,.intro,.panel-head{display:flex;align-items:center;justify-content:space-between;gap:20px}header{margin-bottom:34px}.brand{display:flex;align-items:center;gap:13px}.brand img{width:165px;height:auto}.brand strong{display:block;color:var(--teal);font-weight:700}.brand span{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:1.2px}.source{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px}#refreshBtn{display:flex;align-items:center;gap:7px}.pulse{width:8px;height:8px;border-radius:50%;background:#47b878;box-shadow:0 0 0 5px #d8f1e2}h1{max-width:720px;margin:0 0 9px;font:700 clamp(34px,4.5vw,66px)/.98 Georgia,serif;letter-spacing:-2px}.intro{align-items:end;margin-bottom:28px}.intro p{color:var(--muted);margin:0;max-width:540px;font-size:15px}.loader{display:flex;align-items:center;gap:10px;color:var(--teal);font-weight:bold}.loader .pill-spinner{position:relative;display:inline-block;width:40px;height:22px;border-radius:999px;background:linear-gradient(90deg,#dff3ff,#5a9ed3 45%,#dff3ff);box-shadow:inset 0 0 0 2px rgba(90,158,211,.25),0 8px 18px rgba(90,158,211,.22);overflow:hidden;animation:pillRoll 1.2s ease-in-out infinite}.loader .pill-spinner::before{content:"";position:absolute;left:6px;top:4px;width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,#ecfbff,#cfeaff);box-shadow:0 0 0 2px rgba(24,53,75,.1);animation:pillPulse 1.2s ease-in-out infinite}.loader .pill-spinner::after{content:"";position:absolute;right:8px;top:6px;width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.7)}@keyframes pillRoll{0%{transform:translateX(-6px) rotate(0deg)}50%{transform:translateX(6px) rotate(180deg)}100%{transform:translateX(-6px) rotate(360deg)}}@keyframes pillPulse{0%,100%{transform:scale(.95)}50%{transform:scale(1.1)}}.filters{display:flex;flex-wrap:wrap;gap:10px;padding:13px;margin-bottom:20px;border:1px solid var(--line);background:#fff;border-radius:12px}label{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.8px;display:flex;align-items:center;gap:7px;padding-left:7px}select,input,button{border:1px solid var(--line);background:#fbfdfc;color:var(--ink);border-radius:7px;padding:9px 11px;font:inherit}input{min-width:210px}button{cursor:pointer;color:var(--teal);font-weight:bold}.kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-bottom:18px}.kpi{padding:20px 21px;min-height:128px;background:#fff;border:1px solid var(--line);border-radius:12px;position:relative;overflow:hidden}.kpi:first-child{background:var(--teal);color:#fff;border-color:var(--teal)}.kpi:first-child .kpi-label,.kpi:first-child .kpi-note{color:#e4f4fb}.kpi-label{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:1.1px}.kpi-value{margin:12px 0 7px;font-weight:700;font-size:25px}.kpi-note{color:var(--muted);font-size:12px}.kpi-change{margin-top:10px;color:var(--coral);font-size:11px;font-weight:700}.kpi:first-child .kpi-change{color:#d9f4e8}.kpi.demand{background:#eaf5fb}.kpi.revenue{background:#eef9f4}.grid{display:grid;grid-template-columns:1.65fr 1fr;gap:18px;margin-bottom:18px}.panel{border:1px solid var(--line);border-radius:12px;background:#fff;padding:20px;min-width:0}h2{margin:0;font:700 21px Georgia,serif}.caption{color:var(--muted);font-size:12px;margin-top:4px}.chart{height:246px;display:flex;align-items:stretch;gap:10px;padding:12px 0 0;border-bottom:1px solid var(--line)}.bar-group{flex:1;min-width:22px;display:flex;flex-direction:column;justify-content:end;gap:7px;text-align:center}.bar{min-height:2px;background:var(--teal);border-radius:5px 5px 0 0}.bar-label{color:var(--muted);font-size:10px;transform:rotate(-42deg);white-space:nowrap}.rank{display:grid;gap:13px}.rank-row{display:grid;grid-template-columns:25px 1fr auto;align-items:center;gap:8px;font-size:12px}.rank-num{color:var(--coral);font:700 16px Georgia,serif}.rank-track{height:6px;margin-top:5px;background:#edf2ef;border-radius:10px;overflow:hidden}.rank-fill{display:block;height:100%;background:var(--coral);border-radius:inherit}.rank-amount{font-weight:bold}.table-wrap{overflow:auto;max-height:420px}table{width:100%;border-collapse:collapse;min-width:720px}th{position:sticky;top:0;background:#f8fbf9;color:var(--muted);text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.8px}th,td{padding:12px 10px;border-bottom:1px solid #edf1ef}td{font-size:12px}td.amount{color:var(--teal);font-weight:bold;text-align:right}.empty{text-align:center;color:var(--muted);padding:35px}.upload{display:none;margin:18px 0;padding:18px;background:#fff8e9;border:1px solid #f0d693;border-radius:10px}.upload.show{display:flex;justify-content:space-between;align-items:center;gap:15px}@media(max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}}@media(max-width:900px){.shell{padding:22px 18px 35px}.kpis{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.intro{display:block}}@media(max-width:520px){header{align-items:start}.source{font-size:0}.brand img{width:135px}.kpis{gap:8px}.kpi{padding:15px}.filters label{width:100%;justify-content:space-between}}
 </style><style>.intro-side{display:flex;align-items:center;gap:28px}.fulfilment-panel{min-width:360px;padding:14px 16px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 18px rgba(24,53,75,.06)}h1{font-size:clamp(30px,3.7vw,54px);letter-spacing:-1px}.kpi-label{display:flex;align-items:center;gap:7px}
-</style><style>.kpi-label{display:flex;align-items:center;gap:7px}.kpi-label svg{width:15px;height:15px;stroke-width:2.4}.kpi-change{display:flex;align-items:center;gap:4px}.kpi-change svg{width:14px;height:14px;stroke-width:3}.kpi-change span.up{color:#16844f}.kpi-change span.down{color:#cf3f3f}.filters{position:fixed;left:0;top:0;bottom:0;width:230px;z-index:5;display:flex;align-content:flex-start;flex-direction:column;padding:26px 16px;margin:0;border:0;border-right:1px solid var(--line);border-radius:0;box-shadow:5px 0 20px rgba(24,53,75,.05)}.filters label{width:100%;display:flex;flex-direction:column;align-items:stretch;gap:6px;padding:0}.filters select,.filters input,.filters button{width:100%}.shell{margin-left:230px}.chart{height:260px;display:block;border:0}.chart svg{width:100%;height:100%;overflow:visible}.chart-grid{stroke:#e6eef2;stroke-width:1}.chart-line{fill:none;stroke:var(--teal);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.chart-point{fill:#fff;stroke:var(--teal);stroke-width:3}.chart-label{fill:var(--muted);font:10px Montserrat,sans-serif}@media(max-width:600px){.filters{position:static;width:auto;display:flex;flex-direction:row;padding:13px;margin-bottom:20px;border:1px solid var(--line);border-radius:12px;box-shadow:none}.filters label{width:auto;display:flex;flex-direction:row;align-items:center;gap:7px;padding-left:7px}.filters select,.filters input,.filters button{width:auto}.shell{margin-left:0}}@media(max-width:520px){.filters label{width:100%;flex-direction:row;justify-content:space-between}.filters select,.filters input{flex:1}}</style><style>.login-overlay{position:fixed;inset:0;background:linear-gradient(160deg,#0d1b2a 0%,#143047 100%);z-index:100;display:flex;align-items:center;justify-content:center;color:#fff}.login-card{width:360px;max-width:90%;padding:36px;background:#fff;border-radius:16px;color:var(--ink);text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}.login-card img{width:120px;margin-bottom:18px}.login-card h2{margin:0 0 6px;font-size:22px}.login-card p{color:var(--muted);margin:0 0 22px;font-size:13px}.login-card label{display:flex;flex-direction:column;align-items:stretch;text-align:left;margin-bottom:14px;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.8px}.login-card input{width:100%;margin-top:6px;min-width:0}.login-card button{width:100%;background:var(--teal);color:#fff;border-color:var(--teal);padding:11px}.login-card button:hover{background:#4896c8}.login-error{color:#cf3f3f;font-size:12px;margin-top:12px;min-height:18px}#appShell.hidden{display:none}.sidebar-nav button.hidden{display:none}</style><style>.sidebar{position:fixed;left:0;top:0;bottom:0;width:260px;background:linear-gradient(160deg,#0d1b2a 0%,#0f2333 45%,#143047 100%);z-index:10;display:flex;flex-direction:column;padding:24px 16px;color:#fff;box-shadow:5px 0 20px rgba(0,0,0,.25)}.sidebar-header{text-align:center;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.1)}.sidebar-header strong{display:block;font-size:16px;font-weight:700;color:#fff}.sidebar-header span{font-size:10px;opacity:.7;text-transform:uppercase;letter-spacing:1.2px}.sidebar-logo{width:70%;max-width:120px;height:auto;margin:0 auto 14px;display:block;background:#fff;padding:10px 12px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.2)}.sidebar-nav{display:flex;flex-direction:column;gap:6px}.sidebar-nav button{width:100%;display:flex;align-items:center;gap:12px;text-align:left;background:transparent;color:#c9d6e3;border:0;border-radius:10px;padding:12px 14px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s,color .15s;position:relative}.sidebar-nav button svg{width:18px;height:18px;stroke-width:2;flex-shrink:0}.sidebar-nav button:hover{background:rgba(255,255,255,.06);color:#fff}.sidebar-nav button.active{background:rgba(90,158,211,.14);color:#fff;box-shadow:inset 4px 0 0 0 var(--teal)}.nav-num{margin-left:auto;font-size:12px;font-weight:700;color:rgba(255,255,255,.55)}.shell{margin-left:280px}.filters{position:static;width:auto;flex-direction:row;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:10px;padding:12px 14px;margin:0 0 20px 0;border:1px solid var(--line);background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(24,53,75,.05)}.filters label{width:auto;flex-direction:row;align-items:center;gap:7px;padding-left:0}.filters select,.filters input,.filters button{width:auto}header{margin-bottom:20px}@media(max-width:1000px){.sidebar{width:220px}.shell{margin-left:240px}}@media(max-width:768px){.sidebar{position:static;width:100%;flex-direction:row;flex-wrap:wrap;padding:16px}.sidebar-header{width:100%;margin-bottom:14px;padding-bottom:0;border-bottom:0}.sidebar-nav{flex-direction:row;flex-wrap:wrap;flex:1}.sidebar-nav button{width:auto;flex:1;min-width:160px;box-shadow:none!important}.shell{margin-left:0}.filters{justify-content:flex-start}}</style></head>
+</style><style>.kpi-label{display:flex;align-items:center;gap:7px}.kpi-label svg{width:15px;height:15px;stroke-width:2.4}.kpi-change{display:flex;align-items:center;gap:4px}.kpi-change svg{width:14px;height:14px;stroke-width:3}.kpi-change span.up{color:#16844f}.kpi-change span.down{color:#cf3f3f}.filters{position:fixed;left:0;top:0;bottom:0;width:230px;z-index:5;display:flex;align-content:flex-start;flex-direction:column;padding:26px 16px;margin:0;border:0;border-right:1px solid var(--line);border-radius:0;box-shadow:5px 0 20px rgba(24,53,75,.05)}.filters label{width:100%;display:flex;flex-direction:column;align-items:stretch;gap:6px;padding:0}.filters select,.filters input,.filters button{width:100%}.shell{margin-left:230px}.chart{height:260px;display:block;border:0}.chart svg{width:100%;height:100%;overflow:visible}.chart-grid{stroke:#e6eef2;stroke-width:1}.chart-line{fill:none;stroke:var(--teal);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.chart-point{fill:#fff;stroke:var(--teal);stroke-width:3}.chart-label{fill:var(--muted);font:10px Montserrat,sans-serif}@media(max-width:600px){.filters{position:static;width:auto;display:flex;flex-direction:row;padding:13px;margin-bottom:20px;border:1px solid var(--line);border-radius:12px;box-shadow:none}.filters label{width:auto;display:flex;flex-direction:row;align-items:center;gap:7px;padding-left:7px}.filters select,.filters input,.filters button{width:auto}.shell{margin-left:0}}@media(max-width:520px){.filters label{width:100%;flex-direction:row;justify-content:space-between}.filters select,.filters input{flex:1}}</style><style>.login-overlay{position:fixed;inset:0;background:linear-gradient(160deg,#0d1b2a 0%,#143047 100%);z-index:100;display:flex;align-items:center;justify-content:center;color:#fff}.login-card{width:360px;max-width:90%;padding:36px;background:#fff;border-radius:16px;color:var(--ink);text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}.login-card img{width:120px;margin-bottom:18px}.login-card h2{margin:0 0 6px;font-size:22px}.login-card p{color:var(--muted);margin:0 0 22px;font-size:13px}.login-card label{display:flex;flex-direction:column;align-items:stretch;text-align:left;margin-bottom:14px;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.8px}.login-card input{width:100%;margin-top:6px;min-width:0}.login-card button{width:100%;background:var(--teal);color:#fff;border-color:var(--teal);padding:11px}.login-card button:hover{background:#4896c8}.login-error{color:#cf3f3f;font-size:12px;margin-top:12px;min-height:18px}#appShell.hidden{display:none}.sidebar-nav button.hidden{display:none}</style><style>.sidebar{position:fixed;left:0;top:0;bottom:0;width:260px;background:linear-gradient(160deg,#0d1b2a 0%,#0f2333 45%,#143047 100%);z-index:10;display:flex;flex-direction:column;padding:24px 16px;color:#fff;box-shadow:5px 0 20px rgba(0,0,0,.25)}.sidebar-header{text-align:center;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.1)}.sidebar-header strong{display:block;font-size:16px;font-weight:700;color:#fff}.sidebar-header span{font-size:10px;opacity:.7;text-transform:uppercase;letter-spacing:1.2px}.sidebar-logo{width:70%;max-width:120px;height:auto;margin:0 auto 14px;display:block;background:#fff;padding:10px 12px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.2)}.sidebar-nav{display:flex;flex-direction:column;gap:6px}.sidebar-nav button{width:100%;display:flex;align-items:center;gap:12px;text-align:left;background:transparent;color:#c9d6e3;border:0;border-radius:10px;padding:12px 14px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s,color .15s;position:relative}.sidebar-nav button svg{width:18px;height:18px;stroke-width:2;flex-shrink:0}.sidebar-nav button:hover{background:rgba(255,255,255,.06);color:#fff}.sidebar-nav button.active{background:rgba(90,158,211,.14);color:#fff;box-shadow:inset 4px 0 0 0 var(--teal)}.nav-num{margin-left:auto;font-size:12px;font-weight:700;color:rgba(255,255,255,.55)}.shell{margin-left:280px}.filters{position:static;width:auto;flex-direction:row;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:10px;padding:12px 14px;margin:0 0 20px 0;border:1px solid var(--line);background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(24,53,75,.05)}.filters label{width:auto;flex-direction:row;align-items:center;gap:7px;padding-left:0}.filters select,.filters input,.filters button{width:auto}header{margin-bottom:20px}@media(max-width:1000px){.sidebar{width:220px}.shell{margin-left:240px}}@media(max-width:768px){.sidebar{position:static;width:100%;flex-direction:row;flex-wrap:wrap;padding:16px}.sidebar-header{width:100%;margin-bottom:14px;padding-bottom:0;border-bottom:0}.sidebar-nav{flex-direction:row;flex-wrap:wrap;flex:1}.sidebar-nav button{width:auto;flex:1;min-width:160px;box-shadow:none!important}.shell{margin-left:0}.filters{justify-content:flex-start}}</style>
+<style>
+.year-badge{
+  display:inline-block;
+  vertical-align:middle;
+  margin-left:10px;
+  padding:7px 12px;
+  border-radius:999px;
+  background:var(--teal);
+  color:#fff;
+  font:700 14px/1 "Montserrat","Segoe UI",sans-serif;
+  letter-spacing:.5px;
+}
+.ytd-kpi-panel th:nth-child(2),
+.ytd-kpi-panel td:nth-child(2){
+  white-space:nowrap;
+  font-weight:600;
+}
+@media(max-width:700px){
+  .year-badge{font-size:11px;padding:6px 9px}
+}
+</style>
+</head>
 <style>#dropOffFilterBtn.active{background:var(--teal);color:#fff;border-color:var(--teal)}</style>
 <style>#chart,#clientMetricChart,#productTrendChart,#paretoChart{height:360px!important}.rank{min-height:420px!important}#productRank,#rank{min-height:420px!important}#csDistributionChart,#csRevenueChart{height:340px!important}.pareto-dive{margin-top:32px}.pareto-dive .intro{align-items:end;margin-bottom:18px}.pareto-kpis{grid-template-columns:repeat(6,minmax(0,1fr))!important;margin-bottom:18px}.pareto-row{cursor:pointer;transition:background .12s}.pareto-row:hover{background:#eef6fa}.pareto-row.active{background:#e1f0f8}.pareto-row td:first-child{font-weight:700}.pareto-bar{fill:var(--teal)}.pareto-grid{stroke:#e6eef2;stroke-width:1}@media(max-width:1200px){.pareto-kpis{grid-template-columns:repeat(3,minmax(0,1fr))!important}}@media(max-width:768px){.pareto-kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important}}</style>
 <body>
@@ -23,32 +45,34 @@
 </div>
 <main class="shell hidden" id="appShell">
 <aside class="sidebar"><div class="sidebar-header"><img class="sidebar-logo" src="./Drug.logo.png" alt="Drugstoc logo"><strong>Drugstoc App Analytics</strong></div><nav class="sidebar-nav"><button type="button" data-page="executive-summary" class="active"><i data-lucide="layout-grid"></i>Executive Summary<span class="nav-num">01</span></button><button type="button" data-page="client-analysis"><i data-lucide="bar-chart-3"></i>Client Analysis<span class="nav-num">02</span></button><button type="button" data-page="product-analysis"><i data-lucide="package"></i>Product Analysis<span class="nav-num">03</span></button><button type="button" data-page="customer-segments"><i data-lucide="users"></i>Customer Segments<span class="nav-num">04</span></button><button type="button" data-page="dictionary"><i data-lucide="book-open"></i>Dictionary<span class="nav-num">05</span></button></nav></aside>
-<header><img class="header-cover" src="./drugstoc_cover.jpg" alt="Drugstoc healthcare banner"><div class="brand"><div><strong>Drugstoc</strong><span>Commerce intelligence</span></div></div><div class="source"><i class="pulse"></i><span id="sourceText">Connecting to Web root.xlsx</span></div><button id="refreshBtn" type="button" title="Pull live data from Web root.xlsx"><i data-lucide="refresh-cw"></i> Pull live data from Web root</button></header>
-<div class="upload" id="upload"><span id="uploadMsg">Auto-load requires browser permission for the workbook.</span><button id="retryBtn" type="button">Retry auto-load from server</button><button id="grantBtn" type="button">Grant access to Web root.xlsx</button><label><input id="fileInput" type="file" accept=".xlsx,.xls"> Choose workbook</label><pre id="uploadLog" style="margin-top:10px;white-space:pre-wrap;font-size:11px;color:var(--muted);max-height:120px;overflow:auto;width:100%;"></pre></div>
-<div class="loader" id="loader">Loading workbook...</div>
+<header><img class="header-cover" src="./drugstoc_cover.jpg" alt="Drugstoc healthcare banner"><div class="brand"><div><strong>Drugstoc</strong><span>Commerce intelligence</span></div></div><div class="source"><i class="pulse"></i><span id="sourceText">Connecting to Odoo</span></div><button id="refreshBtn" type="button" title="Pull live data from Odoo"><i data-lucide="refresh-cw"></i> Pull live data from Odoo</button></header>
+<div class="upload" id="upload"><span id="uploadMsg">Odoo data is unavailable. Check the server-side Odoo configuration.</span><button id="retryBtn" type="button">Retry Odoo connection</button><pre id="uploadLog" style="margin-top:10px;white-space:pre-wrap;font-size:11px;color:var(--muted);max-height:120px;overflow:auto;width:100%;"></pre></div>
+<div class="loader" id="loader"><span class="pill-spinner"></span><span>Loading Odoo data...</span></div>
 <div id="dashboardPage" class="page">
-<section class="intro"><div><h1>Drugstoc App performance Dashboard</h1><p>Live visibility into pharmacy commerce performance, powered by the Orders sheet and shaped for quick decisions.</p></div><div class="intro-side"><div class="fulfilment-panel"><div class="panel-head"><div><h2>Fulfilment overview</h2><div class="caption">App Revenue against App Demand</div></div></div><div class="fulfilment-content"><div class="donut" id="fulfilmentDonut"><div><strong id="fulfilmentValue">--</strong><span>Fulfilment</span></div></div></div></div></div></section>
+<section class="intro"><div><h1>Drugstoc App Performance Dashboard <span class="year-badge">2026</span></h1><p>Live visibility into pharmacy commerce performance, powered by Odoo and shaped for quick decisions.</p></div><div class="intro-side"><div class="fulfilment-panel"><div class="panel-head"><div><h2>Fulfilment rate</h2><div class="caption">Fulfilled App Revenue versus App Demand</div></div></div><div class="fulfilment-content"><div class="donut" id="fulfilmentDonut" role="img" aria-label="Fulfilment rate: fulfilled App Revenue as a share of App Demand"><div><strong id="fulfilmentValue">--</strong><span>Fulfilment rate</span></div></div></div></div></div></section>
 <section class="filters"><label>Year <select id="yearFilter"><option value="all">All years</option></select></label><label>Month <select id="monthFilter"><option value="all">All months</option></select></label><label>Week <select id="weekFilter"><option value="all">All weeks</option></select></label><label>From <input id="esStartDate" type="date"></label><label>To <input id="esEndDate" type="date"></label><label>Search <input id="searchFilter" type="search" placeholder="Order, client, status..."></label><button id="resetBtn" type="button">Reset filters</button></section>
 <section class="kpis"><article class="kpi"><div class="kpi-label">App Orders</div><div class="kpi-value" id="webTotal">--</div><div class="kpi-note">Distinct Order Number where SalesRep = Web Order</div><div class="kpi-change" id="ordersChange">WoW --</div></article><article class="kpi"><div class="kpi-label">B2B Orders Processed</div><div class="kpi-value" id="orderCount">--</div><div class="kpi-note">Distinct Order Number on Orders tab</div><div class="kpi-change" id="orderCountChange">WoW --</div></article><article class="kpi"><div class="kpi-label">App Order Share</div><div class="kpi-value" id="appOrderShare">--</div><div class="kpi-note">App Orders / B2B Orders Processed</div><div class="kpi-change" id="appOrderShareChange">WoW --</div></article><article class="kpi"><div class="kpi-label">B2B Contribution</div><div class="kpi-value" id="b2bContribution">--</div><div class="kpi-note">Web Order Amount / Total Order Amount</div><div class="kpi-change" id="b2bContributionChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Clients Ordering</div><div class="kpi-value" id="clientsOrdering">--</div><div class="kpi-note">Distinct Client in Orders where SalesRep = Web Order</div><div class="kpi-change" id="clientsOrderingChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Clients Invoiced</div><div class="kpi-value" id="clientsInvoiced">--</div><div class="kpi-note">Distinct Client Name in Revenue</div><div class="kpi-change" id="clientsInvoicedChange">WoW --</div></article><article class="kpi demand"><div class="kpi-label">App Demand</div><div class="kpi-value" id="appDemand">--</div><div class="kpi-note">Sum of Order Amount where SalesRep = Web Order</div><div class="kpi-change" id="demandChange">WoW --</div></article><article class="kpi revenue"><div class="kpi-label">App Revenue</div><div class="kpi-value" id="appRevenue">--</div><div class="kpi-note">Sum of Total Invoiced from Revenue Sheet</div><div class="kpi-change" id="revenueChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Lost Sale</div><div class="kpi-value" id="lostSale">--</div><div class="kpi-note">App Demand - App Revenue</div><div class="kpi-change" id="lostSaleChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Average Basket Size</div><div class="kpi-value" id="average">--</div><div class="kpi-note">App Demand / B2B Orders Processed</div><div class="kpi-change" id="averageChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Fulfilment Rate</div><div class="kpi-value" id="revenueRate">--</div><div class="kpi-note">App Revenue / App Demand</div><div class="kpi-change" id="fulfilmentRateChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Target Achieved</div><div class="kpi-value" id="targetAchieved">--</div><div class="kpi-note">Current week revenue / ₦40M weekly target</div><div class="kpi-change" id="targetAchievedChange">WoW --</div></article></section>
-<section class="grid" style="grid-template-columns:1fr"><article class="panel"><div class="panel-head"><div><h2 id="chartTitle">Weekly App Revenue</h2><div class="caption" id="chartCaption">Invoice Total from Revenue sheet, NGN</div></div><div><select id="chartMetric" aria-label="Chart metric"><option value="revenue">App Revenue</option><option value="demand">App Demand</option><option value="orders">App Orders</option></select><select id="chartMode" aria-label="Chart drill level"><option value="week">Weekly</option><option value="month">Monthly</option></select><div class="caption" id="rangeNote">All available history</div></div></div><div class="chart" id="chart"></div></article></section>
+<section class="grid" style="grid-template-columns:1fr"><article class="panel"><div class="panel-head"><div><h2 id="chartTitle">Weekly App Revenue</h2><div class="caption" id="chartCaption">Posted Odoo invoice total, NGN</div></div><div><select id="chartMetric" aria-label="Chart metric"><option value="revenue">App Revenue</option><option value="demand">App Demand</option><option value="orders">App Orders</option></select><select id="chartMode" aria-label="Chart drill level"><option value="week">Weekly</option><option value="month">Monthly</option></select><div class="caption" id="rangeNote">All available history</div></div></div><div class="chart" id="chart"></div></article></section>
+<section class="panel"><div class="panel-head"><div><h2>WoW Analysis</h2><div class="caption" id="wowAnalysisNote">Current week vs previous week</div></div></div><div class="table-wrap"><table><thead><tr><th>Metric</th><th style="text-align:right">Current Week</th><th style="text-align:right">Previous Week</th><th style="text-align:right">WoW Change</th></tr></thead><tbody id="wowAnalysisBody"></tbody></table></div></section>
+<section class="panel"><div class="panel-head"><div><h2>2025 vs 2026</h2><div class="caption" id="vsCompareNote">Revenue, demand and fulfilment rate by year</div></div><div style="display:flex;gap:12px;align-items:center"><label style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.8px">Month <select id="vsMonthFilter"></select></label><label style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.8px">Week <select id="vsWeekFilter"></select></label></div></div><div class="table-wrap"><table><thead><tr><th>Metric</th><th style="text-align:right">2025</th><th style="text-align:right">2026</th><th style="text-align:right">Change (2026 vs 2025)</th></tr></thead><tbody id="vsCompareBody"></tbody></table></div></section>
 <section class="panel"><div class="panel-head"><div><h2>Order ledger</h2><div class="caption" id="tableNote">Showing the latest matching records</div></div></div><div class="table-wrap"><table><thead><tr><th>Order number</th><th>Date</th><th>Client</th><th>Sales rep</th><th>Status</th><th style="text-align:right">Order amount</th></tr></thead><tbody id="tableBody"></tbody></table></div></section>
 </div>
 <section class="page" id="clientAnalysisPage" style="display:none">
-<section class="intro"><div><h1>Client Analysis</h1><p>Insights from the Drop off sheet: active clients, drop-offs, and churn.</p></div></section>
+<section class="intro"><div><h1>Client Analysis</h1><p>Insights from live Web Orders: active clients, drop-offs, and churn based on days since each client's last order.</p></div></section>
 <section class="filters ca-filters"><label>Year <select id="caYearFilter"><option value="all">All years</option></select></label><label>From <input id="caStartDate" type="date"></label><label>To <input id="caEndDate" type="date"></label><button id="caResetBtn" type="button">Reset filters</button></section>
-<section class="kpis"><article class="kpi"><div class="kpi-label">Total App Users</div><div class="kpi-value" id="caTotalAppUsers">--</div><div class="kpi-note">Count of Client rows in Drop off sheet</div></article><article class="kpi"><div class="kpi-label">Total Active Client</div><div class="kpi-value" id="caTotalActive">--</div><div class="kpi-note">Rows where Status is Active</div></article><article class="kpi"><div class="kpi-label">Active Customers</div><div class="kpi-value" id="caActiveCustomers">--</div><div class="kpi-note">Active clients / Total clients &times; 100</div></article><article class="kpi"><div class="kpi-label">Total Drop Offs</div><div class="kpi-value" id="caTotalDropOffs">--</div><div class="kpi-note">Rows where Status is Drop Off</div></article><article class="kpi"><div class="kpi-label">Churning Customers</div><div class="kpi-value" id="caChurning">--</div><div class="kpi-note">Rows where Status is Churn</div></article><article class="kpi"><div class="kpi-label">Total Switch</div><div class="kpi-value" id="caTotalSwitch">--</div><div class="kpi-note">Rows where Switch Status is Switch</div></article><article class="kpi"><div class="kpi-label">Churn Percentage</div><div class="kpi-value" id="caChurnPct">--</div><div class="kpi-note">Churning / Total App Users &times; 100</div></article></section>
+<section class="kpis"><article class="kpi"><div class="kpi-label">Total App Users</div><div class="kpi-value" id="caTotalAppUsers">--</div><div class="kpi-note">Distinct clients with Web Orders</div><div class="kpi-change" id="caTotalAppUsersChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Total Active Client</div><div class="kpi-value" id="caTotalActive">--</div><div class="kpi-note">Last Web Order within 30 days</div><div class="kpi-change" id="caTotalActiveChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Active Customers</div><div class="kpi-value" id="caActiveCustomers">--</div><div class="kpi-note">Active clients / Total clients &times; 100</div><div class="kpi-change" id="caActiveCustomersChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Total Drop Offs</div><div class="kpi-value" id="caTotalDropOffs">--</div><div class="kpi-note">Last Web Order 31–60 days ago</div><div class="kpi-change" id="caTotalDropOffsChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Churning Customers</div><div class="kpi-value" id="caChurning">--</div><div class="kpi-note">Last Web Order over 60 days ago</div><div class="kpi-change" id="caChurningChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Total Switch</div><div class="kpi-value" id="caTotalSwitch">--</div><div class="kpi-note">Rows where Switch Status is Switch</div><div class="kpi-change" id="caTotalSwitchChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Churn Percentage</div><div class="kpi-value" id="caChurnPct">--</div><div class="kpi-note">Churning / Total App Users &times; 100</div><div class="kpi-change" id="caChurnPctChange">WoW --</div></article></section>
 <section class="panel"><div class="panel-head"><div><h2>Client metric</h2><div class="caption">Revenue, Sales order, or Demand by Client</div></div><select id="clientMetric" aria-label="Client metric"><option value="revenue">Revenue</option><option value="sales">Sales order</option><option value="demand">Demand</option></select></div><div class="chart" id="clientMetricChart" style="height:360px"></div></section>
-<section class="pareto-dive" id="paretoDiveSection"><section class="intro"><div><h1>Pareto-Dive</h1><p>Web order analysis by customer class. See which classes drive orders and demand, and dive into client detail.</p></div></section><section class="kpis pareto-kpis"><article class="kpi"><div class="kpi-label">Total Web Orders</div><div class="kpi-value" id="paretoTotalOrders">--</div><div class="kpi-note">Distinct Order Number where SalesRep = Web Order</div></article><article class="kpi"><div class="kpi-label">Web Demand</div><div class="kpi-value" id="paretoTotalDemand">--</div><div class="kpi-note">Sum of Order Amount where SalesRep = Web Order</div></article><article class="kpi"><div class="kpi-label">Web Revenue</div><div class="kpi-value" id="paretoTotalRevenue">--</div><div class="kpi-note">Sum of Total Invoiced from Revenue sheet</div></article><article class="kpi"><div class="kpi-label">Classes</div><div class="kpi-value" id="paretoClassCount">--</div><div class="kpi-note">Distinct customer classes</div></article><article class="kpi"><div class="kpi-label">Top Class</div><div class="kpi-value" id="paretoTopClass">--</div><div class="kpi-note">Class with most of selected metric</div></article><article class="kpi"><div class="kpi-label">Top Share</div><div class="kpi-value" id="paretoTopShare">--</div><div class="kpi-note">Share of top class in selected metric</div></article></section><section class="grid"><article class="panel"><div class="panel-head"><div><h2 id="paretoChartTitle">Orders by class</h2><div class="caption" id="paretoChartCaption">Web order count per class</div></div><select id="paretoMetric" aria-label="Pareto metric"><option value="orders">Web Orders</option><option value="demand">Web Demand</option><option value="revenue">Revenue</option></select></div><div class="chart" id="paretoChart"></div></article></section><section class="panel"><div class="panel-head"><div><h2>Class Pareto table</h2><div class="caption" id="paretoTableNote">Click a row to dive into clients</div></div></div><div class="table-wrap"><table><thead><tr><th>Class</th><th style="text-align:right">Web Orders</th><th style="text-align:right">% Orders</th><th style="text-align:right">Cum % Orders</th><th style="text-align:right">Web Demand</th><th style="text-align:right">% Demand</th><th style="text-align:right">Cum % Demand</th><th style="text-align:right">Revenue</th><th style="text-align:right">% Revenue</th><th style="text-align:right">Cum % Revenue</th><th style="text-align:right">Clients</th></tr></thead><tbody id="paretoTableBody"></tbody></table></div></section><section class="panel" id="paretoClientPanel" style="display:none"><div class="panel-head"><div><h2 id="paretoClientTitle">Client breakdown</h2><div class="caption">Web orders inside the selected class</div></div><button id="paretoBackBtn" type="button">Back to classes</button></div><div class="table-wrap"><table><thead><tr><th>Client</th><th style="text-align:right">Web Orders</th><th style="text-align:right">Demand (NGN)</th><th style="text-align:right">Revenue</th><th style="text-align:right">Avg Order</th></tr></thead><tbody id="paretoClientBody"></tbody></table></div></section></section>
-<section class="panel"><div class="panel-head"><div><h2>Drop off ledger</h2><div class="caption" id="dropOffTableNote">Showing the latest matching records</div></div><button id="dropOffFilterBtn" type="button">Show Drop Off Only</button><button id="exportBtn" type="button">Export CSV</button></div><div class="table-wrap"><table><thead id="dropOffTableHead"></thead><tbody id="dropOffTableBody"></tbody></table></div></section>
+<section class="pareto-dive" id="paretoDiveSection"><section class="intro"><div><h1>Pareto-Dive</h1><p>Web order analysis by customer class. See which classes drive orders and demand, and dive into client detail.</p></div></section><section class="kpis pareto-kpis"><article class="kpi"><div class="kpi-label">Total App Orders</div><div class="kpi-value" id="paretoTotalOrders">--</div><div class="kpi-note">Distinct Order Number where SalesRep = Web Order</div></article><article class="kpi"><div class="kpi-label">App Demand</div><div class="kpi-value" id="paretoTotalDemand">--</div><div class="kpi-note">Sum of Order Amount where SalesRep = Web Order</div></article><article class="kpi"><div class="kpi-label">App Revenue</div><div class="kpi-value" id="paretoTotalRevenue">--</div><div class="kpi-note">Sum of Total Invoiced from Revenue sheet</div></article><article class="kpi"><div class="kpi-label">Classes</div><div class="kpi-value" id="paretoClassCount">--</div><div class="kpi-note">Distinct customer classes</div></article><article class="kpi"><div class="kpi-label">Top Class</div><div class="kpi-value" id="paretoTopClass">--</div><div class="kpi-note">Class with most of selected metric</div></article><article class="kpi"><div class="kpi-label">Top Share</div><div class="kpi-value" id="paretoTopShare">--</div><div class="kpi-note">Share of top class in selected metric</div></article></section><section class="grid"><article class="panel"><div class="panel-head"><div><h2 id="paretoChartTitle">Orders by class</h2><div class="caption" id="paretoChartCaption">Web order count per class</div></div><select id="paretoMetric" aria-label="Pareto metric"><option value="orders">App Orders</option><option value="demand">App Demand</option><option value="revenue">Revenue</option></select></div><div class="chart" id="paretoChart"></div></article></section><section class="panel"><div class="panel-head"><div><h2>Class Pareto table</h2><div class="caption" id="paretoTableNote">Click a row to dive into clients</div></div></div><div class="table-wrap"><table><thead><tr><th>Class</th><th style="text-align:right">App Orders</th><th style="text-align:right">App Demand</th><th style="text-align:right">App Revenue</th><th style="text-align:right">Cum % Revenue</th></tr></thead><tbody id="paretoTableBody"></tbody></table></div></section><section class="panel" id="paretoClientPanel" style="display:none"><div class="panel-head"><div><h2 id="paretoClientTitle">Client breakdown</h2><div class="caption">Web orders inside the selected class</div></div><button id="paretoBackBtn" type="button">Back to classes</button></div><div class="table-wrap"><table><thead><tr><th>Client</th><th style="text-align:right">Web Orders</th><th style="text-align:right">Demand (NGN)</th><th style="text-align:right">Revenue</th><th style="text-align:right">Avg Order</th></tr></thead><tbody id="paretoClientBody"></tbody></table></div></section></section>
+<section class="panel"><div class="panel-head"><div><h2>Drop off ledger</h2><div class="caption" id="dropOffTableNote">Showing the latest matching records</div></div><select id="dropOffWeekFilter" aria-label="Drop off week"><option value="all">All drop off weeks</option></select><button id="dropOffFilterBtn" type="button">Show Drop Off Only</button><button id="exportBtn" type="button">Export CSV</button></div><div class="table-wrap"><table><thead id="dropOffTableHead"></thead><tbody id="dropOffTableBody"></tbody></table></div></section>
 <section class="panel"><div class="panel-head"><div><h2>Segment Classification</h2><div class="caption" id="csTableNote">Showing clients by segment</div></div><button id="csExportBtn" type="button">Export CSV</button></div><div class="table-wrap"><table><thead><tr><th>Client</th><th>Segment</th><th style="text-align:right">Orders</th><th style="text-align:right">Avg Days</th><th style="text-align:right">Total Order Value</th><th style="text-align:right">Avg Order Value</th><th>First Order</th><th>Last Order</th><th style="text-align:right">Revenue</th></tr></thead><tbody id="csTableBody"></tbody></table></div></section>
 </section>
 <section class="page" id="productAnalysisPage" style="display:none">
-<section class="intro"><div><h1>Product Analysis</h1><p>Insights from the Product Line sheet: ordered quantities, fulfilment, and product value.</p></div></section>
+<section class="intro"><div><h1>Product Analysis</h1><p>Insights from the last 30 days of order lines: ordered quantities, fulfilment, and product value.</p></div></section>
 <section class="filters pa-filters"><label>Year <select id="paYearFilter"><option value="all">All years</option></select></label><label>From <input id="paStartDate" type="date"></label><label>To <input id="paEndDate" type="date"></label><button id="paResetBtn" type="button">Reset filters</button></section>
 <section class="kpis"><article class="kpi"><div class="kpi-label"><i data-lucide="package"></i>Total Product Ordered</div><div class="kpi-value" id="paTotalOrdered">--</div><div class="kpi-note">Count of product line rows</div></article><article class="kpi"><div class="kpi-label"><i data-lucide="layers"></i>Distinct Products</div><div class="kpi-value" id="paDistinctProducts">--</div><div class="kpi-note">Distinct Order Lines/Product/Name</div></article><article class="kpi"><div class="kpi-label"><i data-lucide="shopping-cart"></i>Most Ordered Product</div><div class="kpi-value product-name" id="paMostOrdered">--</div><div class="kpi-note" id="paMostOrderedNote">Product with highest ordered quantity</div></article><article class="kpi"><div class="kpi-label"><i data-lucide="check-circle"></i>Product Fulfilment Rate</div><div class="kpi-value" id="paFulfilmentRate">--</div><div class="kpi-note">Sum Invoiced Qty / Sum Ordered Qty</div></article><article class="kpi"><div class="kpi-label"><i data-lucide="alert-circle"></i>Most Uninvoiced Product</div><div class="kpi-value product-name" id="paMostUninvoiced">--</div><div class="kpi-note" id="paMostUninvoicedNote">Product with highest un-invoiced quantity</div></article><article class="kpi"><div class="kpi-label"><i data-lucide="gem"></i>Most Valuable Product</div><div class="kpi-value product-name" id="paMostValuable">--</div><div class="kpi-note" id="paMostValuableNote">Highest sum of Order Lines/Total</div></article><article class="kpi"><div class="kpi-label"><i data-lucide="calendar-clock"></i>Uninvoiced Qty MoM</div><div class="kpi-value" id="paUninvoicedMom">--</div><div class="kpi-note">Month-over-month un-invoiced qty</div></article><article class="kpi"><div class="kpi-label"><i data-lucide="list"></i>Avg Lines per Order</div><div class="kpi-value" id="paAvgLines">--</div><div class="kpi-note">Product rows / distinct order references</div></article><article class="kpi"><div class="kpi-label"><i data-lucide="boxes"></i>Total Quantity Ordered</div><div class="kpi-value" id="paTotalQty">--</div><div class="kpi-note">Sum of Order Lines/Quantity</div></article><article class="kpi"><div class="kpi-label"><i data-lucide="file-check"></i>Total Quantity Invoiced</div><div class="kpi-value" id="paTotalInvoicedQty">--</div><div class="kpi-note">Sum of Order Lines/Invoiced Quantity</div></article></section>
 <section class="grid"><article class="panel"><div class="panel-head"><div><h2 id="productTrendTitle">Product Quantity Trend</h2><div class="caption">Ordered vs Invoiced quantity over time</div></div><div><select id="productTrendMetric" aria-label="Product trend metric"><option value="quantity">Quantity</option><option value="value">Value</option></select><select id="productTrendMode" aria-label="Product trend level"><option value="week">Weekly</option><option value="month">Monthly</option></select><div class="caption" id="productTrendRange">All available history</div></div></div><div class="chart" id="productTrendChart"></div></article><article class="panel"><div class="panel-head"><div><h2 id="productRankTitle">Top Products by Quantity</h2><div class="caption">Products ranked by ordered quantity</div></div><select id="productRankMetric" aria-label="Product rank metric"><option value="quantity">Quantity</option><option value="value">Value</option><option value="uninvoiced">Uninvoiced Qty</option></select></div><div class="rank" id="productRank"></div></article></section>
 <section class="panel"><div class="panel-head"><div><h2>Product ledger</h2><div class="caption" id="productTableNote">Showing the latest matching records</div></div></div><div class="table-wrap"><table><thead><tr><th>Product</th><th style="text-align:right">Ordered Qty</th><th style="text-align:right">Invoiced Qty</th><th style="text-align:right">Uninvoiced Qty</th><th style="text-align:right">Fulfilment</th><th style="text-align:right">Total Value</th><th style="text-align:right">Distinct SO</th></tr></thead><tbody id="productTableBody"></tbody></table></div></section>
-<section class="panel"><div class="panel-head"><div><h2>Product invoicing status</h2><div class="caption">Grouped by ordered-vs-invoiced status</div></div></div><div class="table-wrap"><table><thead><tr><th>Product</th><th style="text-align:right">Ordered Qty</th><th style="text-align:right">Invoiced Qty</th><th style="text-align:right">Uninvoiced Qty</th><th style="text-align:right">Status</th></tr></thead><tbody id="productStatusTableBody"></tbody></table></div></section>
+
 </section>
 <section class="page" id="dictionaryPage" style="display:none">
 <section class="intro"><div><h1>Data Dictionary</h1><p>Definitions for every sheet, column, and KPI used across the dashboard.</p></div></section>
@@ -64,7 +88,7 @@
 </main>
 <script>
 const kpiLayoutStyle = document.createElement("style");
-kpiLayoutStyle.textContent = ".kpis{grid-template-columns:repeat(5,minmax(0,1fr))}.client-bars{height:380px}.client-value{font-size:11px;font-weight:700}@media(max-width:1100px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:700px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}";
+kpiLayoutStyle.textContent = "#dashboardPage>.kpis{grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}#dashboardPage>.kpis .kpi{min-height:112px;padding:15px 16px}#dashboardPage>.kpis .kpi-value{margin:8px 0 5px;font-size:22px}#dashboardPage>.kpis .kpi-note{font-size:11px}.client-bars{height:380px}.client-value{font-size:11px;font-weight:700}@media(max-width:1100px){#dashboardPage>.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:700px){#dashboardPage>.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}";
 document.head.appendChild(kpiLayoutStyle);
 const clientBarStyle = document.createElement("style");
 clientBarStyle.textContent = ".header-cover{width:100%;height:112px;object-fit:cover;object-position:center;border-radius:12px;margin-bottom:18px;display:block}.fulfilment-panel{margin-bottom:18px}.fulfilment-content{display:flex;align-items:center;gap:28px}.donut{--fulfilment:0%;width:150px;height:150px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--coral) var(--fulfilment),var(--mint) 0)}.donut:before{content:'';position:absolute;width:112px;height:112px;border-radius:50%;background:#fff}.donut>div{position:relative;text-align:center}.donut strong{display:block;font-size:22px}.donut span{color:var(--muted);font-size:10px;text-transform:uppercase}.fulfilment-legend{display:grid;gap:12px;color:var(--muted);font-size:12px}.fulfilment-legend span{display:flex;align-items:center;gap:8px}.legend-dot{width:9px;height:9px;border-radius:50%;display:inline-block}.revenue-dot{background:var(--coral)}.demand-dot{background:var(--mint);border:1px solid var(--line)}.fulfilment-legend strong{color:var(--ink);margin-left:4px}.client-bars{width:100%;height:300px}.client-bar{fill:#1eaa72;opacity:.9}.client-bar:hover{fill:#5a9ed3;opacity:1}.client-value{fill:var(--ink);font:700 10px Montserrat,sans-serif}.chart-grid{display:none}@media(max-width:600px){.fulfilment-content{align-items:flex-start;flex-direction:column}}";
@@ -79,8 +103,20 @@ const kpiTheme = document.createElement("style");
 kpiTheme.textContent = `.kpi{background:#fff!important;color:var(--ink);border:1px solid var(--line);border-top:5px solid var(--teal);padding:19px 20px 18px;box-shadow:0 8px 18px rgba(24,53,75,.06)}.kpi:nth-child(2){border-top-color:#1eaa72}.kpi:nth-child(3){border-top-color:#f4c85c}.kpi:nth-child(4){border-top-color:#8a73c6}.kpi:nth-child(5){border-top-color:#e8785f}.kpi:nth-child(6){border-top-color:#5a9ed3}.kpi:nth-child(7){border-top-color:#31a6a0}.kpi:after{width:70px;height:70px;right:-25px;bottom:-38px;border-width:13px;opacity:.32}.kpi:first-child{background:#fff!important;color:var(--ink);border-color:var(--line);border-top-color:var(--teal)}.kpi:first-child .kpi-label,.kpi:first-child .kpi-note,.kpi:first-child .kpi-change{color:inherit}.kpi-label{color:var(--muted);font-weight:700}.kpi-value{color:var(--ink)}.kpi-change{color:var(--muted)}`;
 document.head.appendChild(kpiTheme);
 const kpiGrid = document.querySelector(".kpis");
-const ordersProcessedCard = document.getElementById("orderCount").closest(".kpi");
-kpiGrid.insertBefore(ordersProcessedCard, kpiGrid.children[1]);
+const ytdKpiSection = document.createElement("section");
+ytdKpiSection.className = "panel ytd-kpi-panel";
+ytdKpiSection.innerHTML = `<div class="panel-head"><div><h2>Executive KPI Year to Date</h2><div class="caption" id="ytdKpiNote">Current calendar year through today</div></div></div><div class="table-wrap"><table><thead><tr><th>KPI</th><th>Calculation</th><th style="text-align:right">YTD Value</th></tr></thead><tbody id="ytdKpiTableBody"></tbody></table></div>`;
+kpiGrid.insertAdjacentElement("afterend", ytdKpiSection);
+const ytdKpiTableBody = document.getElementById("ytdKpiTableBody");
+const ytdKpiNote = document.getElementById("ytdKpiNote");
+ytdKpiSection.querySelector("thead").querySelectorAll("th")[1].textContent = "Date span";
+ytdKpiSection.querySelector("h2").textContent = "Weekly Executive KPI Year to Date";
+ytdKpiSection.querySelector("thead").innerHTML = `<tr><th>Week</th><th>Date span</th><th>Month</th><th style="text-align:right">Demand</th><th style="text-align:right">Revenue</th><th style="text-align:right">Value Fulfilment</th><th style="text-align:right">Target Achieved</th><th style="text-align:right">Order Count</th><th style="text-align:right">Clients Ordering</th><th style="text-align:right">Clients Invoiced</th><th style="text-align:right">Average Basket Size</th></tr>`;
+ytdKpiSection.querySelector("thead").querySelectorAll("th")[1].textContent = "Date span";
+[
+  "webTotal", "appDemand", "appRevenue", "revenueRate", "clientsOrdering", "clientsInvoiced",
+  "orderCount", "appOrderShare", "b2bContribution", "lostSale", "average", "targetAchieved"
+].forEach(id => kpiGrid.appendChild(document.getElementById(id).closest(".kpi")));
 const kpiIcons = ["shopping-bag", "clipboard-list", "trending-up", "receipt", "percent", "briefcase-business", "calculator"];
 document.querySelectorAll(".kpi-label").forEach((label, index) => {
   const icon = document.createElement("i");
@@ -94,10 +130,10 @@ const weekFilter = document.getElementById("weekFilter");
 const searchFilter = document.getElementById("searchFilter");
 const esStartDate = document.getElementById("esStartDate");
 const esEndDate = document.getElementById("esEndDate");
+const vsMonthFilter = document.getElementById("vsMonthFilter");
+const vsWeekFilter = document.getElementById("vsWeekFilter");
 const resetBtn = document.getElementById("resetBtn");
-const fileInput = document.getElementById("fileInput");
 const upload = document.getElementById("upload");
-const grantBtn = document.getElementById("grantBtn");
 const refreshBtn = document.getElementById("refreshBtn");
 const loader = document.getElementById("loader");
 const sourceText = document.getElementById("sourceText");
@@ -139,12 +175,20 @@ const fulfilmentValue = document.getElementById("fulfilmentValue");
 
 const exportBtn = document.getElementById("exportBtn");
 const dropOffFilterBtn = document.getElementById("dropOffFilterBtn");
+const dropOffWeekFilter = document.getElementById("dropOffWeekFilter");
 const caYearFilter = document.getElementById("caYearFilter");
 const caStartDate = document.getElementById("caStartDate");
 const caEndDate = document.getElementById("caEndDate");
 const caResetBtn = document.getElementById("caResetBtn");
 const caTotalSwitch = document.getElementById("caTotalSwitch");
 const caActiveCustomers = document.getElementById("caActiveCustomers");
+const caTotalAppUsersChange = document.getElementById("caTotalAppUsersChange");
+const caTotalActiveChange = document.getElementById("caTotalActiveChange");
+const caActiveCustomersChange = document.getElementById("caActiveCustomersChange");
+const caTotalDropOffsChange = document.getElementById("caTotalDropOffsChange");
+const caChurningChange = document.getElementById("caChurningChange");
+const caTotalSwitchChange = document.getElementById("caTotalSwitchChange");
+const caChurnPctChange = document.getElementById("caChurnPctChange");
 const paYearFilter = document.getElementById("paYearFilter");
 const paStartDate = document.getElementById("paStartDate");
 const paEndDate = document.getElementById("paEndDate");
@@ -173,7 +217,6 @@ const productRankMetric = document.getElementById("productRankMetric");
 const productRank = document.getElementById("productRank");
 const productTableBody = document.getElementById("productTableBody");
 const productTableNote = document.getElementById("productTableNote");
-const productStatusTableBody = document.getElementById("productStatusTableBody");
 const paMostOrdered = document.getElementById("paMostOrdered");
 const paMostOrderedNote = document.getElementById("paMostOrderedNote");
 paMostOrdered.closest(".kpi").querySelector(".kpi-label").lastChild.textContent = "Most Qty Ordered Product";
@@ -213,7 +256,7 @@ const loginPass = document.getElementById("loginPass");
 const loginBtn = document.getElementById("loginBtn");
 const loginError = document.getElementById("loginError");
 const appShell = document.getElementById("appShell");
-const state = { rows: [], filtered: [], revenueRows: [], dropOffRows: [], productRows: [], filteredProducts: [], dropOffOnly: false, filteredDropOffLedger: [] };
+const state = { rows: [], filtered: [], revenueRows: [], dropOffRows: [], productRows: [], filteredProducts: [], dropOffOnly: false, filteredDropOffLedger: [], executiveDefaultsInitialized: false, clientClassMap: new Map() };
 
 const ROLE_PAGES = {
   admin: ["executive-summary", "client-analysis", "product-analysis", "customer-segments", "dictionary"],
@@ -242,25 +285,80 @@ const dateText = value => {
   return Number.isNaN(date.getTime()) ? "-" : date.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
 };
 const clean = value => String(value ?? "").toLowerCase().replace(/[^a-z0-9]/g, "");
+const isExcludedOrderState = value => ["draft", "cancel", "cancelled"].includes(clean(value));
 const isWebOrder = value => clean(value) === "weborder";
+const partnerIdValue = value => Array.isArray(value) ? value[0] : value;
+const partnerNameValue = value => Array.isArray(value) ? value[1] : value;
+const isWebOrderPartner = (value, webPartnerIds) => {
+  const partnerId = String(partnerIdValue(value) ?? "").trim();
+  const partnerName = clean(partnerNameValue(value));
+  return webPartnerIds.has(partnerId) || partnerName.includes("weborder") || clean(partnerId).includes("weborder");
+};
+const getDateOffset = (date, days) => {
+  const copy = new Date(date);
+  copy.setDate(copy.getDate() + days);
+  return copy;
+};
+const getInvoiceDateValue = row => row["Invoice Date"] ?? row.invoice_date ?? row["Column1.Invoice Date"] ?? row["Column1.Invoice Date(invoice_date)"] ?? row["Invoice Date(invoice_date)"] ?? "";
+const getSalespersonValue = row => row.Salesperson ?? row["Salesperson"] ?? row["Column1.Salesperson"] ?? row.salesperson ?? row.SalesRep ?? row["SalesRep"] ?? row.invoice_user_id ?? row.salesperson_id ?? "";
+const matchesColumnName = (key, candidates) => candidates.some(candidate => clean(key) === clean(candidate));
+const invoiceMatchesDateRange = (row, start, end) => dateMatchesRange(getInvoiceDateValue(row), start, end);
 const distinctCount = (rows, key) => new Set(rows.map(row => row[key]).filter(Boolean)).size;
+// Executive reporting weeks run Monday through Saturday. Sunday is deliberately
+// excluded, even though the ISO week number also contains Sunday.
+const isExecutiveWeekDate = value => {
+  const date = parseDate(value);
+  return !!date && date.getDay() !== 0;
+};
+const selectedExecutiveWeek = value => weekFilter.value === "all" ||
+  (String(value.Week) === weekFilter.value && isExecutiveWeekDate(value.date));
+const dateInputValue = date => {
+  if (!date) return "";
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
 const revenueMatchesFilters = row => {
-  const date = new Date(row["Invoice Date"]);
+  const invoiceDate = getInvoiceDateValue(row);
+  const date = parseDate(invoiceDate);
   return (yearFilter.value === "all" || String(row.Year) === yearFilter.value) &&
-         (monthFilter.value === "all" || date.getMonth() + 1 === Number(monthFilter.value)) &&
-         (weekFilter.value === "all" || String(row.Week) === weekFilter.value) &&
-         dateMatchesRange(row["Invoice Date"], esStartDate.value, esEndDate.value);
+         (monthFilter.value === "all" || (date && date.getMonth() + 1 === Number(monthFilter.value))) &&
+         selectedExecutiveWeek({ Week: row.Week, date }) &&
+         invoiceMatchesDateRange(row, esStartDate.value, esEndDate.value);
 };
 
 function populateFilters() {
   const years = [...new Set(state.rows.map(row => row.Year).filter(Boolean))].sort((a, b) => b - a);
   const months = [...new Set(state.rows.map(row => new Date(row["Order Date"]).getMonth() + 1).filter(Boolean))].sort((a, b) => a - b);
-  const weeks = [...new Set(state.rows.map(row => row.Week).filter(Boolean))].sort((a, b) => a - b);
+  const weekMap = new Map();
+  state.rows.forEach(row => {
+    const date = parseDate(row["Order Date"]);
+    if (!date) return;
+    const weekKey = getIsoWeek(date);
+    if (!weekMap.has(weekKey)) {
+      const weekStart = getWeekStart(date);
+      const weekEnd = getWeekEnd(date);
+      weekMap.set(weekKey, {
+        label: `Mon ${formatDateSpan(weekStart, weekEnd)} (Sat)`,
+        value: String(weekKey),
+        start: dateInputValue(weekStart),
+        end: dateInputValue(weekEnd)
+      });
+    }
+  });
+  const weeks = [...weekMap.values()].sort((a, b) => Number(a.value) - Number(b.value));
   const yearOptions = `<option value="all">All years</option>` + years.map(year => `<option value="${year}">${year}</option>`).join("");
 
-  yearFilter.innerHTML += [...years].map(year => `<option value="${year}">${year}</option>`).join("");
-  monthFilter.innerHTML += [...months].map(month => `<option value="${month}">${new Date(2000, month - 1).toLocaleString("en", { month: "long" })}</option>`).join("");
-  weekFilter.innerHTML += [...weeks].map(week => `<option value="${week}">Week ${week}</option>`).join("");
+  const selectedYear = yearFilter.value;
+  const selectedMonth = monthFilter.value;
+  yearFilter.innerHTML = `<option value="all">All years</option>` + years.map(year => `<option value="${year}">${year}</option>`).join("");
+  monthFilter.innerHTML = `<option value="all">All months</option>` + months.map(month => `<option value="${month}">${new Date(2000, month - 1).toLocaleString("en", { month: "long" })}</option>`).join("");
+  if ([...yearFilter.options].some(o => o.value === selectedYear)) yearFilter.value = selectedYear;
+  if ([...monthFilter.options].some(o => o.value === selectedMonth)) monthFilter.value = selectedMonth;
+  weekFilter.innerHTML = `<option value="all">All weeks</option>` + weeks.map(item => `<option value="${item.value}" data-start="${item.start}" data-end="${item.end}">${item.label}</option>`).join("");
+  if (years.includes(2026)) yearFilter.value = "2026";
+  state.executiveDefaultsInitialized = true;
   caYearFilter.innerHTML = yearOptions;
   paYearFilter.innerHTML = yearOptions;
   dictYearFilter.innerHTML = yearOptions;
@@ -277,7 +375,7 @@ function applyFilters() {
     const date = new Date(row["Order Date"]);
     return (year === "all" || String(row.Year) === year) &&
            (month === "all" || date.getMonth() + 1 === Number(month)) &&
-           (week === "all" || String(row.Week) === week) &&
+           selectedExecutiveWeek({ Week: row.Week, date }) &&
            dateMatchesRange(row["Order Date"], esStartDate.value, esEndDate.value) &&
            (!query || [row["Order Number"], row.Client, row.SalesRep, row.Status].join(" ").toLowerCase().includes(query));
   });
@@ -286,20 +384,36 @@ function applyFilters() {
 }
 
 function wowText(current, previous) {
-  if (!previous) return "WoW --";
+  if (previous === null || previous === undefined || previous === 0) return "WoW --";
   const change = ((current - previous) / previous) * 100;
   const direction = change >= 0 ? "up" : "down";
   const icon = change >= 0 ? "arrow-up-right" : "arrow-down-right";
   return `<span class="${direction}"><i data-lucide="${icon}"></i>WoW ${change >= 0 ? "+" : ""}${change.toFixed(1)}%</span>`;
 }
 
-function previousWeekRows() {
-  const weeks = state.rows.map(row => Number(row.Week)).filter(Boolean),
-        selected = weekFilter.value === "all" ? weeks.reduce((max, week) => Math.max(max, week), 0) : Number(weekFilter.value);
-  return state.rows.filter(row => Number(row.Week) === selected - 1 && isWebOrder(row.SalesRep) &&
-    (yearFilter.value === "all" || String(row.Year) === yearFilter.value) &&
-    (monthFilter.value === "all" || new Date(row["Order Date"]).getMonth() + 1 === Number(monthFilter.value)) &&
-    dateMatchesRange(row["Order Date"], esStartDate.value, esEndDate.value));
+function setLoader(message) {
+  loader.innerHTML = `<span class="pill-spinner"></span><span>${message}</span>`;
+}
+
+// Resolve the WoW anchor pair: the selected week, or the ISO week of the most
+// recent order in the year-scoped data. Previous-week baselines are matched on
+// year + week only — the executive date range bounds the current view, and
+// applying it to the baseline would empty it (the old WoW "--" bug).
+function activeWeekInfo() {
+  let scoped = state.rows.filter(row => yearFilter.value === "all" || String(row.Year) === yearFilter.value);
+  let current;
+  if (weekFilter.value !== "all") {
+    current = Number(weekFilter.value);
+  } else {
+    const dates = scoped.map(row => parseDate(row["Order Date"])).filter(Boolean);
+    if (!dates.length) return null;
+    const latest = new Date(Math.max(...dates.map(date => date.getTime())));
+    current = getIsoWeek(latest);
+    if (yearFilter.value === "all") {
+      scoped = scoped.filter(row => String(row.Year) === String(latest.getFullYear()));
+    }
+  }
+  return { current, previous: current - 1, scoped };
 }
 
 function render() {
@@ -311,23 +425,21 @@ function render() {
         webDemand = webRows.reduce((sum, row) => sum + (Number(row["Order Amount"]) || 0), 0),
         filteredRevenueRows = state.revenueRows.filter(revenueMatchesFilters),
         revenueTotal = filteredRevenueRows.reduce((sum, row) => sum + (Number(row["Invoice Total"]) || 0), 0),
-        currentWeek = weekFilter.value === "all" ? state.rows.map(row => Number(row.Week)).filter(Boolean).reduce((max, week) => Math.max(max, week), 0) : Number(weekFilter.value),
-        currentWeekRows = rows.filter(row => Number(row.Week) === currentWeek),
-        previousRows = previousWeekRows(),
-        previousDemand = previousRows.reduce((sum, row) => sum + (Number(row["Order Amount"]) || 0), 0),
+        weekInfo = activeWeekInfo(),
+        currentWeek = weekInfo ? weekInfo.current : 0,
         activeWeek = currentWeek,
-        currentRevenueRows = state.revenueRows.filter(row => Number(row.Week) === activeWeek && (yearFilter.value === "all" || String(row.Year) === yearFilter.value) && (monthFilter.value === "all" || new Date(row["Invoice Date"]).getMonth() + 1 === Number(monthFilter.value)) && dateMatchesRange(row["Invoice Date"], esStartDate.value, esEndDate.value)),
-        previousRevenueRows = state.revenueRows.filter(row => Number(row.Week) === activeWeek - 1 && (yearFilter.value === "all" || String(row.Year) === yearFilter.value) && (monthFilter.value === "all" || new Date(row["Invoice Date"]).getMonth() + 1 === Number(monthFilter.value)) && dateMatchesRange(row["Invoice Date"], esStartDate.value, esEndDate.value)),
+        currentWeekRows = weekInfo ? rows.filter(row => Number(row.Week) === weekInfo.current && isExecutiveWeekDate(row["Order Date"])) : [],
+        previousRowsAll = weekInfo ? weekInfo.scoped.filter(row => Number(row.Week) === weekInfo.previous && isExecutiveWeekDate(row["Order Date"])) : [],
+        previousDemand = previousRowsAll.filter(row => isWebOrder(row.SalesRep)).reduce((sum, row) => sum + (Number(row["Order Amount"]) || 0), 0),
+        yearScopedRevenue = state.revenueRows.filter(row => yearFilter.value === "all" || String(row.Year) === yearFilter.value),
+        currentRevenueRows = weekInfo ? yearScopedRevenue.filter(row => Number(row.Week) === weekInfo.current && isExecutiveWeekDate(getInvoiceDateValue(row))) : [],
+        previousRevenueRows = weekInfo ? yearScopedRevenue.filter(row => Number(row.Week) === weekInfo.previous && isExecutiveWeekDate(getInvoiceDateValue(row))) : [],
         currentRevenue = currentRevenueRows.reduce((sum, row) => sum + (Number(row["Invoice Total"]) || 0), 0),
         previousRevenue = previousRevenueRows.reduce((sum, row) => sum + (Number(row["Invoice Total"]) || 0), 0),
         totalOrderAmount = rows.reduce((sum, row) => sum + (Number(row["Order Amount"]) || 0), 0);
 
   const currentWeekWebRows = currentWeekRows.filter(row => isWebOrder(row.SalesRep));
-  const previousWeek = activeWeek - 1;
-  const previousWeekAllRows = state.rows.filter(row => Number(row.Week) === previousWeek &&
-    (yearFilter.value === "all" || String(row.Year) === yearFilter.value) &&
-    (monthFilter.value === "all" || new Date(row["Order Date"]).getMonth() + 1 === Number(monthFilter.value)) &&
-    dateMatchesRange(row["Order Date"], esStartDate.value, esEndDate.value));
+  const previousWeekAllRows = previousRowsAll;
   const currentWeekWebDemand = currentWeekWebRows.reduce((sum, row) => sum + (Number(row["Order Amount"]) || 0), 0);
   const previousWeekWebRows = previousWeekAllRows.filter(row => isWebOrder(row.SalesRep));
   const previousWeekTotalOrderAmount = previousWeekAllRows.reduce((sum, row) => sum + (Number(row["Order Amount"]) || 0), 0);
@@ -343,8 +455,8 @@ function render() {
   const previousB2B = previousWeekTotalOrderAmount ? (previousWeekWebDemand / previousWeekTotalOrderAmount) * 100 : 0;
   const currentClientsOrdering = distinctCount(currentWeekWebRows, "Client");
   const previousClientsOrdering = distinctCount(previousWeekWebRows, "Client");
-  const currentClientsInvoiced = distinctCount(currentRevenueRows, "Client");
-  const previousClientsInvoiced = distinctCount(previousRevenueRows, "Client");
+  const currentClientsInvoiced = distinctCount(currentRevenueRows, "Partner ID");
+  const previousClientsInvoiced = distinctCount(previousRevenueRows, "Partner ID");
   const currentAverageBasket = currentClientsInvoiced ? currentRevenue / currentClientsInvoiced : 0;
   const previousAverageBasket = previousClientsInvoiced ? previousRevenue / previousClientsInvoiced : 0;
   const currentFulfilmentRate = currentWeekWebDemand ? (currentRevenue / currentWeekWebDemand) * 100 : 0;
@@ -363,7 +475,7 @@ function render() {
   orderCount.textContent = b2bOrders.toLocaleString();
   average.textContent = moneyCompact((filteredRevenueRows.length && distinctCount(filteredRevenueRows, "Client")) ? revenueTotal / distinctCount(filteredRevenueRows, "Client") : 0);
   clientsOrdering.textContent = distinctCount(webRows, "Client").toLocaleString();
-  clientsInvoiced.textContent = distinctCount(filteredRevenueRows, "Client").toLocaleString();
+  clientsInvoiced.textContent = distinctCount(filteredRevenueRows, "Partner ID").toLocaleString();
 
   ordersChange.innerHTML = wowText(currentWebOrders, previousWebOrders);
   demandChange.innerHTML = wowText(currentWeekWebRows.reduce((sum, row) => sum + (Number(row["Order Amount"]) || 0), 0), previousDemand);
@@ -381,12 +493,215 @@ function render() {
   const fulfilment = webDemand ? Math.min((revenueTotal / webDemand) * 100, 100) : 0;
   fulfilmentDonut.style.setProperty("--fulfilment", `${fulfilment}%`);
   fulfilmentValue.textContent = state.revenueRows.length ? percent(fulfilment) : "--";
+  renderWowAnalysis(weekInfo);
+  renderVsCompare();
+  renderYtdWeeklyTable();
   renderChart(rows);
   renderTable(rows);
   document.querySelectorAll(".kpi-change [data-lucide]").forEach(icon => lucide.createIcons({nodes:[icon]}));
   } catch (err) {
     console.error("render() ERROR:", err.message);
   }
+}
+
+function renderWowAnalysis(weekInfo) {
+  const body = document.getElementById("wowAnalysisBody");
+  const note = document.getElementById("wowAnalysisNote");
+  if (!body) return;
+  if (!weekInfo) {
+    body.innerHTML = `<tr><td colspan="4" class="empty">No dated orders available for WoW analysis.</td></tr>`;
+    return;
+  }
+  const inWeek = (row, week, dateKey) => Number(row.Week) === week && isExecutiveWeekDate(row[dateKey]);
+  const cur = weekInfo.scoped.filter(row => inWeek(row, weekInfo.current, "Order Date"));
+  const prev = weekInfo.scoped.filter(row => inWeek(row, weekInfo.previous, "Order Date"));
+  const revScoped = state.revenueRows.filter(row => yearFilter.value === "all" || String(row.Year) === yearFilter.value);
+  const curRev = revScoped.filter(row => Number(row.Week) === weekInfo.current && isExecutiveWeekDate(getInvoiceDateValue(row)));
+  const prevRev = revScoped.filter(row => Number(row.Week) === weekInfo.previous && isExecutiveWeekDate(getInvoiceDateValue(row)));
+  const curWeb = cur.filter(row => isWebOrder(row.SalesRep));
+  const prevWeb = prev.filter(row => isWebOrder(row.SalesRep));
+  const sum = (set, key) => set.reduce((total, row) => total + (Number(row[key]) || 0), 0);
+  const curDemand = sum(curWeb, "Order Amount"), prevDemand = sum(prevWeb, "Order Amount");
+  const curRevenue = sum(curRev, "Invoice Total"), prevRevenue = sum(prevRev, "Invoice Total");
+  const curInvoiced = distinctCount(curRev, "Partner ID"), prevInvoiced = distinctCount(prevRev, "Partner ID");
+  const curFulfil = curDemand ? (curRevenue / curDemand) * 100 : null;
+  const prevFulfil = prevDemand ? (prevRevenue / prevDemand) * 100 : null;
+  const rows = [
+    ["App Orders", distinctCount(curWeb, "Order Number"), distinctCount(prevWeb, "Order Number"), value => value.toLocaleString(), false],
+    ["B2B Orders Processed", distinctCount(cur, "Order Number"), distinctCount(prev, "Order Number"), value => value.toLocaleString(), false],
+    ["App Demand", curDemand, prevDemand, moneyCompact, false],
+    ["App Revenue", curRevenue, prevRevenue, moneyCompact, false],
+    ["Lost Sale", curDemand - curRevenue, prevDemand - prevRevenue, moneyCompact, false],
+    ["Fulfilment Rate", curFulfil, prevFulfil, value => percent(value), true],
+    ["Clients Ordering", distinctCount(curWeb, "Client"), distinctCount(prevWeb, "Client"), value => value.toLocaleString(), false],
+    ["Clients Invoiced", curInvoiced, prevInvoiced, value => value.toLocaleString(), false],
+    ["Average Basket Size", curInvoiced ? curRevenue / curInvoiced : null, prevInvoiced ? prevRevenue / prevInvoiced : null, moneyCompact, false]
+  ];
+  body.innerHTML = rows.map(([label, current, previous, fmt, pointsDelta]) => {
+    const delta = (current === null || previous === null || previous === 0)
+      ? "--"
+      : pointsDelta
+        ? `${current - previous >= 0 ? "+" : ""}${(current - previous).toFixed(1)} pts`
+        : `${((current - previous) / Math.abs(previous)) * 100 >= 0 ? "+" : ""}${(((current - previous) / Math.abs(previous)) * 100).toFixed(1)}%`;
+    const improved = current !== null && previous !== null && (pointsDelta ? current >= previous : current >= previous);
+    const color = delta === "--" ? "var(--muted)" : improved ? "var(--teal)" : "var(--coral)";
+    return `<tr><td><strong>${label}</strong></td><td class="amount">${current === null ? "--" : fmt(current)}</td><td class="amount">${previous === null ? "--" : fmt(previous)}</td><td class="amount" style="color:${color};font-weight:700">${delta}</td></tr>`;
+  }).join("");
+  const spanYear = yearFilter.value === "all" ? new Date().getFullYear() : yearFilter.value;
+  note.textContent = `Week ${weekInfo.current} (${executiveWeekDateSpan(spanYear, weekInfo.current)}) vs Week ${weekInfo.previous} (${executiveWeekDateSpan(spanYear, weekInfo.previous)})`;
+}
+
+function renderVsCompare() {
+  const body = document.getElementById("vsCompareBody");
+  const note = document.getElementById("vsCompareNote");
+  if (!body) return;
+  const month = vsMonthFilter.value, week = vsWeekFilter.value;
+  const inPeriod = (value, year) => {
+    const date = parseDate(value);
+    if (!date || date.getFullYear() !== year) return false;
+    if (month !== "all" && date.getMonth() + 1 !== Number(month)) return false;
+    if (week !== "all" && getIsoWeek(date) !== Number(week)) return false;
+    return true;
+  };
+  const aggregate = year => {
+    const demand = state.rows
+      .filter(row => row.Year === year && isWebOrder(row.SalesRep) && inPeriod(row["Order Date"], year))
+      .reduce((total, row) => total + (Number(row["Order Amount"]) || 0), 0);
+    const revenue = state.revenueRows
+      .filter(row => row.Year === year && inPeriod(getInvoiceDateValue(row), year))
+      .reduce((total, row) => total + (Number(row["Invoice Total"]) || 0), 0);
+    return { demand, revenue, fulfilment: demand ? (revenue / demand) * 100 : null };
+  };
+  const y25 = aggregate(2025), y26 = aggregate(2026);
+  const rows = [
+    ["Revenue (App)", y25.revenue, y26.revenue, moneyCompact, false],
+    ["Demand (App)", y25.demand, y26.demand, moneyCompact, false],
+    ["Fulfilment Rate", y25.fulfilment, y26.fulfilment, value => percent(value), true]
+  ];
+  body.innerHTML = rows.map(([label, v25, v26, fmt, pointsDelta]) => {
+    const delta = (v25 === null || v26 === null || v25 === 0)
+      ? "--"
+      : pointsDelta
+        ? `${v26 - v25 >= 0 ? "+" : ""}${(v26 - v25).toFixed(1)} pts`
+        : `${((v26 - v25) / Math.abs(v25)) * 100 >= 0 ? "+" : ""}${(((v26 - v25) / Math.abs(v25)) * 100).toFixed(1)}%`;
+    const color = delta === "--" ? "var(--muted)" : v26 >= v25 ? "var(--teal)" : "var(--coral)";
+    return `<tr><td><strong>${label}</strong></td><td class="amount">${v25 === null ? "--" : fmt(v25)}</td><td class="amount">${v26 === null ? "--" : fmt(v26)}</td><td class="amount" style="color:${color};font-weight:700">${delta}</td></tr>`;
+  }).join("");
+  const periodText = `${month === "all" ? "All months" : new Date(2000, Number(month) - 1).toLocaleString("en", { month: "long" })} · ${week === "all" ? "All weeks" : `Week ${week}`}`;
+  note.textContent = `Web Orders — ${periodText} | Revenue = posted Web Order invoices, Demand = Web Order amounts`;
+}
+
+
+const executiveWeekDateSpan = (year, week) => {
+  const numericYear = Number(year);
+  const numericWeek = Number(week);
+  if (!numericYear || !numericWeek) return "-";
+
+  // ISO week -> Monday of that week.
+  const jan4 = new Date(numericYear, 0, 4);
+  const day = jan4.getDay() || 7;
+  const monday = new Date(jan4);
+  monday.setDate(jan4.getDate() - day + 1 + (numericWeek - 1) * 7);
+  monday.setHours(0, 0, 0, 0);
+
+  const saturday = new Date(monday);
+  saturday.setDate(monday.getDate() + 5);
+
+  return formatDateSpan(monday, saturday);
+};
+
+function renderYtdKpiTable() {
+  const endDate = new Date();
+  endDate.setHours(23, 59, 59, 999);
+  const year = endDate.getFullYear();
+  const isYtd = value => {
+    const date = parseDate(value);
+    return date && date.getFullYear() === year && date <= endDate;
+  };
+  const ytdOrders = state.rows.filter(row => isYtd(row["Order Date"]));
+  const ytdWebOrders = ytdOrders.filter(row => isWebOrder(row.SalesRep));
+  const ytdInvoices = state.revenueRows.filter(row => isYtd(getInvoiceDateValue(row)));
+  const orderCountYtd = distinctCount(ytdOrders, "Order Number");
+  const webOrderCountYtd = distinctCount(ytdWebOrders, "Order Number");
+  const totalDemandYtd = ytdOrders.reduce((sum, row) => sum + (Number(row["Order Amount"]) || 0), 0);
+  const webDemandYtd = ytdWebOrders.reduce((sum, row) => sum + (Number(row["Order Amount"]) || 0), 0);
+  const revenueYtd = ytdInvoices.reduce((sum, row) => sum + (Number(row["Invoice Total"]) || 0), 0);
+  const clientsOrderingYtd = distinctCount(ytdWebOrders, "Client");
+  const clientsInvoicedYtd = distinctCount(ytdInvoices, "Partner ID");
+  const rows = [
+    ["App Orders", "Distinct Web Order order numbers", webOrderCountYtd.toLocaleString()],
+    ["B2B Orders Processed", "Distinct order numbers", orderCountYtd.toLocaleString()],
+    ["App Order Share", "App Orders / B2B Orders Processed", orderCountYtd ? percent((webOrderCountYtd / orderCountYtd) * 100) : "--"],
+    ["B2B Contribution", "Web Order demand / total demand", totalDemandYtd ? percent((webDemandYtd / totalDemandYtd) * 100) : "--"],
+    ["Clients Ordering", "Distinct clients on Web Orders", clientsOrderingYtd.toLocaleString()],
+    ["Clients Invoiced", "Distinct partner_id on Web Order invoices", clientsInvoicedYtd.toLocaleString()],
+    ["App Demand", "Sum of Web Order amount_total", moneyCompact(webDemandYtd)],
+    ["App Revenue", "Sum of Web Order invoice amount_total", moneyCompact(revenueYtd)],
+    ["Lost Sale", "App Demand - App Revenue", moneyCompact(webDemandYtd - revenueYtd)],
+    ["Average Basket Size", "App Revenue / Clients Invoiced", clientsInvoicedYtd ? moneyCompact(revenueYtd / clientsInvoicedYtd) : "--"],
+    ["Fulfilment Rate", "App Revenue / App Demand", webDemandYtd ? percent((revenueYtd / webDemandYtd) * 100) : "--"],
+    ["Target Achieved", "YTD revenue / (40M x elapsed weeks)", percent((revenueYtd / (40000000 * Math.max(getIsoWeek(endDate), 1))) * 100)]
+  ];
+  ytdKpiNote.textContent = `${year} YTD through ${dateText(endDate)} | ${ytdInvoices.length.toLocaleString()} Web Order invoices`;
+  ytdKpiTableBody.innerHTML = rows.map(([name, calculation, value]) => `<tr><td><strong>${name}</strong></td><td>${calculation}</td><td class="amount">${value}</td></tr>`).join("");
+}
+
+function renderYtdWeeklyTable() {
+  const endDate = new Date();
+  endDate.setHours(23, 59, 59, 999);
+  const year = endDate.getFullYear();
+  const isYtd = value => {
+    const date = parseDate(value);
+    return date && date.getFullYear() === year && date <= endDate;
+  };
+  const weekly = new Map();
+  const getWeek = value => {
+    const date = parseDate(value);
+    return date ? getIsoWeek(date) : null;
+  };
+  const getBucket = (week, date) => {
+    if (!weekly.has(week)) {
+      const weekStart = getWeekStart(date);
+      const weekEnd = new Date(weekStart);
+      weekEnd.setDate(weekStart.getDate() + 5); // Executive reporting week: Monday through Saturday
+      weekly.set(week, {
+        month: "", weekStart, weekEnd,
+        demand: 0, revenue: 0, orders: new Set(), ordering: new Set(), invoiced: new Set()
+      });
+    }
+    return weekly.get(week);
+  };
+
+  state.rows.filter(row => isYtd(row["Order Date"])).forEach(row => {
+    const week = getWeek(row["Order Date"]);
+    if (!week) return;
+    const date = parseDate(row["Order Date"]);
+    const bucket = getBucket(week, date);
+    bucket.month = date.toLocaleString("en-US", { month: "long" });
+    if (isWebOrder(row.SalesRep)) {
+      if (row["Order Number"]) bucket.orders.add(row["Order Number"]);
+      if (row.Client) bucket.ordering.add(row.Client);
+      bucket.demand += Number(row["Order Amount"]) || 0;
+    }
+  });
+  state.revenueRows.filter(row => isYtd(getInvoiceDateValue(row))).forEach(row => {
+    const week = getWeek(getInvoiceDateValue(row));
+    if (!week) return;
+    const date = parseDate(getInvoiceDateValue(row));
+    const bucket = getBucket(week, date);
+    bucket.month = date.toLocaleString("en-US", { month: "long" });
+    bucket.revenue += Number(row["Invoice Total"]) || 0;
+    if (row["Partner ID"]) bucket.invoiced.add(row["Partner ID"]);
+  });
+
+  const rows = [...weekly.entries()].sort((a, b) => a[0] - b[0]).map(([week, bucket]) => {
+    const fulfilment = bucket.demand ? (bucket.revenue / bucket.demand) * 100 : 0;
+    const target = (bucket.revenue / 40000000) * 100;
+    const basket = bucket.invoiced.size ? bucket.revenue / bucket.invoiced.size : 0;
+    return `<tr><td>${week}</td><td>${formatDateSpan(bucket.weekStart, bucket.weekEnd)}</td><td>${bucket.month}</td><td class="amount">${moneyCompact(bucket.demand)}</td><td class="amount">${moneyCompact(bucket.revenue)}</td><td class="amount">${percent(fulfilment)}</td><td class="amount">${percent(target)}</td><td class="amount">${bucket.orders.size.toLocaleString()}</td><td class="amount">${bucket.ordering.size.toLocaleString()}</td><td class="amount">${bucket.invoiced.size.toLocaleString()}</td><td class="amount">${moneyCompact(basket)}</td></tr>`;
+  });
+  ytdKpiNote.textContent = `${year} YTD through ${dateText(endDate)} | Weekly Web Order demand and invoice performance`;
+  ytdKpiTableBody.innerHTML = rows.join("") || `<tr><td colspan="11" class="empty">No YTD Odoo data available.</td></tr>`;
 }
 
 function renderChart(rows) {
@@ -404,7 +719,7 @@ function renderChart(rows) {
   const plotWidth = width - pad * 2;
   const metricName = chartMetric.options[chartMetric.selectedIndex].text;
   chartTitle.textContent = "App Metric trends";
-  chartCaption.textContent = metric === "orders" ? "Distinct Order Number" : `${metricName} from ${metric === "revenue" ? "Revenue sheet" : "Orders sheet"}, NGN`;
+  chartCaption.textContent = metric === "orders" ? "Distinct Odoo order number" : `${metricName} from ${metric === "revenue" ? "Odoo posted invoices" : "Odoo sales orders"}, NGN`;
   rangeNote.textContent = entries.length ? `${entries[0][0]} - ${entries[entries.length - 1][0]}` : "No matching periods";
   if (!entries.length) { chart.innerHTML = `<div class="empty">No data for these filters.</div>`; return; }
   const points = entries.map(([label, total], index) => { const x = pad + (index / Math.max(entries.length - 1, 1)) * plotWidth; const y = height - pad - (total / max) * plotHeight; return { label, total, x, y }; });
@@ -450,7 +765,9 @@ function loadWorkbook(buffer, source) {
 
     // 1. Load Orders Sheet
     const ordersSheetName = workbook.SheetNames.find(name => clean(name) === "orders") || workbook.SheetNames[0];
-    state.rows = XLSX.utils.sheet_to_json(workbook.Sheets[ordersSheetName], { defval: "" }).filter(row => [2025, 2026].includes(Number(row.Year)));
+    state.rows = XLSX.utils.sheet_to_json(workbook.Sheets[ordersSheetName], { defval: "" }).filter(row =>
+      [2025, 2026].includes(Number(row.Year)) && !isExcludedOrderState(row.Status ?? row.state)
+    );
 
     // 2. Load Revenue Sheet & map invoice totals
     state.revenueRows = [];
@@ -465,14 +782,28 @@ function loadWorkbook(buffer, source) {
         const clientKey = Object.keys(rawRevenueRows[0]).find(key => 
           ["client", "clientname", "customer", "customername"].includes(clean(key))
         );
+        const partnerIdKey = Object.keys(rawRevenueRows[0]).find(key =>
+          ["partnerid", "partner_id", "customerid", "customer_id"].includes(clean(key))
+        );
+        const invoiceDateKey = Object.keys(rawRevenueRows[0]).find(key =>
+          ["invoicedate", "invoice_date", "column1.invoicedate", "column1.invoicedate(invoice_date)"].includes(clean(key))
+        );
+        const salespersonKey = Object.keys(rawRevenueRows[0]).find(key =>
+          ["salesperson", "salesrep", "sales representative", "column1.salesperson"].includes(clean(key))
+        );
 
         if (totalKey) {
           state.revenueRows = rawRevenueRows.map(row => ({
             ...row,
             "Invoice Total": Number(row[totalKey]) || 0,
+            "Partner ID": partnerIdKey ? row[partnerIdKey] : row["Partner ID"] || row.partner_id || "",
             Client: clientKey ? row[clientKey] : "Unknown",
-            "Invoice Date": row[Object.keys(row).find(key => clean(key) === "invoicedate")]
-          })).filter(row => !row.Year || [2025, 2026].includes(Number(row.Year)));
+            "Invoice Date": invoiceDateKey ? row[invoiceDateKey] : row[Object.keys(row).find(key => clean(key) === "invoicedate")],
+            Salesperson: salespersonKey ? row[salespersonKey] : row.Salesperson || row["Salesperson"] || "",
+          })).filter(row => {
+            const webPartnerIds = new Set(state.rows.filter(order => isWebOrder(order.SalesRep)).map(order => String(order["Partner ID"] ?? "").trim()).filter(Boolean));
+            return (!row.Year || [2025, 2026].includes(Number(row.Year))) && isWebOrderPartner(row["Partner ID"], webPartnerIds);
+          });
         }
       }
     }
@@ -522,7 +853,7 @@ function loadWorkbook(buffer, source) {
     populateFilters();
     populateCustomerSegmentFilters();
     state.filtered = state.rows;
-    loader.textContent = `${state.rows.length.toLocaleString()} order records loaded | ${state.productRows.length.toLocaleString()} product lines loaded`;
+    setLoader(`${state.rows.length.toLocaleString()} order records loaded | ${state.productRows.length.toLocaleString()} product lines loaded`);
     const sheets = [];
     if (state.revenueRows.length) sheets.push(revenueSheetName);
     if (state.productRows.length) sheets.push(productLineSheetName);
@@ -539,152 +870,334 @@ function loadWorkbook(buffer, source) {
   }
 }
 
-// AUTO-LOAD INSTRUCTION
-const FILE_HANDLE_DB = "drugstoc-file-handle";
-const FILE_HANDLE_STORE = "handle";
+const ODOO_PAGE_SIZE = 10000;
+const PROD_ORIGIN = "https://drugstoc-ecommerce-dashboard.netlify.app";
 
-function openIndexedDB() {
-  return new Promise((resolve) => {
-    if (!window.indexedDB) return resolve(null);
-    const request = indexedDB.open(FILE_HANDLE_DB, 1);
-    request.onupgradeneeded = (event) => {
-      try { event.target.result.createObjectStore(FILE_HANDLE_STORE); } catch {}
-    };
-    request.onsuccess = (event) => resolve(event.target.result);
-    request.onerror = () => resolve(null);
+async function fetchOdooPage(url, pageSize, offset) {
+  const response = await fetch(`${url}&limit=${pageSize}&offset=${offset}`, { cache: "no-store" });
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  const payload = await response.json();
+  if (payload.error) throw new Error(payload.error);
+  return payload.data;
+}
+
+async function fetchAllPages(baseUrl, label = "records") {
+  const data = await fetchOdooPage(baseUrl, ODOO_PAGE_SIZE, 0);
+  setLoader(`Pulling ${label} | ${data.length.toLocaleString()} records so far`);
+  if (data.length < ODOO_PAGE_SIZE) return { data };
+  // Data is id-ordered, so once the last page of a wave is short, later pages are empty.
+  const CONCURRENCY = 5;
+  for (let offset = ODOO_PAGE_SIZE; ; offset += CONCURRENCY * ODOO_PAGE_SIZE) {
+    const offsets = Array.from({ length: CONCURRENCY }, (_, i) => offset + i * ODOO_PAGE_SIZE);
+    const pages = await Promise.all(offsets.map(o => fetchOdooPage(baseUrl, ODOO_PAGE_SIZE, o)));
+    pages.forEach(page => data.push(...page));
+    setLoader(`Pulling ${label} | ${data.length.toLocaleString()} records so far`);
+    if (pages[pages.length - 1].length < ODOO_PAGE_SIZE) break;
+  }
+  return { data };
+}
+
+const clientClassSheetUrl = "./Client Class.xlsx";
+let clientClassPromise = null;
+
+function normalizeClientName(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/\(.*?\)/g, " ")
+    .replace(/[^a-z0-9]+/g, " ")
+    .replace(/\b(ltd|limited|plc|inc|llc|vmi)\b/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function loadClientClasses() {
+  if (!clientClassPromise) {
+    clientClassPromise = (async () => {
+      try {
+        const response = await fetch(encodeURI(clientClassSheetUrl), { cache: "no-store" });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const workbook = XLSX.read(await response.arrayBuffer(), { type: "array" });
+        const sheetName = workbook.SheetNames.find(name => /customer detail/i.test(name)) || workbook.SheetNames[0];
+        const grid = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1, defval: "" });
+        const headerIndex = grid.findIndex(row => String(row[0]).trim().toLowerCase() === "client");
+        const classes = new Map();
+        (headerIndex >= 0 ? grid.slice(headerIndex + 1) : []).forEach(row => {
+          const client = normalizeClientName(row[0]);
+          const cls = String(row[1] || "").trim();
+          if (client && cls) classes.set(client, cls);
+        });
+        state.clientClassMap = classes;
+        return classes;
+      } catch (error) {
+        console.warn("Client Class workbook unavailable:", error.message);
+        state.clientClassMap = new Map();
+        return state.clientClassMap;
+      }
+    })();
+  }
+  return clientClassPromise;
+}
+
+function applyClientClasses() {
+  const classOf = row => (row.Client && state.clientClassMap.get(normalizeClientName(row.Client))) || "";
+  state.rows.forEach(row => { row.Class = classOf(row); });
+  state.revenueRows.forEach(row => { row.Class = classOf(row); });
+}
+
+const ODOO_CACHE_DB = "drugstoc-odoo-cache";
+
+function openOdooCache() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(ODOO_CACHE_DB, 1);
+    request.onupgradeneeded = () => { if (!request.result.objectStoreNames.contains("payloads")) request.result.createObjectStore("payloads"); };
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
   });
 }
 
-async function getSavedFileHandle() {
-  const db = await openIndexedDB();
-  if (!db) return null;
-  return new Promise((resolve) => {
-    try {
-      const tx = db.transaction(FILE_HANDLE_STORE, "readonly");
-      const store = tx.objectStore(FILE_HANDLE_STORE);
-      const request = store.get("workbook");
+async function loadOdooCache() {
+  try {
+    const db = await openOdooCache();
+    return await new Promise(resolve => {
+      const request = db.transaction("payloads").objectStore("payloads").get("latest");
       request.onsuccess = () => resolve(request.result || null);
       request.onerror = () => resolve(null);
-    } catch {
-      resolve(null);
+    });
+  } catch { return null; }
+}
+
+async function saveOdooCache(entry) {
+  try {
+    const db = await openOdooCache();
+    await new Promise((resolve, reject) => {
+      const tx = db.transaction("payloads", "readwrite");
+      const request = tx.objectStore("payloads").put(entry, "latest");
+      request.onerror = () => reject(request.error);
+      tx.oncomplete = resolve;
+      tx.onabort = () => reject(tx.error || new Error("cache write aborted"));
+      tx.onerror = () => reject(tx.error);
+    });
+  } catch (error) { console.warn("Could not cache Odoo data:", error && error.message); }
+}
+
+async function loadFromOdoo() {
+  const query = "date_from=2026-01-01"; // invoices & partners: 2026 only
+  const orderHistoryQuery = "date_from=2025-01-01"; // orders: full 2025 + 2026 history
+  const orderLinesFrom = new Date();
+  orderLinesFrom.setDate(orderLinesFrom.getDate() - 30);
+  const orderLinesQuery = `date_from=${dateInputValue(orderLinesFrom)}`; // order lines: past 30 days only
+  await loadClientClasses();
+  // Serve the previous pull from cache instantly, then refresh live in the background.
+  const cached = await loadOdooCache();
+  if (cached) {
+    try {
+      state.partnerDetails = new Map((cached.partners || []).map(p => [String(p.id), p]));
+      processOdooPayloads(cached.orders || [], cached.invoices || [], cached.orderLines || []);
+      setLoader(`Showing data cached at ${new Date(cached.savedAt).toLocaleString()} | refreshing live from Odoo...`);
+    } catch (error) {
+      console.warn("Cached data could not be applied:", error.message);
+    }
+  }
+  const netlifyEndpoints = { // Netlify serverless function (works on deployed site and via `netlify dev`)
+    orders: `/.netlify/functions/odoo?resource=orders&${orderHistoryQuery}`,
+    invoices: `/.netlify/functions/odoo?resource=invoices&${query}&state=posted`,
+    orderLines: `/.netlify/functions/odoo?resource=order_lines&${orderLinesQuery}`,
+    partners: `/.netlify/functions/odoo?resource=partners&${query}`
+  };
+  let ordersPayload, invoicesPayload, lastError;
+  try {
+    [ordersPayload, invoicesPayload] = await Promise.all([
+      fetchAllPages(netlifyEndpoints.orders, "orders"),
+      fetchAllPages(netlifyEndpoints.invoices, "invoices")
+    ]);
+  } catch (error) {
+    lastError = error;
+  }
+  // Plain static servers have no local function; fall back to the deployed one (CORS-enabled).
+  if (!ordersPayload && location.origin !== PROD_ORIGIN) {
+    try {
+      const prodEndpoints = Object.fromEntries(Object.entries(netlifyEndpoints).map(([key, url]) => [key, `${PROD_ORIGIN}${url}`]));
+      [ordersPayload, invoicesPayload] = await Promise.all([
+        fetchAllPages(prodEndpoints.orders, "orders"),
+        fetchAllPages(prodEndpoints.invoices, "invoices")
+      ]);
+      lastError = null;
+    } catch (error) {
+      lastError = error;
+    }
+  }
+  if (!ordersPayload) throw lastError || new Error("Odoo API is unavailable");
+
+  // Order lines only feed the Product Analysis page, so they load after the dashboard is usable.
+  let orderLinesPayload = null;
+  try {
+    orderLinesPayload = await fetchAllPages(netlifyEndpoints.orderLines, "order lines");
+  } catch (error) {
+    try {
+      const prodEndpoints = Object.fromEntries(Object.entries(netlifyEndpoints).map(([key, url]) => [key, `${PROD_ORIGIN}${url}`]));
+      orderLinesPayload = await fetchAllPages(prodEndpoints.orderLines, "order lines");
+    } catch (fallbackError) {
+      console.warn("Order lines unavailable:", fallbackError.message);
+    }
+  }
+
+  let partnerRows = [];
+  try {
+    partnerRows = (await fetchAllPages(netlifyEndpoints.partners, "partners")).data;
+  } catch (error) {
+    try {
+      const prodEndpoints = Object.fromEntries(Object.entries(netlifyEndpoints).map(([key, url]) => [key, `${PROD_ORIGIN}${url}`]));
+      partnerRows = (await fetchAllPages(prodEndpoints.partners, "partners")).data;
+    } catch (fallbackError) {
+      console.warn("Partner details unavailable:", fallbackError.message);
+      partnerRows = cached ? cached.partners || [] : [];
+    }
+  }
+  state.partnerDetails = new Map(partnerRows.map(p => [String(p.id), p]));
+
+  const orderLinesData = orderLinesPayload ? orderLinesPayload.data : (cached ? cached.orderLines || [] : []);
+  processOdooPayloads(ordersPayload.data, invoicesPayload.data, orderLinesData);
+  saveOdooCache({ savedAt: Date.now(), orders: ordersPayload.data, invoices: invoicesPayload.data, orderLines: orderLinesData, partners: partnerRows });
+  recordLastRefresh();
+}
+
+function processOdooPayloads(ordersData, invoicesData, orderLinesData) {
+  const toDate = value => value ? new Date(String(value).replace(" ", "T")) : null;
+  const toPartner = value => Array.isArray(value) ? value[1] : value || "";
+  // Odoo returns many2one fields as [id, name] arrays, so unwrap the salesperson
+  // name before testing isWebOrder — clean([17, "Web Order"]) never equals "weborder".
+  const webOrderNames = new Set(ordersData
+    .filter(row => isWebOrder(toPartner(row.user_id)))
+    .map(row => row.name));
+  const toYear = value => {
+    const date = toDate(value);
+    return date && !Number.isNaN(date.getTime()) ? date.getFullYear() : null;
+  };
+
+  state.rows = ordersData.map(row => ({
+    "Order Number": row.name || "",
+    "Order Date": row.date_order || row.create_date || "",
+    "Partner ID": partnerIdValue(row.partner_id) || "",
+    Client: toPartner(row.partner_id),
+    SalesRep: webOrderNames.has(row.name) ? "Web Order" : toPartner(row.user_id),
+    Status: row.state || "",
+    "Order Amount": Number(row.amount_total) || 0,
+    Year: toYear(row.date_order || row.create_date),
+    Week: (() => {
+      const date = toDate(row.date_order || row.create_date);
+      return date && !Number.isNaN(date.getTime()) ? getIsoWeek(date) : null;
+    })()
+  })).filter(row => [2025, 2026].includes(row.Year) && !isExcludedOrderState(row.Status));
+
+  // App revenue = posted invoices whose salesperson is "Web Order".
+  state.revenueRows = invoicesData.map(row => ({
+    "Invoice Number": row.name || "",
+    "Invoice Date": row.invoice_date || row.create_date || "",
+    "Invoice Origin": row.invoice_origin || "",
+    "Partner ID": partnerIdValue(row.partner_id) || "",
+    Client: toPartner(row.partner_id),
+    Salesperson: toPartner(row.invoice_user_id),
+    "Invoice Total": Number(row.amount_total) || 0,
+    Year: toYear(row.invoice_date || row.create_date),
+    Week: (() => {
+      const date = toDate(row.invoice_date || row.create_date);
+      return date && !Number.isNaN(date.getTime()) ? getIsoWeek(date) : null;
+    })()
+  })).filter(row => [2025, 2026].includes(row.Year) && isWebOrder(row.Salesperson));
+  applyClientClasses();
+
+  // Client Analysis from live Odoo data: one row per distinct Web Order partner,
+  // status based on days since their most recent Web Order.
+  // Switch = client whose latest non-Web order is dated after their last Web Order.
+  const webClients = new Map();
+  const lastNonWebOrder = new Map();
+  state.rows.forEach(row => {
+    if (!row.Client) return;
+    const date = toDate(row["Order Date"]);
+    if (!date || Number.isNaN(date.getTime())) return;
+    const key = row["Partner ID"] || row.Client;
+    if (isWebOrder(row.SalesRep)) {
+      const existing = webClients.get(key);
+      if (!existing || date > existing.lastDate) webClients.set(key, { client: row.Client, lastDate: date });
+    } else {
+      const existing = lastNonWebOrder.get(key);
+      if (!existing || date > existing) lastNonWebOrder.set(key, date);
     }
   });
-}
-
-async function saveFileHandle(handle) {
-  const db = await openIndexedDB();
-  if (!db) return;
-  try {
-    const tx = db.transaction(FILE_HANDLE_STORE, "readwrite");
-    const store = tx.objectStore(FILE_HANDLE_STORE);
-    store.put(handle, "workbook");
-  } catch {}
-}
-
-async function verifyPermission(fileHandle) {
-  if (!fileHandle) return false;
-  const options = { mode: "read" };
-  if ((await fileHandle.queryPermission(options)) === "granted") return true;
-  if ((await fileHandle.requestPermission(options)) === "granted") return true;
-  return false;
-}
-
-async function loadFromFileHandle(fileHandle, source) {
-  if (!(await verifyPermission(fileHandle))) throw new Error("Permission denied");
-  const file = await fileHandle.getFile();
-  const buffer = await file.arrayBuffer();
-  loadWorkbook(buffer, source);
-  upload.classList.remove("show");
-}
-
-async function pickAndSaveWorkbook() {
-  if (!window.showOpenFilePicker) {
-    alert("Your browser does not support file system access. Please use the Choose workbook button instead.");
-    return;
-  }
-  try {
-    const [fileHandle] = await window.showOpenFilePicker({
-      types: [{ description: "Excel workbook", accept: { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx", ".xls"] } }]
-    });
-    await saveFileHandle(fileHandle);
-    await loadFromFileHandle(fileHandle, `Local: ${(await fileHandle.getFile()).name}`);
-  } catch (error) {
-    console.warn("File picker cancelled or failed:", error);
-  }
+  const now = new Date();
+  state.dropOffRows = [...webClients.entries()].map(([key, { client, lastDate }]) => {
+    const days = Math.floor((now - lastDate) / 86400000);
+    const details = (state.partnerDetails || new Map()).get(String(key)) || {};
+    return {
+      Client: client,
+      "Phone No": details.phone || "",
+      Email: details.email || "",
+      "Client Class": details.class || state.clientClassMap.get(normalizeClientName(client)) || "",
+      "Last Order Date": lastDate.toISOString().slice(0, 10),
+      "Days Since Last Order": days,
+      "Drop Off Week": getIsoWeek(new Date(lastDate.getTime() + 30 * 86400000)),
+      Status: days <= 30 ? "Active" : days <= 60 ? "Drop Off" : "Churn",
+      "Switch Status": (lastNonWebOrder.get(key) || 0) > lastDate ? "Switch" : ""
+    };
+  }).sort((a, b) => b["Days Since Last Order"] - a["Days Since Last Order"]);
+  populateFilters();
+  populateCustomerSegmentFilters();
+  state.filtered = state.rows;
+  state.productRows = (orderLinesData || []).map(row => ({
+    "Order Reference": row.order_name || "",
+    Customer: toPartner(row.partner_id),
+    Salesperson: webOrderNames.has(row.order_name) ? "Web Order" : toPartner(row.user_id),
+    Product: toPartner(row.product_id),
+    Quantity: Number(row.product_uom_qty) || 0,
+    "Invoiced Quantity": Number(row.qty_invoiced) || 0,
+    Total: Number(row.price_subtotal) || 0,
+    "Order Date": row.order_date || "",
+    Date: toDate(row.order_date),
+    Year: toYear(row.order_date),
+    Month: (() => { const date = toDate(row.order_date); return date && !Number.isNaN(date.getTime()) ? date.getMonth() + 1 : null; })(),
+    Week: (() => { const date = toDate(row.order_date); return date && !Number.isNaN(date.getTime()) ? getIsoWeek(date) : null; })()
+  })).filter(row => [2025, 2026].includes(row.Year) && !/delivery/i.test(row.Product || ""));
+  setLoader(`${state.rows.length.toLocaleString()} Odoo orders loaded | ${state.revenueRows.length.toLocaleString()} posted Web Order invoices loaded | ${state.productRows.length.toLocaleString()} Odoo order lines loaded`);
+  sourceText.textContent = "Live Odoo API | Web Orders + Web Order invoices connected";
+  applyFilters();
+  renderClientAnalysis();
+  renderProductAnalysis();
+  renderCustomerSegments();
+  renderParetoDive();
 }
 
 async function autoConnect() {
-  const expectedPath = "C:\\Users\\IT\\OneDrive - DrugStoc\\MARKETING\\E-COMMERCE\\Web root.xlsx";
-  const candidates = [
-    "./Web%20root.xlsx",
-    "./Web root.xlsx"
-  ];
   const uploadMsg = document.getElementById("uploadMsg");
   const uploadLog = document.getElementById("uploadLog");
-  loader.textContent = "Auto-loading workbook...";
+  setLoader("Connecting to Odoo...");
+  sourceText.textContent = "Pulling live data from Odoo";
   uploadLog.textContent = "";
 
-  // Opening the file directly (file://) blocks fetch(). Direct users to the local server.
-  if (window.location.protocol === "file:") {
-    loader.textContent = "Cannot auto-load workbook from file://";
-    sourceText.textContent = "Open via local server: http://localhost:8080/index.html";
-    uploadMsg.textContent =
-      `This file must be opened through a local web server so the dashboard can read ${expectedPath}.`;
-    upload.classList.add("show");
+  try {
+    uploadLog.textContent = "Connecting to Odoo API...\n";
+    setLoader("Connecting to Odoo...");
+    await loadFromOdoo();
+    upload.classList.remove("show");
     return;
-  }
-
-  // 1. Try network fetch (works when served via HTTP server)
-  for (const fileUrl of candidates) {
-    uploadLog.textContent += `Trying ${fileUrl}...\n`;
-    try {
-      const response = await fetch(fileUrl, { cache: "no-store" });
-      if (!response.ok) {
-        uploadLog.textContent += `  HTTP ${response.status} for ${fileUrl}\n`;
-        continue;
-      }
-      uploadLog.textContent += `  Downloading ${fileUrl}...\n`;
-      const buffer = await response.arrayBuffer();
-      uploadLog.textContent += `  Loaded ${(buffer.byteLength / 1024 / 1024).toFixed(2)} MB\n`;
-      loadWorkbook(buffer, `Loaded automatically from ${expectedPath}`);
+  } catch (error) {
+    uploadLog.textContent += `Odoo API unavailable: ${error.message}\n`;
+    if (state.rows.length) {
+      setLoader(`Live refresh failed (${error.message}) | showing last cached data`);
+      sourceText.textContent = "Odoo API unavailable | cached data shown";
       upload.classList.remove("show");
       return;
-    } catch (error) {
-      uploadLog.textContent += `  Error for ${fileUrl}: ${error.message}\n`;
-      console.warn("Network fetch failed for", fileUrl, error);
     }
   }
-
-  // 2. Try a previously saved File System Access handle
-  const savedHandle = await getSavedFileHandle();
-  if (savedHandle) {
-    try {
-      await loadFromFileHandle(savedHandle, "Loaded from saved workbook handle");
-      return;
-    } catch (err) {
-      uploadLog.textContent += `Saved handle failed: ${err.message}\n`;
-      console.warn("Saved handle failed:", err);
-    }
-  }
-
-  // 3. Show permission prompt
-  loader.textContent = "Workbook access required";
-  sourceText.textContent = "Waiting for workbook file";
-  uploadMsg.textContent =
-    `Could not auto-load ${expectedPath}. Click "Retry auto-load" if the server is still starting, or use "Grant access" / "Choose workbook" below. Server URL: http://localhost:8080/index.html`;
+  setLoader("Odoo connection unavailable");
+  sourceText.textContent = "Odoo API unavailable";
+  uploadMsg.textContent = "Odoo data is unavailable. Check the server-side Odoo configuration and retry.";
   upload.classList.add("show");
 }
 
-fileInput.addEventListener("change", event => {
-  const file = event.target.files[0];
-  if (file) file.arrayBuffer().then(buffer => loadWorkbook(buffer, `Local: ${file.name}`)).catch(error => { loader.textContent = error.message; });
-});
-
-grantBtn.addEventListener("click", pickAndSaveWorkbook);
 document.getElementById("retryBtn").addEventListener("click", autoConnect);
-refreshBtn.addEventListener("click", () => { loader.textContent = "Refreshing workbook..."; sourceText.textContent = "Pulling live data from Web root"; autoConnect(); });
+refreshBtn.addEventListener("click", () => { setLoader("Refreshing Odoo data..."); sourceText.textContent = "Pulling live data from Odoo"; autoConnect(); });
 
-// Daily auto-refresh: pull the workbook once per calendar day
+// Daily auto-refresh keeps dashboard data aligned with Odoo.
 const LAST_REFRESH_KEY = "drugstoc_last_refresh";
 
 function getTodayKey() {
@@ -704,22 +1217,33 @@ function shouldAutoRefreshToday() {
 }
 
 function scheduleDailyRefresh() {
-  if (shouldAutoRefreshToday()) {
-    loader.textContent = "Running daily workbook refresh...";
-    sourceText.textContent = "Pulling live data from Web root";
-    autoConnect();
-  }
+  setLoader("Running Odoo refresh...");
+  sourceText.textContent = "Pulling live data from Odoo";
+  autoConnect();
   // Recheck every hour so a long-running tab refreshes on a new day
   setInterval(() => {
     if (shouldAutoRefreshToday()) {
-      loader.textContent = "Running daily workbook refresh...";
-      sourceText.textContent = "Pulling live data from Web root";
+      setLoader("Running daily Odoo refresh...");
+      sourceText.textContent = "Pulling live data from Odoo";
       autoConnect();
     }
   }, 60 * 60 * 1000);
 }
 
-[yearFilter, monthFilter, weekFilter, esStartDate, esEndDate].forEach(control => control.addEventListener("change", applyFilters));
+[yearFilter, monthFilter, esStartDate, esEndDate].forEach(control => control.addEventListener("change", applyFilters));
+weekFilter.addEventListener("change", () => {
+  const option = weekFilter.options[weekFilter.selectedIndex];
+  // Keep the selected reporting span visible and ensure the date controls use
+  // the same Monday–Saturday window as the week selector.
+  if (weekFilter.value !== "all") {
+    esStartDate.value = option.dataset.start || "";
+    esEndDate.value = option.dataset.end || "";
+  }
+  applyFilters();
+});
+vsMonthFilter.innerHTML = `<option value="all">All months</option>` + Array.from({ length: 12 }, (_, i) => `<option value="${i + 1}">${new Date(2000, i).toLocaleString("en", { month: "long" })}</option>`).join("");
+vsWeekFilter.innerHTML = `<option value="all">All weeks</option>` + Array.from({ length: 53 }, (_, i) => `<option value="${i + 1}">Week ${i + 1}</option>`).join("");
+[vsMonthFilter, vsWeekFilter].forEach(control => control.addEventListener("change", renderVsCompare));
 chartMode.addEventListener("change", () => renderChart(state.filtered));
 chartMetric.addEventListener("change", () => renderChart(state.filtered));
 productTrendMode.addEventListener("change", () => renderProductAnalysis());
@@ -807,6 +1331,9 @@ function renderClientAnalysis() {
   const churnPct = totalUsers ? (churning / totalUsers) * 100 : 0;
   const activeCustomersPct = totalUsers ? (totalActive / totalUsers) * 100 : 0;
 
+  const currentMetrics = { totalUsers, totalActive, activeCustomersPct, totalDropOffs, churning, totalSwitch, churnPct };
+  const previousMetrics = getPreviousClientMetrics();
+
   document.getElementById("caTotalAppUsers").textContent = totalUsers.toLocaleString();
   document.getElementById("caTotalActive").textContent = totalActive.toLocaleString();
   document.getElementById("caActiveCustomers").textContent = totalUsers ? percent(activeCustomersPct) : "--";
@@ -815,9 +1342,24 @@ function renderClientAnalysis() {
   document.getElementById("caTotalSwitch").textContent = totalSwitch.toLocaleString();
   document.getElementById("caChurnPct").textContent = percent(churnPct);
 
+  caTotalAppUsersChange.innerHTML = wowText(currentMetrics.totalUsers, previousMetrics.totalUsers);
+  caTotalActiveChange.innerHTML = wowText(currentMetrics.totalActive, previousMetrics.totalActive);
+  caActiveCustomersChange.innerHTML = wowText(currentMetrics.activeCustomersPct, previousMetrics.activeCustomersPct);
+  caTotalDropOffsChange.innerHTML = wowText(currentMetrics.totalDropOffs, previousMetrics.totalDropOffs);
+  caChurningChange.innerHTML = wowText(currentMetrics.churning, previousMetrics.churning);
+  caTotalSwitchChange.innerHTML = wowText(currentMetrics.totalSwitch, previousMetrics.totalSwitch);
+  caChurnPctChange.innerHTML = wowText(currentMetrics.churnPct, previousMetrics.churnPct);
+
   const thead = document.getElementById("dropOffTableHead");
   const tbody = document.getElementById("dropOffTableBody");
   const note = document.getElementById("dropOffTableNote");
+
+  const dropOffWeeks = [...new Set(state.dropOffRows.map(r => r["Drop Off Week"]).filter(Boolean))].sort((a, b) => a - b);
+  if (dropOffWeekFilter) {
+    const selectedWeek = dropOffWeekFilter.value;
+    dropOffWeekFilter.innerHTML = `<option value="all">All drop off weeks</option>` + dropOffWeeks.map(w => `<option value="${w}">Week ${w}</option>`).join("");
+    if ([...dropOffWeekFilter.options].some(o => o.value === String(selectedWeek))) dropOffWeekFilter.value = selectedWeek;
+  }
 
   if (!rows.length) {
     thead.innerHTML = "";
@@ -827,11 +1369,23 @@ function renderClientAnalysis() {
     return;
   }
 
+  // Backfill contact details from the Odoo partner records (also covers rows
+  // loaded from an uploaded workbook instead of the live Odoo pull).
+  const partnerByName = new Map();
+  (state.partnerDetails || new Map()).forEach(p => partnerByName.set(normalizeClientName(p.name), p));
+  rows.forEach(row => {
+    const details = partnerByName.get(normalizeClientName(row.Client)) || {};
+    if (!row["Phone No"]) row["Phone No"] = details.phone || "";
+    if (!row.Email) row.Email = details.email || "";
+    if (!row["Client Class"]) row["Client Class"] = details.class || state.clientClassMap.get(normalizeClientName(row.Client)) || "";
+  });
+
   const allKeys = Object.keys(rows[0]);
-  const priority = ["Client", "Segment", "Status"];
+  const priority = ["Client", "Phone No", "Email", "Client Class", "Segment", "Status"];
   const keys = [...new Set([...priority.filter(k => allKeys.includes(k)), ...allKeys])];
 
-  const ledgerRows = state.dropOffOnly ? rows.filter(row => clean(row.Status) === "dropoff") : rows;
+  let ledgerRows = state.dropOffOnly ? rows.filter(row => clean(row.Status) === "dropoff") : rows;
+  if (dropOffWeekFilter && dropOffWeekFilter.value !== "all") ledgerRows = ledgerRows.filter(row => String(row["Drop Off Week"]) === dropOffWeekFilter.value);
   state.filteredDropOffLedger = ledgerRows;
 
   thead.innerHTML = `<tr>${keys.map(k => `<th>${k}</th>`).join("")}</tr>`;
@@ -849,6 +1403,67 @@ function renderClientAnalysis() {
   const dateNote = (caStartDate.value || caEndDate.value) ? " | Order date filtered" : "";
   note.textContent = `Showing ${Math.min(ledgerRows.length, 100).toLocaleString()} of ${ledgerRows.length.toLocaleString()} records${filterNote}${dateNote}`;
   renderClientMetricChart();
+}
+
+function getPreviousClientMetrics() {
+  const allRows = state.rows.filter(row => row.Client && row["Order Date"] && isWebOrder(row.SalesRep));
+  const latestDate = allRows.reduce((max, row) => {
+    const date = parseDate(row["Order Date"]);
+    return date && (!max || date > max) ? date : max;
+  }, null);
+
+  if (!latestDate) return { totalUsers: null, totalActive: null, activeCustomersPct: null, totalDropOffs: null, churning: null, totalSwitch: null, churnPct: null };
+
+  const currentStart = caStartDate.value ? new Date(caStartDate.value + "T00:00:00") : getDateOffset(latestDate, -30);
+  const currentEnd = caEndDate.value ? new Date(caEndDate.value + "T23:59:59") : latestDate;
+  const currentDuration = Math.max(1, Math.ceil((currentEnd - currentStart) / 86400000));
+  const previousEnd = getDateOffset(currentStart, -1);
+  const previousStart = getDateOffset(previousEnd, -(currentDuration));
+
+  const snapshot = rows => {
+    const webClientMap = new Map();
+    const lastNonWebOrder = new Map();
+    rows.forEach(row => {
+      if (!row.Client) return;
+      const date = parseDate(row["Order Date"]);
+      if (!date) return;
+      const key = row["Partner ID"] || row.Client;
+      if (isWebOrder(row.SalesRep)) {
+        const existing = webClientMap.get(key);
+        if (!existing || date > existing.lastDate) webClientMap.set(key, { client: row.Client, lastDate: date });
+      } else {
+        const existing = lastNonWebOrder.get(key);
+        if (!existing || date > existing) lastNonWebOrder.set(key, date);
+      }
+    });
+
+    const clientRows = [...webClientMap.entries()].map(([key, { client, lastDate }]) => {
+      const days = Math.floor((new Date() - lastDate) / 86400000);
+      return {
+        Client: client,
+        Status: days <= 30 ? "active" : days <= 60 ? "dropoff" : "churn",
+        "Switch Status": (lastNonWebOrder.get(key) || 0) > lastDate ? "switch" : ""
+      };
+    });
+
+    const totalUsers = clientRows.filter(row => row.Client).length;
+    const totalActive = clientRows.filter(row => clean(row.Status) === "active").length;
+    const totalDropOffs = clientRows.filter(row => clean(row.Status) === "dropoff").length;
+    const churning = clientRows.filter(row => clean(row.Status) === "churn").length;
+    const totalSwitch = clientRows.filter(row => clean(row["Switch Status"]) === "switch").length;
+    const churnPct = totalUsers ? (churning / totalUsers) * 100 : 0;
+    const activeCustomersPct = totalUsers ? (totalActive / totalUsers) * 100 : 0;
+
+    return { totalUsers, totalActive, activeCustomersPct, totalDropOffs, churning, totalSwitch, churnPct };
+  };
+
+  const previousRows = state.rows.filter(row => {
+    const date = parseDate(row["Order Date"]);
+    const inYear = caYearFilter.value === "all" || String(row.Year) === caYearFilter.value;
+    return date && inYear && date >= previousStart && date <= previousEnd && isWebOrder(row.SalesRep);
+  });
+
+  return snapshot(previousRows);
 }
 
 function buildParetoData() {
@@ -870,7 +1485,7 @@ function buildParetoData() {
   });
   state.revenueRows.filter(row => (year === "all" || String(row.Year) === year) && dateMatchesRange(row["Invoice Date"], start, end)).forEach(row => {
     const client = row.Client || "Unknown";
-    const cls = clientClassMap.get(client) || "Unranked";
+    const cls = row.Class || clientClassMap.get(client) || "Unranked";
     if (!byClass[cls]) byClass[cls] = { orders: new Set(), demand: 0, clients: new Set(), revenue: 0 };
     byClass[cls].revenue += Number(row["Invoice Total"]) || 0;
   });
@@ -936,21 +1551,14 @@ function renderParetoDive(metric = paretoMetric.value) {
   paretoChart.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${paretoChartTitle.textContent}">${yAxis}${bars}${labels}${yLabel}</svg>`;
 
   // Table
-  cumOrders = 0; cumDemand = 0; cumRevenue = 0;
-  const tableRows = data.map((d, i) => {
-    cumOrders += d.orders;
-    cumDemand += d.demand;
+  cumRevenue = 0;
+  const tableRows = data.map(d => {
     cumRevenue += d.revenue;
-    const pctOrders = totalOrders ? (d.orders / totalOrders) * 100 : 0;
-    const cumPctOrders = totalOrders ? (cumOrders / totalOrders) * 100 : 0;
-    const pctDemand = totalDemand ? (d.demand / totalDemand) * 100 : 0;
-    const cumPctDemand = totalDemand ? (cumDemand / totalDemand) * 100 : 0;
-    const pctRevenue = totalRevenue ? (d.revenue / totalRevenue) * 100 : 0;
     const cumPctRevenue = totalRevenue ? (cumRevenue / totalRevenue) * 100 : 0;
-    return `<tr class="pareto-row" data-class="${d.class}"><td>${d.class}</td><td class="amount">${d.orders.toLocaleString()}</td><td class="amount">${percent(pctOrders)}</td><td class="amount">${percent(cumPctOrders)}</td><td class="amount">${moneyCompact(d.demand)}</td><td class="amount">${percent(pctDemand)}</td><td class="amount">${percent(cumPctDemand)}</td><td class="amount">${moneyCompact(d.revenue)}</td><td class="amount">${percent(pctRevenue)}</td><td class="amount">${percent(cumPctRevenue)}</td><td class="amount">${d.clients.toLocaleString()}</td></tr>`;
+    return `<tr class="pareto-row" data-class="${d.class}"><td>${d.class}</td><td class="amount">${d.orders.toLocaleString()}</td><td class="amount">${moneyCompact(d.demand)}</td><td class="amount">${moneyCompact(d.revenue)}</td><td class="amount">${percent(cumPctRevenue)}</td></tr>`;
   }).join("");
 
-  paretoTableBody.innerHTML = tableRows || `<tr><td colspan="11" class="empty">No web order class data.</td></tr>`;
+  paretoTableBody.innerHTML = tableRows || `<tr><td colspan="5" class="empty">No app order class data.</td></tr>`;
   paretoTableNote.textContent = `Click a row to dive into ${data.length.toLocaleString()} classes`;
 
   if (window.lucide) lucide.createIcons();
@@ -1024,6 +1632,41 @@ function renderClientMetricChart() {
   const axisLabel = metric === "sales" ? label : `${label} (NGN)`;
 
   clientMetricChart.innerHTML = entries.length ? `<svg class="client-bars" viewBox="0 0 ${width} ${height}" role="img" aria-label="${label} by Client horizontal bar chart">${[0, 0.25, 0.5, 0.75, 1].map(pct => { const x = leftPad + pct * maxBarWidth; return `<line class="chart-grid" x1="${x}" y1="${pad}" x2="${x}" y2="${height - pad}"/><text class="chart-label" x="${x}" y="${height - pad + 18}" text-anchor="middle">${fmt(max * pct)}</text>`; }).join("")}<text class="chart-label" x="${width / 2 + leftPad / 2}" y="${height - 4}" text-anchor="middle" font-weight="600">${axisLabel}</text>${entries.map(([client, total], index) => { const y = pad + index * rowHeight + 4; const barWidth = Math.max((total / max) * maxBarWidth, 2); return `<text class="chart-label" x="${pad}" y="${y + 13}">${client.slice(0, 20)}</text><rect class="client-bar" x="${leftPad}" y="${y}" width="${barWidth}" height="${Math.max(rowHeight - 10, 8)}" rx="4"><title>${client}: ${fmt(total)}</title></rect><text class="client-value" x="${leftPad + 8 + barWidth}" y="${y + 13}">${dataLabel(total)}</text>`; }).join("")}</svg>` : `<div class="empty">No ${label} data for clients.</div>`;
+}
+
+function getWeekStart(date) {
+  const d = parseDate(date);
+  if (!d) return null;
+  const day = d.getDay();
+  const diff = day === 0 ? -6 : 1 - day;
+  const monday = new Date(d);
+  monday.setDate(d.getDate() + diff);
+  monday.setHours(0, 0, 0, 0);
+  return monday;
+}
+
+function getWeekEnd(date) {
+  const start = getWeekStart(date);
+  if (!start) return null;
+  const saturday = new Date(start);
+  saturday.setDate(start.getDate() + 5);
+  saturday.setHours(0, 0, 0, 0);
+  return saturday;
+}
+
+function ordinalDay(date) {
+  const day = date.getDate();
+  const suffix = day % 10 === 1 && day !== 11 ? "st" : day % 10 === 2 && day !== 12 ? "nd" : day % 10 === 3 && day !== 13 ? "rd" : "th";
+  return `${day}${suffix}`;
+}
+
+function formatDateSpan(start, end) {
+  if (!start || !end) return "All weeks";
+  const monthLabel = date => {
+    const short = date.toLocaleDateString("en-GB", { month: "short" });
+    return short === "Sep" ? "Sept" : short;
+  };
+  return `${ordinalDay(start)} ${monthLabel(start)} - ${ordinalDay(end)} ${monthLabel(end)}`;
 }
 
 function getIsoWeek(date) {
@@ -1173,7 +1816,6 @@ function renderProductAnalysis() {
   renderProductTrend(rows);
   renderProductRank(rows);
   renderProductTable(rows);
-  renderProductStatusTable(rows);
 }
 
 function renderProductTrend(rows) {
@@ -1272,26 +1914,6 @@ function renderProductTable(rows) {
   }).join("") : `<tr><td colspan="7" class="empty">No matching products.</td></tr>`;
 }
 
-function renderProductStatusTable(rows) {
-  const totals = {};
-  rows.forEach(r => {
-    if (!r.Product) return;
-    if (!totals[r.Product]) totals[r.Product] = { qty: 0, invoiced: 0 };
-    totals[r.Product].qty += Number(r.Quantity) || 0;
-    totals[r.Product].invoiced += Number(r["Invoiced Quantity"]) || 0;
-  });
-
-  const entries = Object.entries(totals).sort((a, b) => b[1].qty - a[1].qty);
-  productStatusTableBody.innerHTML = entries.length ? entries.map(([product, t]) => {
-    const orderedQty = Number(t.qty) || 0;
-    const invoicedQty = Number(t.invoiced) || 0;
-    const uninvoicedQty = Math.max(orderedQty - invoicedQty, 0);
-    let status = "Fully invoiced";
-    if (invoicedQty === 0) status = "Uninvoiced";
-    else if (invoicedQty < orderedQty) status = "Partially invoiced";
-    return `<tr><td><strong>${product || "-"}</strong></td><td class="amount">${orderedQty.toLocaleString()}</td><td class="amount">${invoicedQty.toLocaleString()}</td><td class="amount">${uninvoicedQty.toLocaleString()}</td><td class="amount">${status}</td></tr>`;
-  }).join("") : `<tr><td colspan="5" class="empty">No matching product status data.</td></tr>`;
-}
 
 function getClientSegments(year = "all") {
   const startDate = csStartDate ? csStartDate.value : "";
@@ -1458,10 +2080,10 @@ function renderSegmentTable(segments) {
 
 const dictionary = [
   // Sheets
-  { term: "Orders sheet", source: "Workbook", definition: "Source of truth for sales orders. Columns: Order Number, Order Date, Client, SalesRep, Status, Order Amount, Year, Week." },
-  { term: "Revenue sheet", source: "Workbook", definition: "Invoice-level revenue data. Columns: Invoice Number, Invoice Date, Client Name, Total Invoiced, Year, Week." },
-  { term: "Drop Off sheet", source: "Workbook", definition: "Client engagement status. Columns: Client, Last Order Date, Drop Off Date, Last Order Age, Status, Last Order Date (From Others), Order from Other Platforms.SalesRep, Order from Other Platforms.Order Amount, Switch Status." },
-  { term: "Product Line sheet", source: "Workbook", definition: "Order line items. Columns: Order Lines/Order Reference, Order Lines/Customer, Order Lines/Salesperson, Order Lines/Product/Name, Order Lines/Quantity, Order Lines/Invoiced Quantity, Order Lines/Total, Order Date." },
+  { term: "Orders", source: "Odoo sale.order", definition: "Source of truth for sales orders. Fields: name, date_order, partner_id, user_id, state, amount_total." },
+  { term: "Invoices", source: "Odoo account.move", definition: "Posted customer invoices matched to partners with Web Orders. Fields: name, invoice_date, invoice_origin, partner_id, amount_total." },
+  { term: "Drop Off", source: "Odoo sale.order", definition: "Client engagement status derived from each partner's latest Web Order and latest non-Web Order." },
+  { term: "Product Lines", source: "Odoo sale.order.line", definition: "Order line items used for product KPIs. Fields: order_id, product_id, product_uom_qty, qty_invoiced, price_subtotal." },
   // Orders columns
   { term: "Order Number", source: "Orders", definition: "Unique sales order identifier (e.g., SO158232)." },
   { term: "Order Date", source: "Orders", definition: "Date the sales order was created." },
@@ -1477,6 +2099,9 @@ const dictionary = [
   { term: "Total Invoiced", source: "Revenue", definition: "Invoice total amount in NGN." },
   // Drop Off columns
   { term: "Drop Off Date", source: "Drop Off", definition: "Date the client was flagged as dropped off." },
+  { term: "Phone No", source: "Drop Off / Odoo res.partner", definition: "Client phone number from the Odoo partner record." },
+  { term: "Email", source: "Drop Off / Odoo res.partner", definition: "Client email address from the Odoo partner record." },
+  { term: "Client Class", source: "Drop Off / Odoo res.partner", definition: "Client classification (partner category) from Odoo, falling back to the Client Class workbook when Odoo has no category." },
   { term: "Status", source: "Drop Off", definition: "Client lifecycle status: Active, Drop Off, or Churn." },
   { term: "Switch Status", source: "Drop Off", definition: "Client platform loyalty indicator. 'Switch' means the client moved to another platform; 'Still User' means they remain active on the app." },
   { term: "Segment", source: "Drop Off", definition: "Customer buying-frequency segment derived from app order history (Weekly, Bi-Weekly, Monthly, Quarterly, Sporadic, or Not segmented)." },
@@ -1491,15 +2116,15 @@ const dictionary = [
   // Executive Summary KPIs
   { term: "App Orders", source: "KPI", definition: "Distinct Order Number where SalesRep = Web Order." },
   { term: "App Demand", source: "KPI", definition: "Sum of Order Amount where SalesRep = Web Order." },
-  { term: "App Revenue", source: "KPI", definition: "Sum of Total Invoiced from the Revenue sheet." },
+  { term: "App Revenue", source: "KPI", definition: "Sum of amount_total from posted Odoo account.move records whose partner_id belongs to a Web Order partner." },
   { term: "Lost Sale", source: "KPI", definition: "App Demand minus App Revenue. Represents web order value that has not yet been invoiced." },
   { term: "Fulfilment Rate", source: "KPI", definition: "App Revenue divided by App Demand, expressed as a percentage." },
   { term: "B2B Contribution", source: "KPI", definition: "Web Order Amount divided by Total Order Amount." },
   { term: "App Order Share", source: "KPI", definition: "App Orders divided by B2B Orders Processed, expressed as a percentage." },
   { term: "Target Achieved", source: "KPI", definition: "Current week revenue divided by the ₦40,000,000 weekly target, expressed as a percentage." },
   { term: "B2B Orders Processed", source: "KPI", definition: "Distinct count of Order Number on the Orders tab after filters." },
-  { term: "Clients Invoiced", source: "KPI", definition: "Distinct Client Name appearing in the Revenue sheet." },
-  { term: "Clients Ordering", source: "KPI", definition: "Distinct Client appearing in the Orders sheet where SalesRep = Web Order." },
+  { term: "Clients Invoiced", source: "KPI", definition: "Distinct partner_id on matched posted Odoo invoices." },
+  { term: "Clients Ordering", source: "KPI", definition: "Distinct partner_id on Odoo sale.order records assigned to Web Order." },
   { term: "Average Basket Size", source: "KPI", definition: "App Revenue divided by Clients Invoiced." },
   // Client Analysis KPIs
   { term: "Total App Users", source: "KPI", definition: "Count of Client rows in the Drop Off sheet." },
@@ -1607,6 +2232,7 @@ clientMetric.addEventListener("change", renderClientMetricChart);
 caResetBtn.addEventListener("click", () => { caYearFilter.value = "all"; caStartDate.value = ""; caEndDate.value = ""; renderClientAnalysis(); renderParetoDive(); });
 paResetBtn.addEventListener("click", () => { paYearFilter.value = "all"; paStartDate.value = ""; paEndDate.value = ""; renderProductAnalysis(); });
 dictYearFilter.addEventListener("change", renderDictionary);
+dropOffWeekFilter.addEventListener("change", renderClientAnalysis);
 dropOffFilterBtn.addEventListener("click", () => {
   state.dropOffOnly = !state.dropOffOnly;
   dropOffFilterBtn.textContent = state.dropOffOnly ? "Show All" : "Show Drop Off Only";
