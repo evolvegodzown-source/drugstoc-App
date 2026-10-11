@@ -335,12 +335,15 @@ function populateFilters() {
   state.rows.forEach(row => {
     const date = parseDate(row["Order Date"]);
     if (!date) return;
+    const rowYear = String(date.getFullYear());
+    if (yearFilter.value !== "all" && rowYear !== yearFilter.value) return;
     const weekKey = getIsoWeek(date);
     if (!weekMap.has(weekKey)) {
       const weekStart = getWeekStart(date);
       const weekEnd = getWeekEnd(date);
+      const yearTag = yearFilter.value === "all" ? ` ${rowYear}` : "";
       weekMap.set(weekKey, {
-        label: `Mon ${formatDateSpan(weekStart, weekEnd)} (Sat)`,
+        label: `Week ${weekKey}${yearTag} · ${formatDateSpan(weekStart, weekEnd)}`,
         value: String(weekKey),
         start: dateInputValue(weekStart),
         end: dateInputValue(weekEnd)
@@ -352,12 +355,14 @@ function populateFilters() {
 
   const selectedYear = yearFilter.value;
   const selectedMonth = monthFilter.value;
+  const selectedWeek = weekFilter.value;
   yearFilter.innerHTML = `<option value="all">All years</option>` + years.map(year => `<option value="${year}">${year}</option>`).join("");
   monthFilter.innerHTML = `<option value="all">All months</option>` + months.map(month => `<option value="${month}">${new Date(2000, month - 1).toLocaleString("en", { month: "long" })}</option>`).join("");
   if ([...yearFilter.options].some(o => o.value === selectedYear)) yearFilter.value = selectedYear;
   if ([...monthFilter.options].some(o => o.value === selectedMonth)) monthFilter.value = selectedMonth;
   weekFilter.innerHTML = `<option value="all">All weeks</option>` + weeks.map(item => `<option value="${item.value}" data-start="${item.start}" data-end="${item.end}">${item.label}</option>`).join("");
-  if (years.includes(2026)) yearFilter.value = "2026";
+  if ([...weekFilter.options].some(o => o.value === selectedWeek)) weekFilter.value = selectedWeek;
+  if (!state.executiveDefaultsInitialized && years.includes(2026)) yearFilter.value = "2026";
   state.executiveDefaultsInitialized = true;
   caYearFilter.innerHTML = yearOptions;
   paYearFilter.innerHTML = yearOptions;
@@ -981,8 +986,8 @@ async function saveOdooCache(entry) {
 }
 
 async function loadFromOdoo() {
-  const query = "date_from=2026-01-01"; // invoices & partners: 2026 only
-  const orderHistoryQuery = "date_from=2025-01-01"; // orders: full 2025 + 2026 history
+  const query = "date_from=2026-01-01"; // partners: 2026 only
+  const orderHistoryQuery = "date_from=2025-01-01"; // orders & invoices: full 2025 + 2026 history
   const orderLinesFrom = new Date();
   orderLinesFrom.setDate(orderLinesFrom.getDate() - 30);
   const orderLinesQuery = `date_from=${dateInputValue(orderLinesFrom)}`; // order lines: past 30 days only
@@ -1000,7 +1005,7 @@ async function loadFromOdoo() {
   }
   const netlifyEndpoints = { // Netlify serverless function (works on deployed site and via `netlify dev`)
     orders: `/.netlify/functions/odoo?resource=orders&${orderHistoryQuery}`,
-    invoices: `/.netlify/functions/odoo?resource=invoices&${query}&state=posted`,
+    invoices: `/.netlify/functions/odoo?resource=invoices&${orderHistoryQuery}&state=posted`,
     orderLines: `/.netlify/functions/odoo?resource=order_lines&${orderLinesQuery}`,
     partners: `/.netlify/functions/odoo?resource=partners&${query}`
   };
@@ -1230,7 +1235,8 @@ function scheduleDailyRefresh() {
   }, 60 * 60 * 1000);
 }
 
-[yearFilter, monthFilter, esStartDate, esEndDate].forEach(control => control.addEventListener("change", applyFilters));
+yearFilter.addEventListener("change", () => { populateFilters(); applyFilters(); });
+[monthFilter, esStartDate, esEndDate].forEach(control => control.addEventListener("change", applyFilters));
 weekFilter.addEventListener("change", () => {
   const option = weekFilter.options[weekFilter.selectedIndex];
   // Keep the selected reporting span visible and ensure the date controls use
@@ -1258,6 +1264,7 @@ resetBtn.addEventListener("click", () => {
   esStartDate.value = "";
   esEndDate.value = "";
   searchFilter.value = "";
+  populateFilters();
   applyFilters();
 });
 csResetBtn.addEventListener("click", () => {
