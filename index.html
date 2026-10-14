@@ -54,6 +54,7 @@
 <section class="kpis"><article class="kpi"><div class="kpi-label">App Orders</div><div class="kpi-value" id="webTotal">--</div><div class="kpi-note">Distinct Order Number where SalesRep = Web Order</div><div class="kpi-change" id="ordersChange">WoW --</div></article><article class="kpi"><div class="kpi-label">B2B Orders Processed</div><div class="kpi-value" id="orderCount">--</div><div class="kpi-note">Distinct Order Number on Orders tab</div><div class="kpi-change" id="orderCountChange">WoW --</div></article><article class="kpi"><div class="kpi-label">App Order Share</div><div class="kpi-value" id="appOrderShare">--</div><div class="kpi-note">App Orders / B2B Orders Processed</div><div class="kpi-change" id="appOrderShareChange">WoW --</div></article><article class="kpi"><div class="kpi-label">B2B Contribution</div><div class="kpi-value" id="b2bContribution">--</div><div class="kpi-note">Web Order Amount / Total Order Amount</div><div class="kpi-change" id="b2bContributionChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Clients Ordering</div><div class="kpi-value" id="clientsOrdering">--</div><div class="kpi-note">Distinct Client in Orders where SalesRep = Web Order</div><div class="kpi-change" id="clientsOrderingChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Clients Invoiced</div><div class="kpi-value" id="clientsInvoiced">--</div><div class="kpi-note">Distinct Client Name in Revenue</div><div class="kpi-change" id="clientsInvoicedChange">WoW --</div></article><article class="kpi demand"><div class="kpi-label">App Demand</div><div class="kpi-value" id="appDemand">--</div><div class="kpi-note">Sum of Order Amount where SalesRep = Web Order</div><div class="kpi-change" id="demandChange">WoW --</div></article><article class="kpi revenue"><div class="kpi-label">App Revenue</div><div class="kpi-value" id="appRevenue">--</div><div class="kpi-note">Sum of Total Invoiced from Revenue Sheet</div><div class="kpi-change" id="revenueChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Lost Sale</div><div class="kpi-value" id="lostSale">--</div><div class="kpi-note">App Demand - App Revenue</div><div class="kpi-change" id="lostSaleChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Average Basket Size</div><div class="kpi-value" id="average">--</div><div class="kpi-note">App Demand / B2B Orders Processed</div><div class="kpi-change" id="averageChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Fulfilment Rate</div><div class="kpi-value" id="revenueRate">--</div><div class="kpi-note">App Revenue / App Demand</div><div class="kpi-change" id="fulfilmentRateChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Target Achieved</div><div class="kpi-value" id="targetAchieved">--</div><div class="kpi-note">Current week revenue / ₦40M weekly target</div><div class="kpi-change" id="targetAchievedChange">WoW --</div></article></section>
 <section class="grid" style="grid-template-columns:1fr"><article class="panel"><div class="panel-head"><div><h2 id="chartTitle">Weekly App Revenue</h2><div class="caption" id="chartCaption">Posted Odoo invoice total, NGN</div></div><div><select id="chartMetric" aria-label="Chart metric"><option value="revenue">App Revenue</option><option value="demand">App Demand</option><option value="orders">App Orders</option></select><select id="chartMode" aria-label="Chart drill level"><option value="week">Weekly</option><option value="month">Monthly</option></select><div class="caption" id="rangeNote">All available history</div></div></div><div class="chart" id="chart"></div></article></section>
 <section class="panel"><div class="panel-head"><div><h2>WoW Analysis</h2><div class="caption" id="wowAnalysisNote">Current week vs previous week</div></div></div><div class="table-wrap"><table><thead><tr><th>Metric</th><th style="text-align:right">Current Week</th><th style="text-align:right">Previous Week</th><th style="text-align:right">WoW Change</th></tr></thead><tbody id="wowAnalysisBody"></tbody></table></div></section>
+<section class="panel" id="mixpanelSection"><div class="panel-head"><div><h2>Mixpanel Activities</h2><div class="caption" id="mixpanelCaption">Checkouts and abandoned carts from Mixpanel</div></div><div style="display:flex;gap:12px;align-items:center"><label style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.8px">From <input id="mpStartDate" type="date"></label><label style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.8px">To <input id="mpEndDate" type="date"></label></div></div><div class="kpis" style="grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:16px"><article class="kpi"><div class="kpi-label">Checkouts</div><div class="kpi-value" id="mpCheckouts">--</div><div class="kpi-note" id="mpCheckoutsNote">Mixpanel checkout events in range</div></article><article class="kpi"><div class="kpi-label">Abandoned Carts</div><div class="kpi-value" id="mpAbandoned">--</div><div class="kpi-note" id="mpAbandonedNote">Mixpanel abandoned cart events in range</div></article></div><div class="chart" id="mpChart"></div></section>
 <section class="panel"><div class="panel-head"><div><h2>2025 vs 2026</h2><div class="caption" id="vsCompareNote">Revenue, demand and fulfilment rate by year</div></div><div style="display:flex;gap:12px;align-items:center"><label style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.8px">Month <select id="vsMonthFilter"></select></label><label style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.8px">Week <select id="vsWeekFilter"></select></label></div></div><div class="table-wrap"><table><thead><tr><th>Metric</th><th style="text-align:right">2025</th><th style="text-align:right">2026</th><th style="text-align:right">Change (2026 vs 2025)</th></tr></thead><tbody id="vsCompareBody"></tbody></table></div></section>
 <section class="panel"><div class="panel-head"><div><h2>Order ledger</h2><div class="caption" id="tableNote">Showing the latest matching records</div></div></div><div class="table-wrap"><table><thead><tr><th>Order number</th><th>Date</th><th>Client</th><th>Sales rep</th><th>Status</th><th style="text-align:right">Order amount</th></tr></thead><tbody id="tableBody"></tbody></table></div></section>
 </div>
@@ -2199,6 +2200,7 @@ function login() {
   appShell.classList.remove("hidden");
   updateNav();
   showPage(currentRole === "service" ? "client-analysis" : "executive-summary");
+  if (currentRole !== "service") loadMixpanelActivities();
   if (window.lucide) lucide.createIcons();
 }
 
@@ -2278,5 +2280,80 @@ loginUser.addEventListener("keydown", e => { if (e.key === "Enter") login(); });
 
 // Load workbook in the background while login is shown;
 // scheduleDailyRefresh will pull live data once per day.
+// Mixpanel Activities: checkout and abandoned cart counts, filterable by date range.
+const mpStartDate = document.getElementById("mpStartDate");
+const mpEndDate = document.getElementById("mpEndDate");
+const mpCheckouts = document.getElementById("mpCheckouts");
+const mpAbandoned = document.getElementById("mpAbandoned");
+const mpChart = document.getElementById("mpChart");
+const mixpanelCaption = document.getElementById("mixpanelCaption");
+let mpEvents = ["Checkout", "Cart Abandoned"];
+let mpLoadedRange = "";
+
+const mpIsoDate = value => {
+  const date = new Date(value.getTime() - value.getTimezoneOffset() * 60000);
+  return date.toISOString().slice(0, 10);
+};
+const mpToday = () => mpIsoDate(new Date());
+const mpMonthAgo = () => { const d = new Date(); d.setDate(d.getDate() - 30); return mpIsoDate(d); };
+
+function renderMixpanelChart(daily, events) {
+  if (!daily.length) { mpChart.innerHTML = `<div class="empty">No Mixpanel events in this range.</div>`; return; }
+  const width = 820, height = 280, pad = 45, bottom = 50;
+  const plotWidth = width - pad * 2;
+  const plotHeight = height - pad - bottom;
+  const max = Math.max(...daily.flatMap(d => events.map(name => d[name] || 0)), 1);
+  const x = i => pad + (i / Math.max(daily.length - 1, 1)) * plotWidth;
+  const y = v => height - bottom - (v / max) * plotHeight;
+  const colors = ["#1eaa72", "#e8785f"];
+  const grid = [0, 0.25, 0.5, 0.75, 1].map(p => {
+    const gy = height - bottom - p * plotHeight;
+    return `<line class="chart-grid" x1="${pad}" y1="${gy}" x2="${width - pad}" y2="${gy}"/>`;
+  }).join("");
+  const labelEvery = Math.ceil(daily.length / 10);
+  const xLabels = daily.map((d, i) => i % labelEvery ? "" :
+    `<text class="chart-label chart-axis-label" x="${x(i)}" y="${height - 12}" text-anchor="middle">${d.date.slice(5)}</text>`).join("");
+  const lines = events.map((name, idx) =>
+    `<polyline fill="none" stroke="${colors[idx]}" stroke-width="2.5" points="${daily.map((d, i) => `${x(i)},${y(d[name] || 0)}`).join(" ")}"/>`).join("");
+  const dots = events.map((name, idx) => daily.map((d, i) =>
+    `<circle cx="${x(i)}" cy="${y(d[name] || 0)}" r="3.5" fill="${colors[idx]}"><title>${d.date} ${name}: ${(d[name] || 0).toLocaleString()}</title></circle>`).join("")).join("");
+  const legend = events.map((name, idx) =>
+    `<span style="display:inline-flex;align-items:center;gap:6px;margin-right:16px;color:var(--muted);font-size:11px"><span style="width:9px;height:9px;border-radius:50%;background:${colors[idx]}"></span>${name}</span>`).join("");
+  mpChart.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Daily Mixpanel events">${grid}${lines}${dots}${xLabels}</svg><div style="margin-top:8px">${legend}</div>`;
+}
+
+async function loadMixpanelActivities() {
+  const from = mpStartDate.value || mpMonthAgo();
+  const to = mpEndDate.value || mpToday();
+  if (from > to) { mixpanelCaption.textContent = "Start date must be before end date."; return; }
+  const rangeKey = `${from}|${to}`;
+  if (rangeKey === mpLoadedRange) return;
+  mixpanelCaption.textContent = `Loading Mixpanel events for ${from} to ${to}...`;
+  try {
+    let response = await fetch(`/.netlify/functions/mixpanel?from=${from}&to=${to}`, { cache: "no-store" });
+    if (!response.ok && location.origin !== PROD_ORIGIN) {
+      response = await fetch(`${PROD_ORIGIN}/.netlify/functions/mixpanel?from=${from}&to=${to}`, { cache: "no-store" });
+    }
+    const payload = await response.json();
+    if (!response.ok || payload.error) throw new Error(payload.error || `HTTP ${response.status}`);
+    mpEvents = payload.events || mpEvents;
+    mpCheckouts.textContent = (payload.totals[mpEvents[0]] || 0).toLocaleString();
+    mpAbandoned.textContent = (payload.totals[mpEvents[1]] || 0).toLocaleString();
+    document.getElementById("mpCheckoutsNote").textContent = `Mixpanel "${mpEvents[0]}" events`;
+    document.getElementById("mpAbandonedNote").textContent = `Mixpanel "${mpEvents[1]}" events`;
+    mixpanelCaption.textContent = `Checkouts and abandoned carts from Mixpanel, ${from} to ${to}`;
+    mpLoadedRange = rangeKey;
+    renderMixpanelChart(payload.daily || [], mpEvents);
+  } catch (error) {
+    mixpanelCaption.textContent = `Mixpanel unavailable: ${error.message}`;
+  }
+}
+
+mpStartDate.value = mpMonthAgo();
+mpEndDate.value = mpToday();
+[mpStartDate, mpEndDate].forEach(control => control.addEventListener("change", () => {
+  if (mpStartDate.value && mpEndDate.value) loadMixpanelActivities();
+}));
+
 scheduleDailyRefresh();
 </script></body></html>
