@@ -30,7 +30,7 @@
 </style>
 </head>
 <style>#dropOffFilterBtn.active{background:var(--teal);color:#fff;border-color:var(--teal)}</style>
-<style>#chart,#clientMetricChart,#productTrendChart,#paretoChart{height:360px!important}.rank{min-height:420px!important}#productRank,#rank{min-height:420px!important}#csDistributionChart,#csRevenueChart{height:340px!important}.pareto-dive{margin-top:32px}.pareto-dive .intro{align-items:end;margin-bottom:18px}.pareto-kpis{grid-template-columns:repeat(6,minmax(0,1fr))!important;margin-bottom:18px}.pareto-row{cursor:pointer;transition:background .12s}.pareto-row:hover{background:#eef6fa}.pareto-row.active{background:#e1f0f8}.pareto-row td:first-child{font-weight:700}.pareto-bar{fill:var(--teal)}.pareto-grid{stroke:#e6eef2;stroke-width:1}@media(max-width:1200px){.pareto-kpis{grid-template-columns:repeat(3,minmax(0,1fr))!important}}@media(max-width:768px){.pareto-kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important}}</style>
+<style>#chart,#clientMetricChart,#productTrendChart,#paretoChart,#cbpChart{height:360px!important}#cbpTopList .rank{min-height:0!important;gap:10px}#cbpTopList .rank-row{font-size:12px}.rank{min-height:420px!important}#productRank,#rank{min-height:420px!important}#csDistributionChart,#csRevenueChart{height:340px!important}.pareto-dive{margin-top:32px}.pareto-dive .intro{align-items:end;margin-bottom:18px}.pareto-kpis{grid-template-columns:repeat(6,minmax(0,1fr))!important;margin-bottom:18px}.pareto-row{cursor:pointer;transition:background .12s}.pareto-row:hover{background:#eef6fa}.pareto-row.active{background:#e1f0f8}.pareto-row td:first-child{font-weight:700}.pareto-bar{fill:var(--teal)}.pareto-grid{stroke:#e6eef2;stroke-width:1}@media(max-width:1200px){.pareto-kpis{grid-template-columns:repeat(3,minmax(0,1fr))!important}}@media(max-width:768px){.pareto-kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important}}</style>
 <body>
 <div class="login-overlay" id="loginOverlay">
   <div class="login-card">
@@ -63,6 +63,7 @@
 <section class="filters ca-filters"><label>Year <select id="caYearFilter"><option value="all">All years</option></select></label><label>From <input id="caStartDate" type="date"></label><label>To <input id="caEndDate" type="date"></label><button id="caResetBtn" type="button">Reset filters</button></section>
 <section class="kpis"><article class="kpi"><div class="kpi-label">Total App Users</div><div class="kpi-value" id="caTotalAppUsers">--</div><div class="kpi-note">Distinct clients with Web Orders</div><div class="kpi-change" id="caTotalAppUsersChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Total Active Client</div><div class="kpi-value" id="caTotalActive">--</div><div class="kpi-note">Last Web Order within 30 days</div><div class="kpi-change" id="caTotalActiveChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Active Customers</div><div class="kpi-value" id="caActiveCustomers">--</div><div class="kpi-note">Active clients / Total clients &times; 100</div><div class="kpi-change" id="caActiveCustomersChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Total Drop Offs</div><div class="kpi-value" id="caTotalDropOffs">--</div><div class="kpi-note">Last Web Order 31–60 days ago</div><div class="kpi-change" id="caTotalDropOffsChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Churning Customers</div><div class="kpi-value" id="caChurning">--</div><div class="kpi-note">Last Web Order over 60 days ago</div><div class="kpi-change" id="caChurningChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Total Switch</div><div class="kpi-value" id="caTotalSwitch">--</div><div class="kpi-note">Rows where Switch Status is Switch</div><div class="kpi-change" id="caTotalSwitchChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Churn Percentage</div><div class="kpi-value" id="caChurnPct">--</div><div class="kpi-note">Churning / Total App Users &times; 100</div><div class="kpi-change" id="caChurnPctChange">WoW --</div></article></section>
 <section class="panel"><div class="panel-head"><div><h2>Client metric</h2><div class="caption">Revenue, Sales order, or Demand by Client</div></div><select id="clientMetric" aria-label="Client metric"><option value="revenue">Revenue</option><option value="sales">Sales order</option><option value="demand">Demand</option></select></div><div class="chart" id="clientMetricChart" style="height:360px"></div></section>
+<section class="panel" id="buyingPatternSection"><div class="panel-head"><div><h2>Client Buying Pattern</h2><div class="caption">Top 10 clients and how their buying moves over time</div></div><div><input id="cbpClientSearch" type="search" placeholder="Search pharmacy..." style="min-width:170px"><select id="cbpClientFilter" aria-label="Pharmacy filter"><option value="top10">Top 10 Clients</option></select><select id="cbpMetric" aria-label="Buying pattern metric"><option value="revenue">Revenue</option><option value="sales">Sales order</option></select><select id="cbpMode" aria-label="Buying pattern period"><option value="month">Monthly</option><option value="week">Weekly</option></select></div></div><section class="grid"><article class="panel"><div class="panel-head"><div><h2 id="cbpChartTitle">Top 10 clients revenue trend</h2><div class="caption" id="cbpChartCaption">Revenue per month across the top 10 clients</div></div></div><div class="chart" id="cbpChart"></div></article><article class="panel"><div class="panel-head"><div><h2>Top 10 Clients</h2><div class="caption" id="cbpListCaption">Ranked by selected metric</div></div></div><div id="cbpTopList"></div></article></section></section>
 <section class="pareto-dive" id="paretoDiveSection"><section class="intro"><div><h1>Pareto-Dive</h1><p>Web order analysis by customer class. See which classes drive orders and demand, and dive into client detail.</p></div></section><section class="kpis pareto-kpis"><article class="kpi"><div class="kpi-label">Total App Orders</div><div class="kpi-value" id="paretoTotalOrders">--</div><div class="kpi-note">Distinct Order Number where SalesRep = Web Order</div></article><article class="kpi"><div class="kpi-label">App Demand</div><div class="kpi-value" id="paretoTotalDemand">--</div><div class="kpi-note">Sum of Order Amount where SalesRep = Web Order</div></article><article class="kpi"><div class="kpi-label">App Revenue</div><div class="kpi-value" id="paretoTotalRevenue">--</div><div class="kpi-note">Sum of Total Invoiced from Revenue sheet</div></article><article class="kpi"><div class="kpi-label">Classes</div><div class="kpi-value" id="paretoClassCount">--</div><div class="kpi-note">Distinct customer classes</div></article><article class="kpi"><div class="kpi-label">Top Class</div><div class="kpi-value" id="paretoTopClass">--</div><div class="kpi-note">Class with most of selected metric</div></article><article class="kpi"><div class="kpi-label">Top Share</div><div class="kpi-value" id="paretoTopShare">--</div><div class="kpi-note">Share of top class in selected metric</div></article></section><section class="grid"><article class="panel"><div class="panel-head"><div><h2 id="paretoChartTitle">Orders by class</h2><div class="caption" id="paretoChartCaption">Web order count per class</div></div><select id="paretoMetric" aria-label="Pareto metric"><option value="orders">App Orders</option><option value="demand">App Demand</option><option value="revenue">Revenue</option></select></div><div class="chart" id="paretoChart"></div></article></section><section class="panel"><div class="panel-head"><div><h2>Class Pareto table</h2><div class="caption" id="paretoTableNote">Click a row to dive into clients</div></div></div><div class="table-wrap"><table><thead><tr><th>Class</th><th style="text-align:right">App Orders</th><th style="text-align:right">App Demand</th><th style="text-align:right">App Revenue</th><th style="text-align:right">Cum % Revenue</th></tr></thead><tbody id="paretoTableBody"></tbody></table></div></section><section class="panel" id="paretoClientPanel" style="display:none"><div class="panel-head"><div><h2 id="paretoClientTitle">Client breakdown</h2><div class="caption">Web orders inside the selected class</div></div><button id="paretoBackBtn" type="button">Back to classes</button></div><div class="table-wrap"><table><thead><tr><th>Client</th><th style="text-align:right">Web Orders</th><th style="text-align:right">Demand (NGN)</th><th style="text-align:right">Revenue</th><th style="text-align:right">Avg Order</th></tr></thead><tbody id="paretoClientBody"></tbody></table></div></section></section>
 <section class="panel"><div class="panel-head"><div><h2>Drop off ledger</h2><div class="caption" id="dropOffTableNote">Showing the latest matching records</div></div><select id="dropOffWeekFilter" aria-label="Drop off week"><option value="all">All drop off weeks</option></select><button id="dropOffFilterBtn" type="button">Show Drop Off Only</button><button id="exportBtn" type="button">Export CSV</button></div><div class="table-wrap"><table><thead id="dropOffTableHead"></thead><tbody id="dropOffTableBody"></tbody></table></div></section>
 <section class="panel"><div class="panel-head"><div><h2>Segment Classification</h2><div class="caption" id="csTableNote">Showing clients by segment</div></div><button id="csExportBtn" type="button">Export CSV</button></div><div class="table-wrap"><table><thead><tr><th>Client</th><th>Segment</th><th style="text-align:right">Orders</th><th style="text-align:right">Avg Days</th><th style="text-align:right">Total Order Value</th><th style="text-align:right">Avg Order Value</th><th>First Order</th><th>Last Order</th><th style="text-align:right">Revenue</th></tr></thead><tbody id="csTableBody"></tbody></table></div></section>
@@ -1374,6 +1375,7 @@ function renderClientAnalysis() {
     tbody.innerHTML = `<tr><td colspan="100" class="empty">No drop off data loaded.</td></tr>`;
     note.textContent = "No matching records";
     state.filteredDropOffLedger = [];
+    renderBuyingPattern();
     return;
   }
 
@@ -1411,6 +1413,7 @@ function renderClientAnalysis() {
   const dateNote = (caStartDate.value || caEndDate.value) ? " | Order date filtered" : "";
   note.textContent = `Showing ${Math.min(ledgerRows.length, 100).toLocaleString()} of ${ledgerRows.length.toLocaleString()} records${filterNote}${dateNote}`;
   renderClientMetricChart();
+  renderBuyingPattern();
 }
 
 function getPreviousClientMetrics() {
@@ -1675,6 +1678,136 @@ function formatDateSpan(start, end) {
     return short === "Sep" ? "Sept" : short;
   };
   return `${ordinalDay(start)} ${monthLabel(start)} - ${ordinalDay(end)} ${monthLabel(end)}`;
+}
+
+function cbpBucketKey(date, mode) {
+  const y = date.getFullYear();
+  if (mode === "week") return `${y}-W${String(getIsoWeek(date)).padStart(2, "0")}`;
+  return `${y}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+}
+
+function refreshCbpClientFilter() {
+  const query = cbpClientSearch.value.trim().toLowerCase();
+  const esc = value => String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+  const clients = [...new Set([
+    ...state.rows.filter(r => r.Client && isWebOrder(r.SalesRep)).map(r => r.Client),
+    ...state.revenueRows.filter(r => r.Client).map(r => r.Client)
+  ])].sort((a, b) => a.localeCompare(b));
+  const current = cbpClientFilter.value;
+  const matches = query ? clients.filter(c => c.toLowerCase().includes(query)) : clients;
+  cbpClientFilter.innerHTML = `<option value="top10">Top 10 Clients</option>` + matches.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join("");
+  cbpClientFilter.value = [...cbpClientFilter.options].some(o => o.value === current) ? current : "top10";
+}
+
+function renderBuyingPattern() {
+  const metric = cbpMetric.value;
+  const mode = cbpMode.value;
+  const year = caYearFilter.value;
+  const start = caStartDate.value;
+  const end = caEndDate.value;
+  refreshCbpClientFilter();
+  const totals = {};
+  const byClientBucket = {};
+  const addToBucket = (client, key, amount) => {
+    if (!byClientBucket[client]) byClientBucket[client] = {};
+    byClientBucket[client][key] = (byClientBucket[client][key] || 0) + amount;
+  };
+
+  if (metric === "revenue") {
+    state.revenueRows.filter(row => (year === "all" || String(row.Year) === year) && dateMatchesRange(row["Invoice Date"], start, end)).forEach(row => {
+      const date = parseDate(row["Invoice Date"]);
+      if (!date) return;
+      const client = row.Client || "Unknown";
+      const amount = Number(row["Invoice Total"]) || 0;
+      totals[client] = (totals[client] || 0) + amount;
+      addToBucket(client, cbpBucketKey(date, mode), amount);
+    });
+  } else {
+    const orderSets = {};
+    state.rows.filter(row => (year === "all" || String(row.Year) === year) && isWebOrder(row.SalesRep) && dateMatchesRange(row["Order Date"], start, end)).forEach(row => {
+      const date = parseDate(row["Order Date"]);
+      if (!date || !row["Order Number"]) return;
+      const client = row.Client || "Unknown";
+      const key = cbpBucketKey(date, mode);
+      if (!orderSets[client]) orderSets[client] = {};
+      if (!orderSets[client][key]) orderSets[client][key] = new Set();
+      if (!orderSets[client][key].has(row["Order Number"])) {
+        orderSets[client][key].add(row["Order Number"]);
+        totals[client] = (totals[client] || 0) + 1;
+        addToBucket(client, key, 1);
+      }
+    });
+  }
+
+  const entries = Object.entries(totals).sort((a, b) => b[1] - a[1]).slice(0, 10);
+  const selectedClient = cbpClientFilter.value;
+  const fmt = metric === "sales" ? v => v.toLocaleString() : moneyCompact;
+  const label = metric === "sales" ? "Sales order" : "Revenue";
+  const period = mode === "week" ? "week" : "month";
+  cbpListCaption.textContent = `Ranked by ${label.toLowerCase()} (${period}ly view)`;
+  cbpChartTitle.textContent = selectedClient !== "top10" ? `${selectedClient} - ${label.toLowerCase()} trend` : `Top 10 clients ${label.toLowerCase()} trend`;
+  cbpChartCaption.textContent = selectedClient !== "top10" ? `${label} per ${period} for ${selectedClient}` : `${label} per ${period} across the top 10 clients`;
+
+  if (!entries.length) {
+    cbpTopList.innerHTML = `<div class="empty">No client data for these filters.</div>`;
+    cbpChart.innerHTML = `<div class="empty">No ${label.toLowerCase()} data for these filters.</div>`;
+    return;
+  }
+
+  const max = entries[0][1];
+  cbpTopList.innerHTML = `<div class="rank">` + entries.map(([client, total], index) =>
+    `<div class="rank-row"><span class="rank-num">${index + 1}</span><div><div>${client}</div><div class="rank-track"><span class="rank-fill" style="width:${Math.max((total / max) * 100, 2)}%"></span></div></div><span class="rank-amount">${fmt(total)}</span></div>`
+  ).join("") + `</div>`;
+
+  const chartEntries = selectedClient !== "top10"
+    ? (totals[selectedClient] !== undefined ? [[selectedClient, totals[selectedClient]]] : [])
+    : entries;
+  if (!chartEntries.length) {
+    cbpChart.innerHTML = `<div class="empty">No ${label.toLowerCase()} data for ${selectedClient} under these filters.</div>`;
+    return;
+  }
+
+  const buckets = [...new Set(chartEntries.flatMap(([client]) => Object.keys(byClientBucket[client] || {})))].sort();
+  const palette = ["#31a6a0", "#5a9ed3", "#1eaa72", "#f4c85c", "#8a73c6", "#e8785f", "#0e7c66", "#c94f7c", "#7a8b99", "#18354b"];
+  const width = 820, height = 380, pad = 55, chartPad = 56;
+  const plotHeight = height - pad - chartPad;
+  const plotWidth = width - pad * 2;
+  let maxVal = 1;
+  chartEntries.forEach(([client]) => buckets.forEach(b => { const v = byClientBucket[client][b] || 0; if (v > maxVal) maxVal = v; }));
+
+  const xFor = i => pad + (i / Math.max(buckets.length - 1, 1)) * plotWidth;
+  const yFor = v => height - pad - (v / maxVal) * plotHeight;
+  const yGrid = [0, 0.25, 0.5, 0.75, 1].map(pct => {
+    const y = height - pad - pct * plotHeight;
+    return `<line class="chart-grid" x1="${pad}" y1="${y}" x2="${width - pad}" y2="${y}"/><text class="chart-label" x="${pad - 8}" y="${y + 4}" text-anchor="end">${fmt(maxVal * pct)}</text>`;
+  }).join("");
+
+  const step = Math.max(Math.ceil(buckets.length / 12), 1);
+  const xLabels = buckets.map((b, i) => {
+    if (i % step !== 0 && i !== buckets.length - 1) return "";
+    const displayLabel = mode === "week" ? `Wk${b.split("-W")[1]}` : b;
+    const angle = mode === "week" ? -45 : 0;
+    return `<text class="chart-label" x="${xFor(i)}" y="${height - 14}" text-anchor="${mode === "week" ? "end" : "middle"}" transform="rotate(${angle} ${xFor(i)} ${height - 14})">${displayLabel}</text>`;
+  }).join("");
+
+  const lines = chartEntries.map(([client], ci) => {
+    const color = palette[ci % palette.length];
+    const points = buckets.map((b, i) => {
+      const v = byClientBucket[client][b] || 0;
+      return { x: xFor(i), y: yFor(v), b, v };
+    });
+    return `<polyline class="chart-line" style="stroke:${color}" stroke-width="2" points="${points.map(p => `${p.x},${p.y}`).join(" ")}"/>` + points.map(p => `<circle class="chart-point" style="stroke:${color}" cx="${p.x}" cy="${p.y}" r="3.5"><title>${client} ${p.b}: ${fmt(p.v)}</title></circle>`).join("");
+  }).join("");
+
+  const legend = chartEntries.length > 1 ? chartEntries.map(([client], ci) => {
+    const col = ci % 2, row = Math.floor(ci / 2);
+    const x = pad + col * 200, y = pad - 32 + row * 15;
+    return `<rect x="${x}" y="${y - 8}" width="10" height="10" fill="${palette[ci % palette.length]}" rx="2"/><text class="chart-label" x="${x + 14}" y="${y}">${client.slice(0, 18)}</text>`;
+  }).join("") : "";
+
+  const axisTitles = `<text class="chart-label" x="${width / 2}" y="${height - 2}" text-anchor="middle" font-weight="600">${mode === "week" ? "Week" : "Month"}</text><text class="chart-label" x="${pad}" y="${pad - 44}" text-anchor="start" font-weight="600">${metric === "sales" ? "Sales order" : "Revenue (NGN)"}</text>`;
+
+  cbpChart.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Top 10 clients ${label.toLowerCase()} trend chart">${yGrid}${lines}${xLabels}${legend}${axisTitles}</svg>`;
 }
 
 function getIsoWeek(date) {
@@ -2236,6 +2369,8 @@ csExportBtn.addEventListener("click", () => {
 });
 
 clientMetric.addEventListener("change", renderClientMetricChart);
+[cbpMetric, cbpMode, cbpClientFilter].forEach(control => control.addEventListener("change", renderBuyingPattern));
+cbpClientSearch.addEventListener("input", renderBuyingPattern);
 [caYearFilter, caStartDate, caEndDate].forEach(control => control.addEventListener("change", () => { renderClientAnalysis(); renderParetoDive(); }));
 [paYearFilter, paStartDate, paEndDate].forEach(control => control.addEventListener("change", renderProductAnalysis));
 caResetBtn.addEventListener("click", () => { caYearFilter.value = "all"; caStartDate.value = ""; caEndDate.value = ""; renderClientAnalysis(); renderParetoDive(); });
