@@ -306,11 +306,8 @@ const getSalespersonValue = row => row.Salesperson ?? row["Salesperson"] ?? row[
 const matchesColumnName = (key, candidates) => candidates.some(candidate => clean(key) === clean(candidate));
 const invoiceMatchesDateRange = (row, start, end) => dateMatchesRange(getInvoiceDateValue(row), start, end);
 const distinctCount = (rows, key) => new Set(rows.map(row => row[key]).filter(Boolean)).size;
-// Executive reporting periods run Thursday through Friday. Other days are
-// excluded from weekly reporting even though ISO weeks contain all seven days.
-const isExecutiveWeekDate = value => {
-  const date = parseDate(value);
-  return !!date && (date.getDay() === 4 || date.getDay() === 5);
+// All dates belong to a Friday-through-Thursday reporting week.
+const isExecutiveWeekDate = value => !!parseDate(value);
 };
 const selectedExecutiveWeek = value => weekFilter.value === "all" ||
   (String(value.Week) === weekFilter.value && isExecutiveWeekDate(value.date));
@@ -339,7 +336,7 @@ function populateFilters() {
     if (!date || !isExecutiveWeekDate(date)) return;
     const rowYear = String(date.getFullYear());
     if (yearFilter.value !== "all" && rowYear !== yearFilter.value) return;
-    const weekKey = getIsoWeek(date);
+    const weekKey = getReportingWeek(date);
     if (!weekMap.has(weekKey)) {
       const weekStart = getWeekStart(date);
       const weekEnd = getWeekEnd(date);
@@ -402,7 +399,7 @@ function setLoader(message) {
   loader.innerHTML = `<span class="pill-spinner"></span><span>${message}</span>`;
 }
 
-// Resolve the WoW anchor pair: the selected week, or the ISO week of the most
+// Resolve the WoW anchor pair: the selected week, or the reporting week of the most
 // recent order in the year-scoped data. Previous-week baselines are matched on
 // year + week only — the executive date range bounds the current view, and
 // applying it to the baseline would empty it (the old WoW "--" bug).
@@ -416,7 +413,7 @@ function activeWeekInfo() {
       .filter(date => date && isExecutiveWeekDate(date));
     if (!dates.length) return null;
     const latest = new Date(Math.max(...dates.map(date => date.getTime())));
-    current = getIsoWeek(latest);
+    current = getReportingWeek(latest);
     if (yearFilter.value === "all") {
       scoped = scoped.filter(row => String(row.Year) === String(latest.getFullYear()));
     }
@@ -568,7 +565,7 @@ function renderVsCompare() {
     const date = parseDate(value);
     if (!date || date.getFullYear() !== year) return false;
     if (month !== "all" && date.getMonth() + 1 !== Number(month)) return false;
-    if (week !== "all" && (getIsoWeek(date) !== Number(week) || !isExecutiveWeekDate(date))) return false;
+    if (week !== "all" && getReportingWeek(date) !== Number(week)) return false;
     return true;
   };
   const aggregate = year => {
@@ -605,17 +602,13 @@ const executiveWeekDateSpan = (year, week) => {
   const numericWeek = Number(week);
   if (!numericYear || !numericWeek) return "-";
 
-  // ISO week -> Thursday and Friday reporting dates.
-  const jan4 = new Date(numericYear, 0, 4);
-  const day = jan4.getDay() || 7;
-  const thursday = new Date(jan4);
-  thursday.setDate(jan4.getDate() - day + 4 + (numericWeek - 1) * 7);
-  thursday.setHours(0, 0, 0, 0);
-
-  const friday = new Date(thursday);
-  friday.setDate(thursday.getDate() + 1);
-
-  return formatDateSpan(thursday, friday);
+  // Find the Friday start of the reporting week containing a date in this year.
+  for (let offset = -7; offset <= 370; offset += 1) {
+    const date = new Date(numericYear, 0, 1 + offset);
+    if (date.getFullYear() !== numericYear || getReportingWeek(date) !== numericWeek) continue;
+    return formatDateSpan(getWeekStart(date), getWeekEnd(date));
+  }
+  return "-";
 };
 
 function renderYtdKpiTable() {
@@ -648,7 +641,7 @@ function renderYtdKpiTable() {
     ["Lost Sale", "App Demand - App Revenue", moneyCompact(webDemandYtd - revenueYtd)],
     ["Average Basket Size", "App Revenue / Clients Invoiced", clientsInvoicedYtd ? moneyCompact(revenueYtd / clientsInvoicedYtd) : "--"],
     ["Fulfilment Rate", "App Revenue / App Demand", webDemandYtd ? percent((revenueYtd / webDemandYtd) * 100) : "--"],
-    ["Target Achieved", "YTD revenue / (40M x elapsed weeks)", percent((revenueYtd / (40000000 * Math.max(getIsoWeek(endDate), 1))) * 100)]
+    ["Target Achieved", "YTD revenue / (40M x elapsed weeks)", percent((revenueYtd / (40000000 * Math.max(getReportingWeek(endDate), 1))) * 100)]
   ];
   ytdKpiNote.textContent = `${year} YTD through ${dateText(endDate)} | ${ytdInvoices.length.toLocaleString()} Web Order invoices`;
   ytdKpiTableBody.innerHTML = rows.map(([name, calculation, value]) => `<tr><td><strong>${name}</strong></td><td>${calculation}</td><td class="amount">${value}</td></tr>`).join("");
@@ -665,13 +658,13 @@ function renderYtdWeeklyTable() {
   const weekly = new Map();
   const getWeek = value => {
     const date = parseDate(value);
-    return date ? getIsoWeek(date) : null;
+    return date ? getReportingWeek(date) : null;
   };
   const getBucket = (week, date) => {
     if (!weekly.has(week)) {
       const weekStart = getWeekStart(date);
       const weekEnd = new Date(weekStart);
-      weekEnd.setDate(weekStart.getDate() + 1); // Thursday through Friday reporting period
+      weekEnd.setDate(weekStart.getDate() + 6); // Friday through Thursday, seven days inclusive
       weekly.set(week, {
         month: "", weekStart, weekEnd,
         demand: 0, revenue: 0, orders: new Set(), ordering: new Set(), invoiced: new Set()
@@ -773,9 +766,12 @@ function loadWorkbook(buffer, source) {
 
     // 1. Load Orders Sheet
     const ordersSheetName = workbook.SheetNames.find(name => clean(name) === "orders") || workbook.SheetNames[0];
-    state.rows = XLSX.utils.sheet_to_json(workbook.Sheets[ordersSheetName], { defval: "" }).filter(row =>
-      [2025, 2026].includes(Number(row.Year)) && !isExcludedOrderState(row.Status ?? row.state)
-    );
+    state.rows = XLSX.utils.sheet_to_json(workbook.Sheets[ordersSheetName], { defval: "" })
+      .filter(row => [2025, 2026].includes(Number(row.Year)) && !isExcludedOrderState(row.Status ?? row.state))
+      .map(row => {
+        const date = parseDate(row["Order Date"]);
+        return { ...row, Week: date ? getReportingWeek(date) : null };
+      });
 
     // 2. Load Revenue Sheet & map invoice totals
     state.revenueRows = [];
@@ -808,6 +804,7 @@ function loadWorkbook(buffer, source) {
             Client: clientKey ? row[clientKey] : "Unknown",
             "Invoice Date": invoiceDateKey ? row[invoiceDateKey] : row[Object.keys(row).find(key => clean(key) === "invoicedate")],
             Salesperson: salespersonKey ? row[salespersonKey] : row.Salesperson || row["Salesperson"] || "",
+            Week: (() => { const date = parseDate(invoiceDateKey ? row[invoiceDateKey] : row[Object.keys(row).find(key => clean(key) === "invoicedate")]); return date ? getReportingWeek(date) : null; })(),
           })).filter(row => {
             const webPartnerIds = new Set(state.rows.filter(order => isWebOrder(order.SalesRep)).map(order => String(order["Partner ID"] ?? "").trim()).filter(Boolean));
             return (!row.Year || [2025, 2026].includes(Number(row.Year))) && isWebOrderPartner(row["Partner ID"], webPartnerIds);
@@ -848,7 +845,7 @@ function loadWorkbook(buffer, source) {
             "Date": Number.isNaN(date.getTime()) ? null : date,
             "Year": year,
             "Month": Number.isNaN(date.getTime()) ? null : date.getMonth() + 1,
-            "Week": Number.isNaN(date.getTime()) ? null : getIsoWeek(date)
+            "Week": Number.isNaN(date.getTime()) ? null : getReportingWeek(date)
           };
         }).filter(row => [2025, 2026].includes(row.Year));
       }
@@ -1093,7 +1090,7 @@ function processOdooPayloads(ordersData, invoicesData, orderLinesData) {
     Year: toYear(row.date_order || row.create_date),
     Week: (() => {
       const date = toDate(row.date_order || row.create_date);
-      return date && !Number.isNaN(date.getTime()) ? getIsoWeek(date) : null;
+      return date && !Number.isNaN(date.getTime()) ? getReportingWeek(date) : null;
     })()
   })).filter(row => [2025, 2026].includes(row.Year) && !isExcludedOrderState(row.Status));
 
@@ -1109,7 +1106,7 @@ function processOdooPayloads(ordersData, invoicesData, orderLinesData) {
     Year: toYear(row.invoice_date || row.create_date),
     Week: (() => {
       const date = toDate(row.invoice_date || row.create_date);
-      return date && !Number.isNaN(date.getTime()) ? getIsoWeek(date) : null;
+      return date && !Number.isNaN(date.getTime()) ? getReportingWeek(date) : null;
     })()
   })).filter(row => [2025, 2026].includes(row.Year) && isWebOrder(row.Salesperson));
   applyClientClasses();
@@ -1163,7 +1160,7 @@ function processOdooPayloads(ordersData, invoicesData, orderLinesData) {
     Date: toDate(row.order_date),
     Year: toYear(row.order_date),
     Month: (() => { const date = toDate(row.order_date); return date && !Number.isNaN(date.getTime()) ? date.getMonth() + 1 : null; })(),
-    Week: (() => { const date = toDate(row.order_date); return date && !Number.isNaN(date.getTime()) ? getIsoWeek(date) : null; })()
+    Week: (() => { const date = toDate(row.order_date); return date && !Number.isNaN(date.getTime()) ? getReportingWeek(date) : null; })()
   })).filter(row => [2025, 2026].includes(row.Year) && !/delivery/i.test(row.Product || ""));
   setLoader(`${state.rows.length.toLocaleString()} Odoo orders loaded | ${state.revenueRows.length.toLocaleString()} posted Web Order invoices loaded | ${state.productRows.length.toLocaleString()} Odoo order lines loaded`);
   sourceText.textContent = "Live Odoo API | Web Orders + Web Order invoices connected";
@@ -1242,7 +1239,7 @@ yearFilter.addEventListener("change", () => { populateFilters(); applyFilters();
 [monthFilter, esStartDate, esEndDate].forEach(control => control.addEventListener("change", applyFilters));
 weekFilter.addEventListener("change", () => {
   const option = weekFilter.options[weekFilter.selectedIndex];
-  // Keep the selected Thursday–Friday reporting span visible in the date controls.
+  // Keep the selected Friday–Thursday reporting span visible in the date controls.
   if (weekFilter.value !== "all") {
     esStartDate.value = option.dataset.start || "";
     esEndDate.value = option.dataset.end || "";
@@ -1649,20 +1646,20 @@ function getWeekStart(date) {
   const d = parseDate(date);
   if (!d) return null;
   const day = d.getDay();
-  const daysSinceThursday = (day - 4 + 7) % 7;
-  const thursday = new Date(d);
-  thursday.setDate(d.getDate() - daysSinceThursday);
-  thursday.setHours(0, 0, 0, 0);
-  return thursday;
+  const daysSinceFriday = (day - 5 + 7) % 7;
+  const friday = new Date(d);
+  friday.setDate(d.getDate() - daysSinceFriday);
+  friday.setHours(0, 0, 0, 0);
+  return friday;
 }
 
 function getWeekEnd(date) {
   const start = getWeekStart(date);
   if (!start) return null;
-  const friday = new Date(start);
-  friday.setDate(start.getDate() + 1);
-  friday.setHours(0, 0, 0, 0);
-  return friday;
+  const thursday = new Date(start);
+  thursday.setDate(start.getDate() + 6);
+  thursday.setHours(0, 0, 0, 0);
+  return thursday;
 }
 
 function ordinalDay(date) {
@@ -1682,7 +1679,7 @@ function formatDateSpan(start, end) {
 
 function cbpBucketKey(date, mode) {
   const y = date.getFullYear();
-  if (mode === "week") return `${y}-W${String(getIsoWeek(date)).padStart(2, "0")}`;
+  if (mode === "week") return `${y}-W${String(getReportingWeek(date)).padStart(2, "0")}`;
   return `${y}-${String(date.getMonth() + 1).padStart(2, "0")}`;
 }
 
@@ -1816,6 +1813,11 @@ function getIsoWeek(date) {
   d.setUTCDate(d.getUTCDate() + 4 - dayNum);
   const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
   return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+}
+
+function getReportingWeek(date) {
+  const start = getWeekStart(date);
+  return start ? getIsoWeek(start) : null;
 }
 
 function parseDate(value) {
