@@ -272,6 +272,12 @@ const USERS = {
 
 let currentRole = null;
 
+// Bind login controls before the rest of the dashboard initializes, so an
+// unrelated startup error cannot leave the sign-in button unresponsive.
+loginBtn.addEventListener("click", login);
+loginPass.addEventListener("keydown", e => { if (e.key === "Enter") login(); });
+loginUser.addEventListener("keydown", e => { if (e.key === "Enter") login(); });
+
 const money = value => new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 }).format(value || 0);
 const moneyCompact = value => {
   const num = value || 0;
@@ -2330,14 +2336,21 @@ function login() {
     loginError.textContent = "Invalid username or password.";
     return;
   }
-  currentRole = account.role;
-  loginError.textContent = "";
-  loginOverlay.style.display = "none";
-  appShell.classList.remove("hidden");
-  updateNav();
-  showPage(currentRole === "service" ? "client-analysis" : "executive-summary");
-  if (currentRole !== "service") loadMixpanelActivities();
-  if (window.lucide) lucide.createIcons();
+  try {
+    currentRole = account.role;
+    loginError.textContent = "";
+    appShell.classList.remove("hidden");
+    updateNav();
+    showPage(currentRole === "service" ? "client-analysis" : "executive-summary");
+    if (currentRole !== "service") void loadMixpanelActivities();
+    if (window.lucide) lucide.createIcons();
+    loginOverlay.style.display = "none";
+  } catch (error) {
+    console.error("Dashboard sign-in failed:", error);
+    appShell.classList.add("hidden");
+    loginOverlay.style.display = "flex";
+    loginError.textContent = `Sign-in succeeded, but the dashboard could not open: ${error.message}`;
+  }
 }
 
 function exportToCsv(rows, filename) {
@@ -2411,10 +2424,6 @@ paretoBackBtn.addEventListener("click", () => {
 document.querySelectorAll(".sidebar-nav button").forEach(btn => {
   btn.addEventListener("click", () => showPage(btn.dataset.page));
 });
-
-loginBtn.addEventListener("click", login);
-loginPass.addEventListener("keydown", e => { if (e.key === "Enter") login(); });
-loginUser.addEventListener("keydown", e => { if (e.key === "Enter") login(); });
 
 // Load workbook in the background while login is shown;
 // scheduleDailyRefresh will pull live data once per day.
