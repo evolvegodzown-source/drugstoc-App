@@ -314,7 +314,6 @@ const invoiceMatchesDateRange = (row, start, end) => dateMatchesRange(getInvoice
 const distinctCount = (rows, key) => new Set(rows.map(row => row[key]).filter(Boolean)).size;
 // All dates belong to a Friday-through-Thursday reporting week.
 const isExecutiveWeekDate = value => !!parseDate(value);
-};
 const selectedExecutiveWeek = value => weekFilter.value === "all" ||
   (String(value.Week) === weekFilter.value && isExecutiveWeekDate(value.date));
 const dateInputValue = date => {
