@@ -306,11 +306,11 @@ const getSalespersonValue = row => row.Salesperson ?? row["Salesperson"] ?? row[
 const matchesColumnName = (key, candidates) => candidates.some(candidate => clean(key) === clean(candidate));
 const invoiceMatchesDateRange = (row, start, end) => dateMatchesRange(getInvoiceDateValue(row), start, end);
 const distinctCount = (rows, key) => new Set(rows.map(row => row[key]).filter(Boolean)).size;
-// Executive reporting weeks run Monday through Saturday. Sunday is deliberately
-// excluded, even though the ISO week number also contains Sunday.
+// Executive reporting periods run Thursday through Friday. Other days are
+// excluded from weekly reporting even though ISO weeks contain all seven days.
 const isExecutiveWeekDate = value => {
   const date = parseDate(value);
-  return !!date && date.getDay() !== 0;
+  return !!date && (date.getDay() === 4 || date.getDay() === 5);
 };
 const selectedExecutiveWeek = value => weekFilter.value === "all" ||
   (String(value.Week) === weekFilter.value && isExecutiveWeekDate(value.date));
@@ -336,7 +336,7 @@ function populateFilters() {
   const weekMap = new Map();
   state.rows.forEach(row => {
     const date = parseDate(row["Order Date"]);
-    if (!date) return;
+    if (!date || !isExecutiveWeekDate(date)) return;
     const rowYear = String(date.getFullYear());
     if (yearFilter.value !== "all" && rowYear !== yearFilter.value) return;
     const weekKey = getIsoWeek(date);
@@ -412,7 +412,8 @@ function activeWeekInfo() {
   if (weekFilter.value !== "all") {
     current = Number(weekFilter.value);
   } else {
-    const dates = scoped.map(row => parseDate(row["Order Date"])).filter(Boolean);
+    const dates = scoped.map(row => parseDate(row["Order Date"]))
+      .filter(date => date && isExecutiveWeekDate(date));
     if (!dates.length) return null;
     const latest = new Date(Math.max(...dates.map(date => date.getTime())));
     current = getIsoWeek(latest);
@@ -567,7 +568,7 @@ function renderVsCompare() {
     const date = parseDate(value);
     if (!date || date.getFullYear() !== year) return false;
     if (month !== "all" && date.getMonth() + 1 !== Number(month)) return false;
-    if (week !== "all" && getIsoWeek(date) !== Number(week)) return false;
+    if (week !== "all" && (getIsoWeek(date) !== Number(week) || !isExecutiveWeekDate(date))) return false;
     return true;
   };
   const aggregate = year => {
@@ -604,17 +605,17 @@ const executiveWeekDateSpan = (year, week) => {
   const numericWeek = Number(week);
   if (!numericYear || !numericWeek) return "-";
 
-  // ISO week -> Monday of that week.
+  // ISO week -> Thursday and Friday reporting dates.
   const jan4 = new Date(numericYear, 0, 4);
   const day = jan4.getDay() || 7;
-  const monday = new Date(jan4);
-  monday.setDate(jan4.getDate() - day + 1 + (numericWeek - 1) * 7);
-  monday.setHours(0, 0, 0, 0);
+  const thursday = new Date(jan4);
+  thursday.setDate(jan4.getDate() - day + 4 + (numericWeek - 1) * 7);
+  thursday.setHours(0, 0, 0, 0);
 
-  const saturday = new Date(monday);
-  saturday.setDate(monday.getDate() + 5);
+  const friday = new Date(thursday);
+  friday.setDate(thursday.getDate() + 1);
 
-  return formatDateSpan(monday, saturday);
+  return formatDateSpan(thursday, friday);
 };
 
 function renderYtdKpiTable() {
@@ -659,7 +660,7 @@ function renderYtdWeeklyTable() {
   const year = endDate.getFullYear();
   const isYtd = value => {
     const date = parseDate(value);
-    return date && date.getFullYear() === year && date <= endDate;
+    return date && date.getFullYear() === year && date <= endDate && isExecutiveWeekDate(date);
   };
   const weekly = new Map();
   const getWeek = value => {
@@ -670,7 +671,7 @@ function renderYtdWeeklyTable() {
     if (!weekly.has(week)) {
       const weekStart = getWeekStart(date);
       const weekEnd = new Date(weekStart);
-      weekEnd.setDate(weekStart.getDate() + 5); // Executive reporting week: Monday through Saturday
+      weekEnd.setDate(weekStart.getDate() + 1); // Thursday through Friday reporting period
       weekly.set(week, {
         month: "", weekStart, weekEnd,
         demand: 0, revenue: 0, orders: new Set(), ordering: new Set(), invoiced: new Set()
@@ -716,8 +717,8 @@ function renderChart(rows) {
   const mode = chartMode.value;
   const metric = chartMetric.value;
   const add = (row, date, amount, key) => { totals[key] = (totals[key] || 0) + amount; };
-  if (metric === "revenue") state.revenueRows.filter(revenueMatchesFilters).forEach(row => { const date = new Date(row["Invoice Date"]); if (Number.isNaN(date.getTime()) || (mode === "week" && !row.Week)) return; const key = mode === "week" ? `${row.Year || date.getFullYear()}-W${String(row.Week || "").padStart(2, "0")}` : `${row.Year || date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`; add(row, date, Number(row["Invoice Total"]) || 0, key); });
-  else rows.filter(row => isWebOrder(row.SalesRep)).forEach(row => { const date = new Date(row["Order Date"]); const key = mode === "week" ? `${row.Year || date.getFullYear()}-W${String(row.Week || "").padStart(2, "0")}` : `${row.Year || date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`; if (metric === "orders") { if (!totals[key]) totals[key] = new Set(); totals[key].add(row["Order Number"]); } else add(row, date, Number(row["Order Amount"]) || 0, key); });
+  if (metric === "revenue") state.revenueRows.filter(revenueMatchesFilters).forEach(row => { const date = new Date(row["Invoice Date"]); if (Number.isNaN(date.getTime()) || (mode === "week" && (!row.Week || !isExecutiveWeekDate(date)))) return; const key = mode === "week" ? `${row.Year || date.getFullYear()}-W${String(row.Week || "").padStart(2, "0")}` : `${row.Year || date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`; add(row, date, Number(row["Invoice Total"]) || 0, key); });
+  else rows.filter(row => isWebOrder(row.SalesRep)).forEach(row => { const date = new Date(row["Order Date"]); if (mode === "week" && !isExecutiveWeekDate(date)) return; const key = mode === "week" ? `${row.Year || date.getFullYear()}-W${String(row.Week || "").padStart(2, "0")}` : `${row.Year || date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`; if (metric === "orders") { if (!totals[key]) totals[key] = new Set(); totals[key].add(row["Order Number"]); } else add(row, date, Number(row["Order Amount"]) || 0, key); });
   if (metric === "orders") Object.keys(totals).forEach(key => totals[key] = totals[key].size);
   const entries = Object.entries(totals).sort((a, b) => a[0].localeCompare(b[0]));
   const max = Math.max(...entries.map(item => item[1]), 1);
@@ -1241,8 +1242,7 @@ yearFilter.addEventListener("change", () => { populateFilters(); applyFilters();
 [monthFilter, esStartDate, esEndDate].forEach(control => control.addEventListener("change", applyFilters));
 weekFilter.addEventListener("change", () => {
   const option = weekFilter.options[weekFilter.selectedIndex];
-  // Keep the selected reporting span visible and ensure the date controls use
-  // the same Monday–Saturday window as the week selector.
+  // Keep the selected Thursday–Friday reporting span visible in the date controls.
   if (weekFilter.value !== "all") {
     esStartDate.value = option.dataset.start || "";
     esEndDate.value = option.dataset.end || "";
@@ -1649,20 +1649,20 @@ function getWeekStart(date) {
   const d = parseDate(date);
   if (!d) return null;
   const day = d.getDay();
-  const diff = day === 0 ? -6 : 1 - day;
-  const monday = new Date(d);
-  monday.setDate(d.getDate() + diff);
-  monday.setHours(0, 0, 0, 0);
-  return monday;
+  const daysSinceThursday = (day - 4 + 7) % 7;
+  const thursday = new Date(d);
+  thursday.setDate(d.getDate() - daysSinceThursday);
+  thursday.setHours(0, 0, 0, 0);
+  return thursday;
 }
 
 function getWeekEnd(date) {
   const start = getWeekStart(date);
   if (!start) return null;
-  const saturday = new Date(start);
-  saturday.setDate(start.getDate() + 5);
-  saturday.setHours(0, 0, 0, 0);
-  return saturday;
+  const friday = new Date(start);
+  friday.setDate(start.getDate() + 1);
+  friday.setHours(0, 0, 0, 0);
+  return friday;
 }
 
 function ordinalDay(date) {
@@ -1716,7 +1716,7 @@ function renderBuyingPattern() {
   if (metric === "revenue") {
     state.revenueRows.filter(row => (year === "all" || String(row.Year) === year) && dateMatchesRange(row["Invoice Date"], start, end)).forEach(row => {
       const date = parseDate(row["Invoice Date"]);
-      if (!date) return;
+      if (!date || (mode === "week" && !isExecutiveWeekDate(date))) return;
       const client = row.Client || "Unknown";
       const amount = Number(row["Invoice Total"]) || 0;
       totals[client] = (totals[client] || 0) + amount;
@@ -1726,7 +1726,7 @@ function renderBuyingPattern() {
     const orderSets = {};
     state.rows.filter(row => (year === "all" || String(row.Year) === year) && isWebOrder(row.SalesRep) && dateMatchesRange(row["Order Date"], start, end)).forEach(row => {
       const date = parseDate(row["Order Date"]);
-      if (!date || !row["Order Number"]) return;
+      if (!date || (mode === "week" && !isExecutiveWeekDate(date)) || !row["Order Number"]) return;
       const client = row.Client || "Unknown";
       const key = cbpBucketKey(date, mode);
       if (!orderSets[client]) orderSets[client] = {};
@@ -1964,6 +1964,7 @@ function renderProductTrend(rows) {
   const metric = productTrendMetric.value;
   const totals = {};
   rows.forEach(r => {
+    if (mode === "week" && !isExecutiveWeekDate(r.Date || r["Order Date"])) return;
     const key = mode === "week" ? `${r.Year}-W${String(r.Week).padStart(2, "0")}` : `${r.Year}-${String(r.Month).padStart(2, "0")}`;
     if (!totals[key]) totals[key] = { ordered: 0, invoiced: 0 };
     if (metric === "quantity") {
