@@ -85,6 +85,21 @@ exports.handler = async (event) => {
         ["invoice_date", ">=", dateFrom]
       ];
       data = await searchRead(uid, "account.move", domain, INVOICE_FIELDS, limit, offset);
+      // Flag the delivery-fee share of each invoice so the dashboard can net it out of revenue.
+      const moveIds = data.map(row => row.id);
+      if (moveIds.length) {
+        const lines = await searchRead(uid, "account.move.line",
+          [["move_id", "in", moveIds], ["product_id", "!=", false]],
+          ["move_id", "product_id", "price_total"], Math.min(moveIds.length * 20, 100000), 0);
+        const deliveryByMove = {};
+        lines.forEach(line => {
+          const productName = Array.isArray(line.product_id) ? line.product_id[1] || "" : "";
+          if (!/delivery/i.test(productName)) return;
+          const moveId = Array.isArray(line.move_id) ? line.move_id[0] : line.move_id;
+          deliveryByMove[moveId] = (deliveryByMove[moveId] || 0) + (Number(line.price_total) || 0);
+        });
+        data = data.map(row => ({ ...row, delivery_total: deliveryByMove[row.id] || 0 }));
+      }
     } else if (resource === "order_lines") {
       const domain = [["order_id.date_order", ">=", dateFrom], ["order_id.state", "not in", EXCLUDED_ORDER_STATES]];
       data = await searchRead(uid, "sale.order.line", domain, ORDER_LINE_FIELDS, limit, offset);
