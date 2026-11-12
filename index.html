@@ -49,24 +49,24 @@
 <div class="upload" id="upload"><span id="uploadMsg">Odoo data is unavailable. Check the server-side Odoo configuration.</span><button id="retryBtn" type="button">Retry Odoo connection</button><pre id="uploadLog" style="margin-top:10px;white-space:pre-wrap;font-size:11px;color:var(--muted);max-height:120px;overflow:auto;width:100%;"></pre></div>
 <div class="loader" id="loader"><span class="pill-spinner"></span><span>Loading Odoo data...</span></div>
 <div id="dashboardPage" class="page">
-<section class="intro"><div><h1>Drugstoc App Performance Dashboard <span class="year-badge">2026</span></h1><p>Live visibility into pharmacy commerce performance, powered by Odoo and shaped for quick decisions.</p></div><div class="intro-side"><div class="fulfilment-panel"><div class="panel-head"><div><h2>Fulfilment rate</h2><div class="caption">Fulfilled App Revenue versus App Demand</div></div></div><div class="fulfilment-content"><div class="donut" id="fulfilmentDonut" role="img" aria-label="Fulfilment rate: fulfilled App Revenue as a share of App Demand"><div><strong id="fulfilmentValue">--</strong><span>Fulfilment rate</span></div></div></div></div></div></section>
+<section class="intro"><div><h1>Drugstoc App Performance Dashboard <span class="year-badge">2026</span></h1><p>Live visibility into pharmacy commerce performance, powered by Odoo and shaped for quick decisions.</p></div><div class="intro-side"><div class="fulfilment-panel"><div class="panel-head"><div><h2>Fulfilment rate</h2><div class="caption">Fulfilled Invoiced Amount versus App Demand</div></div></div><div class="fulfilment-content"><div class="donut" id="fulfilmentDonut" role="img" aria-label="Fulfilment rate: fulfilled Invoiced Amount as a share of App Demand"><div><strong id="fulfilmentValue">--</strong><span>Fulfilment rate</span></div></div></div></div></div></section>
 <section class="filters"><label>Year <select id="yearFilter"><option value="all">All years</option></select></label><label>Month <select id="monthFilter"><option value="all">All months</option></select></label><label>Week <select id="weekFilter"><option value="all">All weeks</option></select></label><label>From <input id="esStartDate" type="date"></label><label>To <input id="esEndDate" type="date"></label><label>Search <input id="searchFilter" type="search" placeholder="Order, client, status..."></label><button id="resetBtn" type="button">Reset filters</button></section>
-<section class="kpis"><article class="kpi"><div class="kpi-label">App Orders</div><div class="kpi-value" id="webTotal">--</div><div class="kpi-note">Distinct Order Number where SalesRep = Web Order</div><div class="kpi-change" id="ordersChange">WoW --</div></article><article class="kpi"><div class="kpi-label">B2B Orders Processed</div><div class="kpi-value" id="orderCount">--</div><div class="kpi-note">Distinct Order Number on Orders tab</div><div class="kpi-change" id="orderCountChange">WoW --</div></article><article class="kpi"><div class="kpi-label">App Order Share</div><div class="kpi-value" id="appOrderShare">--</div><div class="kpi-note">App Orders / B2B Orders Processed</div><div class="kpi-change" id="appOrderShareChange">WoW --</div></article><article class="kpi"><div class="kpi-label">B2B Contribution</div><div class="kpi-value" id="b2bContribution">--</div><div class="kpi-note">Web Order Amount / Total Order Amount</div><div class="kpi-change" id="b2bContributionChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Clients Ordering</div><div class="kpi-value" id="clientsOrdering">--</div><div class="kpi-note">Distinct Client in Orders where SalesRep = Web Order</div><div class="kpi-change" id="clientsOrderingChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Clients Invoiced</div><div class="kpi-value" id="clientsInvoiced">--</div><div class="kpi-note">Distinct Client Name in Revenue</div><div class="kpi-change" id="clientsInvoicedChange">WoW --</div></article><article class="kpi demand"><div class="kpi-label">App Demand</div><div class="kpi-value" id="appDemand">--</div><div class="kpi-note">Sum of Order Amount where SalesRep = Web Order</div><div class="kpi-change" id="demandChange">WoW --</div></article><article class="kpi revenue"><div class="kpi-label">App Revenue</div><div class="kpi-value" id="appRevenue">--</div><div class="kpi-note">Confirmed Web Order invoices > ₦0, excl. delivery fees, Sunday &amp; future dates</div><div class="kpi-change" id="revenueChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Lost Sale</div><div class="kpi-value" id="lostSale">--</div><div class="kpi-note">App Demand - App Revenue</div><div class="kpi-change" id="lostSaleChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Average Basket Size</div><div class="kpi-value" id="average">--</div><div class="kpi-note">App Demand / B2B Orders Processed</div><div class="kpi-change" id="averageChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Fulfilment Rate</div><div class="kpi-value" id="revenueRate">--</div><div class="kpi-note">App Revenue / App Demand</div><div class="kpi-change" id="fulfilmentRateChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Target Achieved</div><div class="kpi-value" id="targetAchieved">--</div><div class="kpi-note">Current week revenue / ₦40M weekly target</div><div class="kpi-change" id="targetAchievedChange">WoW --</div></article></section>
-<section class="grid" style="grid-template-columns:1fr"><article class="panel"><div class="panel-head"><div><h2 id="chartTitle">Weekly App Revenue</h2><div class="caption" id="chartCaption">Posted Odoo invoice total, NGN</div></div><div><select id="chartMetric" aria-label="Chart metric"><option value="revenue">App Revenue</option><option value="demand">App Demand</option><option value="orders">App Orders</option></select><select id="chartMode" aria-label="Chart drill level"><option value="week">Weekly</option><option value="month">Monthly</option></select><div class="caption" id="rangeNote">All available history</div></div></div><div class="chart" id="chart"></div></article></section>
+<section class="kpis"><article class="kpi"><div class="kpi-label">App Orders</div><div class="kpi-value" id="webTotal">--</div><div class="kpi-note">Distinct Order Number where SalesRep = Web Order</div><div class="kpi-change" id="ordersChange">WoW --</div></article><article class="kpi"><div class="kpi-label">B2B Orders Processed</div><div class="kpi-value" id="orderCount">--</div><div class="kpi-note">Distinct Order Number on Orders tab</div><div class="kpi-change" id="orderCountChange">WoW --</div></article><article class="kpi"><div class="kpi-label">App Order Share</div><div class="kpi-value" id="appOrderShare">--</div><div class="kpi-note">App Orders / B2B Orders Processed</div><div class="kpi-change" id="appOrderShareChange">WoW --</div></article><article class="kpi"><div class="kpi-label">B2B Contribution</div><div class="kpi-value" id="b2bContribution">--</div><div class="kpi-note">Web Order Amount / Total Order Amount</div><div class="kpi-change" id="b2bContributionChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Clients Ordering</div><div class="kpi-value" id="clientsOrdering">--</div><div class="kpi-note">Distinct Client in Orders where SalesRep = Web Order</div><div class="kpi-change" id="clientsOrderingChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Clients Invoiced</div><div class="kpi-value" id="clientsInvoiced">--</div><div class="kpi-note">Distinct Client Name in Revenue</div><div class="kpi-change" id="clientsInvoicedChange">WoW --</div></article><article class="kpi demand"><div class="kpi-label">App Demand</div><div class="kpi-value" id="appDemand">--</div><div class="kpi-note">Sum of Order Amount where SalesRep = Web Order</div><div class="kpi-change" id="demandChange">WoW --</div></article><article class="kpi revenue"><div class="kpi-label">Invoiced Amount</div><div class="kpi-value" id="appRevenue">--</div><div class="kpi-note">Confirmed Web Order invoices > ₦0, excl. delivery fees, Sunday &amp; future dates</div><div class="kpi-change" id="revenueChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Fulfilled Amount</div><div class="kpi-value" id="fulfilledAmount">--</div><div class="kpi-note">Σ unit price × qty invoiced > 0 on Web Order lines, excl. delivery fees, Sunday, future &amp; draft/cancelled</div><div class="kpi-change" id="fulfilledAmountChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Lost Sale</div><div class="kpi-value" id="lostSale">--</div><div class="kpi-note">App Demand - Invoiced Amount</div><div class="kpi-change" id="lostSaleChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Average Basket Size</div><div class="kpi-value" id="average">--</div><div class="kpi-note">App Demand / B2B Orders Processed</div><div class="kpi-change" id="averageChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Fulfilment Rate</div><div class="kpi-value" id="revenueRate">--</div><div class="kpi-note">Invoiced Amount / App Demand</div><div class="kpi-change" id="fulfilmentRateChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Target Achieved</div><div class="kpi-value" id="targetAchieved">--</div><div class="kpi-note">Current week invoiced / ₦40M weekly target</div><div class="kpi-change" id="targetAchievedChange">WoW --</div></article></section>
+<section class="grid" style="grid-template-columns:1fr"><article class="panel"><div class="panel-head"><div><h2 id="chartTitle">Weekly Invoiced Amount</h2><div class="caption" id="chartCaption">Posted Odoo invoice total, NGN</div></div><div><select id="chartMetric" aria-label="Chart metric"><option value="revenue">Invoiced Amount</option><option value="demand">App Demand</option><option value="orders">App Orders</option></select><select id="chartMode" aria-label="Chart drill level"><option value="week">Weekly</option><option value="month">Monthly</option></select><div class="caption" id="rangeNote">All available history</div></div></div><div class="chart" id="chart"></div></article></section>
 <section class="panel"><div class="panel-head"><div><h2>WoW Analysis</h2><div class="caption" id="wowAnalysisNote">Current week vs previous week</div></div></div><div class="table-wrap"><table><thead><tr><th>Metric</th><th style="text-align:right">Current Week</th><th style="text-align:right">Previous Week</th><th style="text-align:right">WoW Change</th></tr></thead><tbody id="wowAnalysisBody"></tbody></table></div></section>
 <section class="panel" id="mixpanelSection"><div class="panel-head"><div><h2>Mixpanel Activities</h2><div class="caption" id="mixpanelCaption">Checkouts and abandoned carts from Mixpanel</div></div><div style="display:flex;gap:12px;align-items:center"><label style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.8px">From <input id="mpStartDate" type="date"></label><label style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.8px">To <input id="mpEndDate" type="date"></label></div></div><div class="kpis" style="grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:16px"><article class="kpi"><div class="kpi-label">Checkouts</div><div class="kpi-value" id="mpCheckouts">--</div><div class="kpi-note" id="mpCheckoutsNote">Mixpanel checkout events in range</div></article><article class="kpi"><div class="kpi-label">Abandoned Carts</div><div class="kpi-value" id="mpAbandoned">--</div><div class="kpi-note" id="mpAbandonedNote">Mixpanel abandoned cart events in range</div></article></div><div class="chart" id="mpChart"></div></section>
-<section class="panel"><div class="panel-head"><div><h2>2025 vs 2026</h2><div class="caption" id="vsCompareNote">Revenue, demand and fulfilment rate by year</div></div><div style="display:flex;gap:12px;align-items:center"><label style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.8px">Month <select id="vsMonthFilter"></select></label><label style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.8px">Week <select id="vsWeekFilter"></select></label></div></div><div class="table-wrap"><table><thead><tr><th>Metric</th><th style="text-align:right">2025</th><th style="text-align:right">2026</th><th style="text-align:right">Change (2026 vs 2025)</th></tr></thead><tbody id="vsCompareBody"></tbody></table></div></section>
+<section class="panel"><div class="panel-head"><div><h2>2025 vs 2026</h2><div class="caption" id="vsCompareNote">Invoiced amount, demand and fulfilment rate by year</div></div><div style="display:flex;gap:12px;align-items:center"><label style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.8px">Month <select id="vsMonthFilter"></select></label><label style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.8px">Week <select id="vsWeekFilter"></select></label></div></div><div class="table-wrap"><table><thead><tr><th>Metric</th><th style="text-align:right">2025</th><th style="text-align:right">2026</th><th style="text-align:right">Change (2026 vs 2025)</th></tr></thead><tbody id="vsCompareBody"></tbody></table></div></section>
 <section class="panel"><div class="panel-head"><div><h2>Order ledger</h2><div class="caption" id="tableNote">Showing the latest matching records</div></div></div><div class="table-wrap"><table><thead><tr><th>Order number</th><th>Date</th><th>Client</th><th>Sales rep</th><th>Status</th><th style="text-align:right">Order amount</th></tr></thead><tbody id="tableBody"></tbody></table></div></section>
 </div>
 <section class="page" id="clientAnalysisPage" style="display:none">
 <section class="intro"><div><h1>Client Analysis</h1><p>Insights from live Web Orders: active clients, drop-offs, and churn based on days since each client's last order.</p></div></section>
 <section class="filters ca-filters"><label>Year <select id="caYearFilter"><option value="all">All years</option></select></label><label>From <input id="caStartDate" type="date"></label><label>To <input id="caEndDate" type="date"></label><button id="caResetBtn" type="button">Reset filters</button></section>
 <section class="kpis"><article class="kpi"><div class="kpi-label">Total App Users</div><div class="kpi-value" id="caTotalAppUsers">--</div><div class="kpi-note">Distinct clients with Web Orders</div><div class="kpi-change" id="caTotalAppUsersChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Total Active Client</div><div class="kpi-value" id="caTotalActive">--</div><div class="kpi-note">Last Web Order within 30 days</div><div class="kpi-change" id="caTotalActiveChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Active Customers</div><div class="kpi-value" id="caActiveCustomers">--</div><div class="kpi-note">Active clients / Total clients &times; 100</div><div class="kpi-change" id="caActiveCustomersChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Total Drop Offs</div><div class="kpi-value" id="caTotalDropOffs">--</div><div class="kpi-note">Last Web Order 31–60 days ago</div><div class="kpi-change" id="caTotalDropOffsChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Churning Customers</div><div class="kpi-value" id="caChurning">--</div><div class="kpi-note">Last Web Order over 60 days ago</div><div class="kpi-change" id="caChurningChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Total Switch</div><div class="kpi-value" id="caTotalSwitch">--</div><div class="kpi-note">Rows where Switch Status is Switch</div><div class="kpi-change" id="caTotalSwitchChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Churn Percentage</div><div class="kpi-value" id="caChurnPct">--</div><div class="kpi-note">Churning / Total App Users &times; 100</div><div class="kpi-change" id="caChurnPctChange">WoW --</div></article></section>
-<section class="panel"><div class="panel-head"><div><h2>Client metric</h2><div class="caption">Revenue, Sales order, or Demand by Client</div></div><select id="clientMetric" aria-label="Client metric"><option value="revenue">Revenue</option><option value="sales">Sales order</option><option value="demand">Demand</option></select></div><div class="chart" id="clientMetricChart" style="height:360px"></div></section>
-<section class="panel" id="buyingPatternSection"><div class="panel-head"><div><h2>Client Buying Pattern</h2><div class="caption">Top 10 clients and how their buying moves over time</div></div><div><input id="cbpClientSearch" type="search" placeholder="Search pharmacy..." style="min-width:170px"><select id="cbpClientFilter" aria-label="Pharmacy filter"><option value="top10">Top 10 Clients</option></select><select id="cbpMetric" aria-label="Buying pattern metric"><option value="revenue">Revenue</option><option value="sales">Sales order</option></select><select id="cbpMode" aria-label="Buying pattern period"><option value="month">Monthly</option><option value="week">Weekly</option></select></div></div><section class="grid"><article class="panel"><div class="panel-head"><div><h2 id="cbpChartTitle">Top 10 clients revenue trend</h2><div class="caption" id="cbpChartCaption">Revenue per month across the top 10 clients</div></div></div><div class="chart" id="cbpChart"></div></article><article class="panel"><div class="panel-head"><div><h2>Top 10 Clients</h2><div class="caption" id="cbpListCaption">Ranked by selected metric</div></div></div><div id="cbpTopList"></div></article></section></section>
-<section class="pareto-dive" id="paretoDiveSection"><section class="intro"><div><h1>Pareto-Dive</h1><p>Web order analysis by customer class. See which classes drive orders and demand, and dive into client detail.</p></div></section><section class="kpis pareto-kpis"><article class="kpi"><div class="kpi-label">Total App Orders</div><div class="kpi-value" id="paretoTotalOrders">--</div><div class="kpi-note">Distinct Order Number where SalesRep = Web Order</div></article><article class="kpi"><div class="kpi-label">App Demand</div><div class="kpi-value" id="paretoTotalDemand">--</div><div class="kpi-note">Sum of Order Amount where SalesRep = Web Order</div></article><article class="kpi"><div class="kpi-label">App Revenue</div><div class="kpi-value" id="paretoTotalRevenue">--</div><div class="kpi-note">Confirmed Web Order invoices > ₦0, excl. delivery fees, Sunday &amp; future dates</div></article><article class="kpi"><div class="kpi-label">Classes</div><div class="kpi-value" id="paretoClassCount">--</div><div class="kpi-note">Distinct customer classes</div></article><article class="kpi"><div class="kpi-label">Top Class</div><div class="kpi-value" id="paretoTopClass">--</div><div class="kpi-note">Class with most of selected metric</div></article><article class="kpi"><div class="kpi-label">Top Share</div><div class="kpi-value" id="paretoTopShare">--</div><div class="kpi-note">Share of top class in selected metric</div></article></section><section class="grid"><article class="panel"><div class="panel-head"><div><h2 id="paretoChartTitle">Orders by class</h2><div class="caption" id="paretoChartCaption">Web order count per class</div></div><select id="paretoMetric" aria-label="Pareto metric"><option value="orders">App Orders</option><option value="demand">App Demand</option><option value="revenue">Revenue</option></select></div><div class="chart" id="paretoChart"></div></article></section><section class="panel"><div class="panel-head"><div><h2>Class Pareto table</h2><div class="caption" id="paretoTableNote">Click a row to dive into clients</div></div></div><div class="table-wrap"><table><thead><tr><th>Class</th><th style="text-align:right">App Orders</th><th style="text-align:right">App Demand</th><th style="text-align:right">App Revenue</th><th style="text-align:right">Cum % Revenue</th></tr></thead><tbody id="paretoTableBody"></tbody></table></div></section><section class="panel" id="paretoClientPanel" style="display:none"><div class="panel-head"><div><h2 id="paretoClientTitle">Client breakdown</h2><div class="caption">Web orders inside the selected class</div></div><button id="paretoBackBtn" type="button">Back to classes</button></div><div class="table-wrap"><table><thead><tr><th>Client</th><th style="text-align:right">Web Orders</th><th style="text-align:right">Demand (NGN)</th><th style="text-align:right">Revenue</th><th style="text-align:right">Avg Order</th></tr></thead><tbody id="paretoClientBody"></tbody></table></div></section></section>
+<section class="panel"><div class="panel-head"><div><h2>Client metric</h2><div class="caption">Invoiced amount, sales order, or demand by client</div></div><select id="clientMetric" aria-label="Client metric"><option value="revenue">Invoiced Amount</option><option value="sales">Sales order</option><option value="demand">Demand</option></select></div><div class="chart" id="clientMetricChart" style="height:360px"></div></section>
+<section class="panel" id="buyingPatternSection"><div class="panel-head"><div><h2>Client Buying Pattern</h2><div class="caption">Top 10 clients and how their buying moves over time</div></div><div><input id="cbpClientSearch" type="search" placeholder="Search pharmacy..." style="min-width:170px"><select id="cbpClientFilter" aria-label="Pharmacy filter"><option value="top10">Top 10 Clients</option></select><select id="cbpMetric" aria-label="Buying pattern metric"><option value="revenue">Invoiced Amount</option><option value="sales">Sales order</option></select><select id="cbpMode" aria-label="Buying pattern period"><option value="month">Monthly</option><option value="week">Weekly</option></select></div></div><section class="grid"><article class="panel"><div class="panel-head"><div><h2 id="cbpChartTitle">Top 10 clients invoiced amount trend</h2><div class="caption" id="cbpChartCaption">Invoiced amount per month across the top 10 clients</div></div></div><div class="chart" id="cbpChart"></div></article><article class="panel"><div class="panel-head"><div><h2>Top 10 Clients</h2><div class="caption" id="cbpListCaption">Ranked by selected metric</div></div></div><div id="cbpTopList"></div></article></section></section>
+<section class="pareto-dive" id="paretoDiveSection"><section class="intro"><div><h1>Pareto-Dive</h1><p>Web order analysis by customer class. See which classes drive orders and demand, and dive into client detail.</p></div></section><section class="kpis pareto-kpis"><article class="kpi"><div class="kpi-label">Total App Orders</div><div class="kpi-value" id="paretoTotalOrders">--</div><div class="kpi-note">Distinct Order Number where SalesRep = Web Order</div></article><article class="kpi"><div class="kpi-label">App Demand</div><div class="kpi-value" id="paretoTotalDemand">--</div><div class="kpi-note">Sum of Order Amount where SalesRep = Web Order</div></article><article class="kpi"><div class="kpi-label">Invoiced Amount</div><div class="kpi-value" id="paretoTotalRevenue">--</div><div class="kpi-note">Confirmed Web Order invoices > ₦0, excl. delivery fees, Sunday &amp; future dates</div></article><article class="kpi"><div class="kpi-label">Classes</div><div class="kpi-value" id="paretoClassCount">--</div><div class="kpi-note">Distinct customer classes</div></article><article class="kpi"><div class="kpi-label">Top Class</div><div class="kpi-value" id="paretoTopClass">--</div><div class="kpi-note">Class with most of selected metric</div></article><article class="kpi"><div class="kpi-label">Top Share</div><div class="kpi-value" id="paretoTopShare">--</div><div class="kpi-note">Share of top class in selected metric</div></article></section><section class="grid"><article class="panel"><div class="panel-head"><div><h2 id="paretoChartTitle">Orders by class</h2><div class="caption" id="paretoChartCaption">Web order count per class</div></div><select id="paretoMetric" aria-label="Pareto metric"><option value="orders">App Orders</option><option value="demand">App Demand</option><option value="revenue">Invoiced Amount</option></select></div><div class="chart" id="paretoChart"></div></article></section><section class="panel"><div class="panel-head"><div><h2>Class Pareto table</h2><div class="caption" id="paretoTableNote">Click a row to dive into clients</div></div></div><div class="table-wrap"><table><thead><tr><th>Class</th><th style="text-align:right">App Orders</th><th style="text-align:right">App Demand</th><th style="text-align:right">Invoiced Amount</th><th style="text-align:right">Cum % Invoiced</th></tr></thead><tbody id="paretoTableBody"></tbody></table></div></section><section class="panel" id="paretoClientPanel" style="display:none"><div class="panel-head"><div><h2 id="paretoClientTitle">Client breakdown</h2><div class="caption">Web orders inside the selected class</div></div><button id="paretoBackBtn" type="button">Back to classes</button></div><div class="table-wrap"><table><thead><tr><th>Client</th><th style="text-align:right">Web Orders</th><th style="text-align:right">Demand (NGN)</th><th style="text-align:right">Invoiced Amount</th><th style="text-align:right">Avg Order</th></tr></thead><tbody id="paretoClientBody"></tbody></table></div></section></section>
 <section class="panel"><div class="panel-head"><div><h2>Drop off ledger</h2><div class="caption" id="dropOffTableNote">Showing the latest matching records</div></div><select id="dropOffWeekFilter" aria-label="Drop off week"><option value="all">All drop off weeks</option></select><button id="dropOffFilterBtn" type="button">Show Drop Off Only</button><button id="exportBtn" type="button">Export CSV</button></div><div class="table-wrap"><table><thead id="dropOffTableHead"></thead><tbody id="dropOffTableBody"></tbody></table></div></section>
-<section class="panel"><div class="panel-head"><div><h2>Segment Classification</h2><div class="caption" id="csTableNote">Showing clients by segment</div></div><button id="csExportBtn" type="button">Export CSV</button></div><div class="table-wrap"><table><thead><tr><th>Client</th><th>Segment</th><th style="text-align:right">Orders</th><th style="text-align:right">Avg Days</th><th style="text-align:right">Total Order Value</th><th style="text-align:right">Avg Order Value</th><th>First Order</th><th>Last Order</th><th style="text-align:right">Revenue</th></tr></thead><tbody id="csTableBody"></tbody></table></div></section>
+<section class="panel"><div class="panel-head"><div><h2>Segment Classification</h2><div class="caption" id="csTableNote">Showing clients by segment</div></div><button id="csExportBtn" type="button">Export CSV</button></div><div class="table-wrap"><table><thead><tr><th>Client</th><th>Segment</th><th style="text-align:right">Orders</th><th style="text-align:right">Avg Days</th><th style="text-align:right">Total Order Value</th><th style="text-align:right">Avg Order Value</th><th>First Order</th><th>Last Order</th><th style="text-align:right">Invoiced Amount</th></tr></thead><tbody id="csTableBody"></tbody></table></div></section>
 </section>
 <section class="page" id="productAnalysisPage" style="display:none">
 <section class="intro"><div><h1>Product Analysis</h1><p>Insights from the last 30 days of order lines: ordered quantities, fulfilment, and product value.</p></div></section>
@@ -84,8 +84,8 @@
 <section class="page" id="customerSegmentsPage" style="display:none">
 <section class="intro"><div><h1>Customer Segments</h1><p>Buying patterns by order occurrence. Clients are grouped by the average number of days between their app orders.</p></div></section>
 <section class="filters cs-filters"><label>Year <select id="csYearFilter"><option value="all">All years</option></select></label><label>From <input id="csStartDate" type="date"></label><label>To <input id="csEndDate" type="date"></label><button id="csResetBtn" type="button">Reset filters</button></section>
-<section class="kpis"><article class="kpi segment-weekly"><div class="kpi-label"><i data-lucide="calendar-check"></i>Weekly Buyers</div><div class="kpi-value" id="csWeeklyCount">--</div><div class="kpi-note">Avg ≤ 7 days between orders</div></article><article class="kpi segment-biweekly"><div class="kpi-label"><i data-lucide="calendar-days"></i>Bi-Weekly Buyers</div><div class="kpi-value" id="csBiWeeklyCount">--</div><div class="kpi-note">Avg 8-14 days between orders</div></article><article class="kpi segment-monthly"><div class="kpi-label"><i data-lucide="calendar"></i>Monthly Buyers</div><div class="kpi-value" id="csMonthlyCount">--</div><div class="kpi-note">Avg 15-30 days between orders</div></article><article class="kpi segment-quarterly"><div class="kpi-label"><i data-lucide="calendar-range"></i>Quarterly Buyers</div><div class="kpi-value" id="csQuarterlyCount">--</div><div class="kpi-note">Avg 31-90 days between orders</div></article><article class="kpi segment-sporadic"><div class="kpi-label"><i data-lucide="shuffle"></i>Sporadic Buyers</div><div class="kpi-value" id="csSporadicCount">--</div><div class="kpi-note">Avg > 90 days or single order</div></article><article class="kpi segment-total"><div class="kpi-label"><i data-lucide="users"></i>Segmented Customers</div><div class="kpi-value" id="csTotalCustomers">--</div><div class="kpi-note">Clients with app order history</div></article><article class="kpi segment-dominant"><div class="kpi-label"><i data-lucide="crown"></i>Dominant Segment</div><div class="kpi-value" id="csDominantSegment">--</div><div class="kpi-note">Largest customer bucket</div></article><article class="kpi segment-value"><div class="kpi-label"><i data-lucide="banknote"></i>Highest Value Segment</div><div class="kpi-value" id="csHighestValueSegment">--</div><div class="kpi-note">Segment with most revenue</div></article><article class="kpi segment-avg"><div class="kpi-label"><i data-lucide="shopping-cart"></i>Avg Orders / Customer</div><div class="kpi-value" id="csAvgOrders">--</div><div class="kpi-note">Average orders per segmented client</div></article></section>
-<section class="grid"><article class="panel"><div class="panel-head"><div><h2>Segment Distribution</h2><div class="caption">Number of clients per buying-frequency bucket</div></div></div><div class="chart" id="csDistributionChart"></div></article><article class="panel"><div class="panel-head"><div><h2>Revenue by Segment</h2><div class="caption">Total invoiced revenue per segment</div></div></div><div class="chart" id="csRevenueChart"></div></article></section>
+<section class="kpis"><article class="kpi segment-weekly"><div class="kpi-label"><i data-lucide="calendar-check"></i>Weekly Buyers</div><div class="kpi-value" id="csWeeklyCount">--</div><div class="kpi-note">Avg ≤ 7 days between orders</div></article><article class="kpi segment-biweekly"><div class="kpi-label"><i data-lucide="calendar-days"></i>Bi-Weekly Buyers</div><div class="kpi-value" id="csBiWeeklyCount">--</div><div class="kpi-note">Avg 8-14 days between orders</div></article><article class="kpi segment-monthly"><div class="kpi-label"><i data-lucide="calendar"></i>Monthly Buyers</div><div class="kpi-value" id="csMonthlyCount">--</div><div class="kpi-note">Avg 15-30 days between orders</div></article><article class="kpi segment-quarterly"><div class="kpi-label"><i data-lucide="calendar-range"></i>Quarterly Buyers</div><div class="kpi-value" id="csQuarterlyCount">--</div><div class="kpi-note">Avg 31-90 days between orders</div></article><article class="kpi segment-sporadic"><div class="kpi-label"><i data-lucide="shuffle"></i>Sporadic Buyers</div><div class="kpi-value" id="csSporadicCount">--</div><div class="kpi-note">Avg > 90 days or single order</div></article><article class="kpi segment-total"><div class="kpi-label"><i data-lucide="users"></i>Segmented Customers</div><div class="kpi-value" id="csTotalCustomers">--</div><div class="kpi-note">Clients with app order history</div></article><article class="kpi segment-dominant"><div class="kpi-label"><i data-lucide="crown"></i>Dominant Segment</div><div class="kpi-value" id="csDominantSegment">--</div><div class="kpi-note">Largest customer bucket</div></article><article class="kpi segment-value"><div class="kpi-label"><i data-lucide="banknote"></i>Highest Value Segment</div><div class="kpi-value" id="csHighestValueSegment">--</div><div class="kpi-note">Segment with most invoiced value</div></article><article class="kpi segment-avg"><div class="kpi-label"><i data-lucide="shopping-cart"></i>Avg Orders / Customer</div><div class="kpi-value" id="csAvgOrders">--</div><div class="kpi-note">Average orders per segmented client</div></article></section>
+<section class="grid"><article class="panel"><div class="panel-head"><div><h2>Segment Distribution</h2><div class="caption">Number of clients per buying-frequency bucket</div></div></div><div class="chart" id="csDistributionChart"></div></article><article class="panel"><div class="panel-head"><div><h2>Invoiced Amount by Segment</h2><div class="caption">Total invoiced amount per segment</div></div></div><div class="chart" id="csRevenueChart"></div></article></section>
 </section>
 </main>
 <script>
@@ -113,10 +113,10 @@ const ytdKpiTableBody = document.getElementById("ytdKpiTableBody");
 const ytdKpiNote = document.getElementById("ytdKpiNote");
 ytdKpiSection.querySelector("thead").querySelectorAll("th")[1].textContent = "Date span";
 ytdKpiSection.querySelector("h2").textContent = "Weekly Executive KPI Year to Date";
-ytdKpiSection.querySelector("thead").innerHTML = `<tr><th>Week</th><th>Date span</th><th>Month</th><th style="text-align:right">Demand</th><th style="text-align:right">Revenue</th><th style="text-align:right">Value Fulfilment</th><th style="text-align:right">Target Achieved</th><th style="text-align:right">Order Count</th><th style="text-align:right">Clients Ordering</th><th style="text-align:right">Clients Invoiced</th><th style="text-align:right">Average Basket Size</th></tr>`;
+ytdKpiSection.querySelector("thead").innerHTML = `<tr><th>Week</th><th>Date span</th><th>Month</th><th style="text-align:right">Demand</th><th style="text-align:right">Invoiced Amount</th><th style="text-align:right">Value Fulfilment</th><th style="text-align:right">Target Achieved</th><th style="text-align:right">Order Count</th><th style="text-align:right">Clients Ordering</th><th style="text-align:right">Clients Invoiced</th><th style="text-align:right">Average Basket Size</th></tr>`;
 ytdKpiSection.querySelector("thead").querySelectorAll("th")[1].textContent = "Date span";
 [
-  "webTotal", "appDemand", "appRevenue", "revenueRate", "clientsOrdering", "clientsInvoiced",
+  "webTotal", "appDemand", "appRevenue", "fulfilledAmount", "revenueRate", "clientsOrdering", "clientsInvoiced",
   "orderCount", "appOrderShare", "b2bContribution", "lostSale", "average", "targetAchieved"
 ].forEach(id => kpiGrid.appendChild(document.getElementById(id).closest(".kpi")));
 const kpiIcons = ["shopping-bag", "clipboard-list", "trending-up", "receipt", "percent", "briefcase-business", "calculator"];
@@ -146,6 +146,8 @@ const revenueRate = document.getElementById("revenueRate");
 const ordersChange = document.getElementById("ordersChange");
 const demandChange = document.getElementById("demandChange");
 const revenueChange = document.getElementById("revenueChange");
+const fulfilledAmount = document.getElementById("fulfilledAmount");
+const fulfilledAmountChange = document.getElementById("fulfilledAmountChange");
 const b2bContribution = document.getElementById("b2bContribution");
 const appOrderShare = document.getElementById("appOrderShare");
 const targetAchieved = document.getElementById("targetAchieved");
@@ -341,6 +343,24 @@ const revenueMatchesFilters = row => {
          selectedExecutiveWeek({ Week: row.Week, date }) &&
          invoiceMatchesDateRange(row, esStartDate.value, esEndDate.value);
 };
+// Fulfilled Amount rules: Web Order lines where the invoiced quantity is positive,
+// valued at unit price × invoiced quantity. Delivery-fee lines, Sunday activity,
+// future-dated records and draft/cancelled orders are excluded.
+const fulfilledLineAmount = row => {
+  if (!isWebOrder(row.Salesperson)) return 0;
+  if (!(Number(row["Invoiced Quantity"]) > 0)) return 0;
+  if (/delivery/i.test(row.Product || "")) return 0;
+  if (isExcludedOrderState(row.Status)) return 0;
+  if (!isCountableRevenueDate(row["Order Date"])) return 0;
+  return (Number(row["Unit Price"]) || 0) * Number(row["Invoiced Quantity"]);
+};
+const fulfilledMatchesFilters = row => {
+  const date = parseDate(row["Order Date"]);
+  return (yearFilter.value === "all" || String(row.Year) === yearFilter.value) &&
+         (monthFilter.value === "all" || (date && date.getMonth() + 1 === Number(monthFilter.value))) &&
+         selectedExecutiveWeek({ Week: row.Week, date }) &&
+         dateMatchesRange(row["Order Date"], esStartDate.value, esEndDate.value);
+};
 
 function populateFilters() {
   const years = [...new Set(state.rows.map(row => row.Year).filter(Boolean))].sort((a, b) => b - a);
@@ -445,6 +465,7 @@ function render() {
         webDemand = webRows.reduce((sum, row) => sum + (Number(row["Order Amount"]) || 0), 0),
         filteredRevenueRows = state.revenueRows.filter(revenueMatchesFilters),
         revenueTotal = filteredRevenueRows.reduce((sum, row) => sum + (Number(row["Invoice Total"]) || 0), 0),
+        fulfilledTotal = state.productRows.filter(fulfilledMatchesFilters).reduce((sum, row) => sum + fulfilledLineAmount(row), 0),
         weekInfo = activeWeekInfo(),
         currentWeek = weekInfo ? weekInfo.current : 0,
         activeWeek = currentWeek,
@@ -456,6 +477,9 @@ function render() {
         previousRevenueRows = weekInfo ? yearScopedRevenue.filter(row => Number(row.Week) === weekInfo.previous && isExecutiveWeekDate(getInvoiceDateValue(row))) : [],
         currentRevenue = currentRevenueRows.reduce((sum, row) => sum + (Number(row["Invoice Total"]) || 0), 0),
         previousRevenue = previousRevenueRows.reduce((sum, row) => sum + (Number(row["Invoice Total"]) || 0), 0),
+        yearScopedFulfilled = state.productRows.filter(row => yearFilter.value === "all" || String(row.Year) === yearFilter.value),
+        currentFulfilled = weekInfo ? yearScopedFulfilled.filter(row => Number(row.Week) === weekInfo.current && isExecutiveWeekDate(row["Order Date"])).reduce((sum, row) => sum + fulfilledLineAmount(row), 0) : 0,
+        previousFulfilled = weekInfo ? yearScopedFulfilled.filter(row => Number(row.Week) === weekInfo.previous && isExecutiveWeekDate(row["Order Date"])).reduce((sum, row) => sum + fulfilledLineAmount(row), 0) : 0,
         totalOrderAmount = rows.reduce((sum, row) => sum + (Number(row["Order Amount"]) || 0), 0);
 
   const currentWeekWebRows = currentWeekRows.filter(row => isWebOrder(row.SalesRep));
@@ -487,6 +511,7 @@ function render() {
   webTotal.textContent = distinctCount(webRows, "Order Number").toLocaleString();
   appDemand.textContent = moneyCompact(webDemand);
   appRevenue.textContent = state.revenueRows.length ? moneyCompact(revenueTotal) : "Unavailable";
+  fulfilledAmount.textContent = state.productRows.length ? moneyCompact(fulfilledTotal) : "Unavailable";
   lostSale.textContent = state.revenueRows.length ? moneyCompact(currentLostSale) : "Unavailable";
   revenueRate.textContent = filteredRevenueRows.length && webDemand ? percent((revenueTotal / webDemand) * 100) : "Unavailable";
   b2bContribution.textContent = currentB2B ? percent(currentB2B) : "Unavailable";
@@ -500,6 +525,7 @@ function render() {
   ordersChange.innerHTML = wowText(currentWebOrders, previousWebOrders);
   demandChange.innerHTML = wowText(currentWeekWebRows.reduce((sum, row) => sum + (Number(row["Order Amount"]) || 0), 0), previousDemand);
   revenueChange.innerHTML = state.revenueRows.length ? wowText(currentRevenue, previousRevenue) : "WoW unavailable";
+  fulfilledAmountChange.innerHTML = state.productRows.length ? wowText(currentFulfilled, previousFulfilled) : "WoW unavailable";
   lostSaleChange.innerHTML = state.revenueRows.length ? wowText(currentLostSale, previousLostSale) : "WoW unavailable";
   orderCountChange.innerHTML = wowText(currentOrderCount, previousOrderCount);
   appOrderShareChange.innerHTML = wowText(currentAppOrderShare, previousAppOrderShare);
@@ -550,7 +576,7 @@ function renderWowAnalysis(weekInfo) {
     ["App Orders", distinctCount(curWeb, "Order Number"), distinctCount(prevWeb, "Order Number"), value => value.toLocaleString(), false],
     ["B2B Orders Processed", distinctCount(cur, "Order Number"), distinctCount(prev, "Order Number"), value => value.toLocaleString(), false],
     ["App Demand", curDemand, prevDemand, moneyCompact, false],
-    ["App Revenue", curRevenue, prevRevenue, moneyCompact, false],
+    ["Invoiced Amount", curRevenue, prevRevenue, moneyCompact, false],
     ["Lost Sale", curDemand - curRevenue, prevDemand - prevRevenue, moneyCompact, false],
     ["Fulfilment Rate", curFulfil, prevFulfil, value => percent(value), true],
     ["Clients Ordering", distinctCount(curWeb, "Client"), distinctCount(prevWeb, "Client"), value => value.toLocaleString(), false],
@@ -594,7 +620,7 @@ function renderVsCompare() {
   };
   const y25 = aggregate(2025), y26 = aggregate(2026);
   const rows = [
-    ["Revenue (App)", y25.revenue, y26.revenue, moneyCompact, false],
+    ["Invoiced Amount", y25.revenue, y26.revenue, moneyCompact, false],
     ["Demand (App)", y25.demand, y26.demand, moneyCompact, false],
     ["Fulfilment Rate", y25.fulfilment, y26.fulfilment, value => percent(value), true]
   ];
@@ -608,7 +634,7 @@ function renderVsCompare() {
     return `<tr><td><strong>${label}</strong></td><td class="amount">${v25 === null ? "--" : fmt(v25)}</td><td class="amount">${v26 === null ? "--" : fmt(v26)}</td><td class="amount" style="color:${color};font-weight:700">${delta}</td></tr>`;
   }).join("");
   const periodText = `${month === "all" ? "All months" : new Date(2000, Number(month) - 1).toLocaleString("en", { month: "long" })} · ${week === "all" ? "All weeks" : `Week ${week}`}`;
-  note.textContent = `Web Orders — ${periodText} | Revenue = posted Web Order invoices, Demand = Web Order amounts`;
+  note.textContent = `Web Orders — ${periodText} | Invoiced = posted Web Order invoices, Demand = Web Order amounts`;
 }
 
 
@@ -652,10 +678,10 @@ function renderYtdKpiTable() {
     ["Clients Ordering", "Distinct clients on Web Orders", clientsOrderingYtd.toLocaleString()],
     ["Clients Invoiced", "Distinct partner_id on Web Order invoices", clientsInvoicedYtd.toLocaleString()],
     ["App Demand", "Sum of Web Order amount_total", moneyCompact(webDemandYtd)],
-    ["App Revenue", "Sum of Web Order invoice amount_total", moneyCompact(revenueYtd)],
-    ["Lost Sale", "App Demand - App Revenue", moneyCompact(webDemandYtd - revenueYtd)],
-    ["Average Basket Size", "App Revenue / Clients Invoiced", clientsInvoicedYtd ? moneyCompact(revenueYtd / clientsInvoicedYtd) : "--"],
-    ["Fulfilment Rate", "App Revenue / App Demand", webDemandYtd ? percent((revenueYtd / webDemandYtd) * 100) : "--"],
+    ["Invoiced Amount", "Sum of Web Order invoice amount_total", moneyCompact(revenueYtd)],
+    ["Lost Sale", "App Demand - Invoiced Amount", moneyCompact(webDemandYtd - revenueYtd)],
+    ["Average Basket Size", "Invoiced Amount / Clients Invoiced", clientsInvoicedYtd ? moneyCompact(revenueYtd / clientsInvoicedYtd) : "--"],
+    ["Fulfilment Rate", "Invoiced Amount / App Demand", webDemandYtd ? percent((revenueYtd / webDemandYtd) * 100) : "--"],
     ["Target Achieved", "YTD revenue / (40M x elapsed weeks)", percent((revenueYtd / (40000000 * Math.max(getReportingWeek(endDate), 1))) * 100)]
   ];
   ytdKpiNote.textContent = `${year} YTD through ${dateText(endDate)} | ${ytdInvoices.length.toLocaleString()} Web Order invoices`;
@@ -766,7 +792,7 @@ function renderRank(rows) {
   const visible = entries;
   const rowHeight = (height - pad * 2) / Math.max(visible.length, 1);
   const maxBarWidth = plotWidth - 80;
-  rank.innerHTML = visible.length ? `<svg class="client-bars" viewBox="0 0 ${width} ${height}" role="img" aria-label="Total Invoiced by Client Name horizontal bar chart">${[0, 0.25, 0.5, 0.75, 1].map(pct => { const x = leftPad + pct * maxBarWidth; return `<line class="chart-grid" x1="${x}" y1="${pad}" x2="${x}" y2="${height - pad}"/><text class="chart-label" x="${x}" y="${height - pad + 18}" text-anchor="middle">${moneyCompact(max * pct)}</text>`; }).join("")}<text class="chart-label" x="${width / 2 + leftPad / 2}" y="${height - 4}" text-anchor="middle" font-weight="600">Revenue (NGN)</text>${visible.map(([client,total], index) => { const y = pad + index * rowHeight + 4; const barWidth = Math.max((total / max) * maxBarWidth, 2); return `<text class="chart-label" x="${pad}" y="${y + 13}">${client.slice(0, 20)}</text><rect class="client-bar" x="${leftPad}" y="${y}" width="${barWidth}" height="${Math.max(rowHeight - 10, 8)}" rx="4"><title>${client}: ${money(total)}</title></rect><text class="client-value" x="${leftPad + 8 + barWidth}" y="${y + 13}">${moneyCompact(total)}</text>`; }).join("")}</svg>` : `<div class="empty">No Total Invoiced client data found.</div>`;
+  rank.innerHTML = visible.length ? `<svg class="client-bars" viewBox="0 0 ${width} ${height}" role="img" aria-label="Total Invoiced by Client Name horizontal bar chart">${[0, 0.25, 0.5, 0.75, 1].map(pct => { const x = leftPad + pct * maxBarWidth; return `<line class="chart-grid" x1="${x}" y1="${pad}" x2="${x}" y2="${height - pad}"/><text class="chart-label" x="${x}" y="${height - pad + 18}" text-anchor="middle">${moneyCompact(max * pct)}</text>`; }).join("")}<text class="chart-label" x="${width / 2 + leftPad / 2}" y="${height - 4}" text-anchor="middle" font-weight="600">Invoiced Amount (NGN)</text>${visible.map(([client,total], index) => { const y = pad + index * rowHeight + 4; const barWidth = Math.max((total / max) * maxBarWidth, 2); return `<text class="chart-label" x="${pad}" y="${y + 13}">${client.slice(0, 20)}</text><rect class="client-bar" x="${leftPad}" y="${y}" width="${barWidth}" height="${Math.max(rowHeight - 10, 8)}" rx="4"><title>${client}: ${money(total)}</title></rect><text class="client-value" x="${leftPad + 8 + barWidth}" y="${y + 13}">${moneyCompact(total)}</text>`; }).join("")}</svg>` : `<div class="empty">No Total Invoiced client data found.</div>`;
 }
 
 function renderTable(rows) {
@@ -846,17 +872,22 @@ function loadWorkbook(buffer, source) {
     if (productLineSheetName) {
       const rawProductRows = XLSX.utils.sheet_to_json(workbook.Sheets[productLineSheetName], { defval: "" });
       if (rawProductRows.length) {
+        const orderStatusByNumber = new Map(state.rows.map(order => [String(order["Order Number"] ?? "").trim(), order.Status || ""]));
         state.productRows = rawProductRows.map(row => {
           const date = new Date(row["Order Date"]);
           const year = Number.isNaN(date.getTime()) ? null : date.getFullYear();
+          const quantity = Number(row["Order Lines/Quantity"]) || 0;
+          const lineTotal = Number(row["Order Lines/Total"]) || 0;
           return {
             "Order Reference": row["Order Lines/Order Reference"] || "",
             "Customer": row["Order Lines/Customer"] || "",
             "Salesperson": row["Order Lines/Salesperson"] || "",
             "Product": row["Order Lines/Product/Name"] || "",
-            "Quantity": Number(row["Order Lines/Quantity"]) || 0,
+            "Quantity": quantity,
             "Invoiced Quantity": Number(row["Order Lines/Invoiced Quantity"]) || 0,
-            "Total": Number(row["Order Lines/Total"]) || 0,
+            "Total": lineTotal,
+            "Unit Price": quantity > 0 ? lineTotal / quantity : 0,
+            "Status": orderStatusByNumber.get(String(row["Order Lines/Order Reference"] ?? "").trim()) ?? "",
             "Order Date": row["Order Date"],
             "Date": Number.isNaN(date.getTime()) ? null : date,
             "Year": year,
@@ -1114,7 +1145,7 @@ function processOdooPayloads(ordersData, invoicesData, orderLinesData) {
     })()
   })).filter(row => [2025, 2026].includes(row.Year) && !isExcludedOrderState(row.Status));
 
-  // App revenue = posted invoices on confirmed Web Orders, net of delivery-fee lines,
+  // Invoiced Amount = posted invoices on confirmed Web Orders, net of delivery-fee lines,
   // with amount > 0, dated inside the reporting week (Saturday in, Sunday/future out).
   state.revenueRows = invoicesData.map(row => ({
     "Invoice Number": row.name || "",
@@ -1175,6 +1206,7 @@ function processOdooPayloads(ordersData, invoicesData, orderLinesData) {
   populateFilters();
   populateCustomerSegmentFilters();
   state.filtered = state.rows;
+  const orderStateByName = new Map((ordersData || []).map(order => [String(order.name ?? "").trim(), order.state || ""]));
   state.productRows = (orderLinesData || []).map(row => ({
     "Order Reference": row.order_name || "",
     Customer: toPartner(row.partner_id),
@@ -1183,6 +1215,8 @@ function processOdooPayloads(ordersData, invoicesData, orderLinesData) {
     Quantity: Number(row.product_uom_qty) || 0,
     "Invoiced Quantity": Number(row.qty_invoiced) || 0,
     Total: Number(row.price_subtotal) || 0,
+    "Unit Price": Number(row.price_unit) || (Number(row.product_uom_qty) > 0 ? (Number(row.price_subtotal) || 0) / Number(row.product_uom_qty) : 0),
+    Status: orderStateByName.get(String(row.order_name ?? "").trim()) ?? "",
     "Order Date": row.order_date || "",
     Date: toDate(row.order_date),
     Year: toYear(row.order_date),
@@ -1552,8 +1586,8 @@ function renderParetoDive(metric = paretoMetric.value) {
   const totalMetric = sortKey === "demand" ? totalDemand : sortKey === "revenue" ? totalRevenue : totalOrders;
   paretoTopShare.textContent = topClass ? percent((topClass[sortKey] / totalMetric) * 100) : "--";
 
-  paretoChartTitle.textContent = metric === "demand" ? "Demand by class" : metric === "revenue" ? "Revenue by class" : "Orders by class";
-  paretoChartCaption.textContent = metric === "demand" ? "Web demand (NGN) per customer class" : metric === "revenue" ? "Web revenue (NGN) per customer class" : "Web order count per customer class";
+  paretoChartTitle.textContent = metric === "demand" ? "Demand by class" : metric === "revenue" ? "Invoiced Amount by class" : "Orders by class";
+  paretoChartCaption.textContent = metric === "demand" ? "Web demand (NGN) per customer class" : metric === "revenue" ? "Web invoiced amount (NGN) per customer class" : "Web order count per customer class";
 
   const width = 820, height = 320, pad = 50, chartPad = 40;
   const plotHeight = height - pad - chartPad;
@@ -1635,7 +1669,7 @@ function renderClientMetricChart() {
   let label = "";
 
   if (metric === "revenue") {
-    label = "Revenue";
+    label = "Invoiced Amount";
     state.revenueRows.filter(row => (year === "all" || String(row.Year) === year) && dateMatchesRange(row["Invoice Date"], start, end)).forEach(row => {
       const client = row.Client || "Unknown";
       totals[client] = (totals[client] || 0) + (Number(row["Invoice Total"]) || 0);
@@ -1766,7 +1800,7 @@ function renderBuyingPattern() {
   const entries = Object.entries(totals).sort((a, b) => b[1] - a[1]).slice(0, 10);
   const selectedClient = cbpClientFilter.value;
   const fmt = metric === "sales" ? v => v.toLocaleString() : moneyCompact;
-  const label = metric === "sales" ? "Sales order" : "Revenue";
+  const label = metric === "sales" ? "Sales order" : "Invoiced Amount";
   const period = mode === "week" ? "week" : "month";
   cbpListCaption.textContent = `Ranked by ${label.toLowerCase()} (${period}ly view)`;
   cbpChartTitle.textContent = selectedClient !== "top10" ? `${selectedClient} - ${label.toLowerCase()} trend` : `Top 10 clients ${label.toLowerCase()} trend`;
@@ -1829,7 +1863,7 @@ function renderBuyingPattern() {
     return `<rect x="${x}" y="${y - 8}" width="10" height="10" fill="${palette[ci % palette.length]}" rx="2"/><text class="chart-label" x="${x + 14}" y="${y}">${client.slice(0, 18)}</text>`;
   }).join("") : "";
 
-  const axisTitles = `<text class="chart-label" x="${width / 2}" y="${height - 2}" text-anchor="middle" font-weight="600">${mode === "week" ? "Week" : "Month"}</text><text class="chart-label" x="${pad}" y="${pad - 44}" text-anchor="start" font-weight="600">${metric === "sales" ? "Sales order" : "Revenue (NGN)"}</text>`;
+  const axisTitles = `<text class="chart-label" x="${width / 2}" y="${height - 2}" text-anchor="middle" font-weight="600">${mode === "week" ? "Week" : "Month"}</text><text class="chart-label" x="${pad}" y="${pad - 44}" text-anchor="start" font-weight="600">${metric === "sales" ? "Sales order" : "Invoiced Amount (NGN)"}</text>`;
 
   cbpChart.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Top 10 clients ${label.toLowerCase()} trend chart">${yGrid}${lines}${xLabels}${legend}${axisTitles}</svg>`;
 }
@@ -2234,7 +2268,7 @@ function renderSegmentRevenue(revenue) {
   const maxBarWidth = plotWidth - 80;
   const colors = { "Weekly": "#1eaa72", "Bi-Weekly": "#5a9ed3", "Monthly": "#f4c85c", "Quarterly": "#8a73c6", "Sporadic": "#e8785f" };
 
-  csRevenueChart.innerHTML = entries.length ? `<svg class="client-bars" viewBox="0 0 ${width} ${height}" role="img" aria-label="Revenue by customer segment">${[0, 0.25, 0.5, 0.75, 1].map(pct => { const x = leftPad + pct * maxBarWidth; return `<line class="chart-grid" x1="${x}" y1="${pad}" x2="${x}" y2="${height - pad}"/><text class="chart-label" x="${x}" y="${height - pad + 18}" text-anchor="middle">${moneyCompact(max * pct)}</text>`; }).join("")}<text class="chart-label" x="${width / 2 + leftPad / 2}" y="${height - 4}" text-anchor="middle" font-weight="600">Revenue (NGN)</text>${entries.map(([segment, total], index) => { const y = pad + index * rowHeight + 4; const barWidth = Math.max((total / max) * maxBarWidth, 2); return `<text class="chart-label" x="${pad}" y="${y + 13}">${segment}</text><rect class="client-bar" x="${leftPad}" y="${y}" width="${barWidth}" height="${Math.max(rowHeight - 10, 8)}" rx="4" style="fill:${colors[segment] || '#5a9ed3'}"><title>${segment}: ${money(total)}</title></rect><text class="client-value" x="${leftPad + 8 + barWidth}" y="${y + 13}">${moneyCompact(total)}</text>`; }).join("")}</svg>` : `<div class="empty">No revenue data by segment.</div>`;
+  csRevenueChart.innerHTML = entries.length ? `<svg class="client-bars" viewBox="0 0 ${width} ${height}" role="img" aria-label="Invoiced Amount by customer segment">${[0, 0.25, 0.5, 0.75, 1].map(pct => { const x = leftPad + pct * maxBarWidth; return `<line class="chart-grid" x1="${x}" y1="${pad}" x2="${x}" y2="${height - pad}"/><text class="chart-label" x="${x}" y="${height - pad + 18}" text-anchor="middle">${moneyCompact(max * pct)}</text>`; }).join("")}<text class="chart-label" x="${width / 2 + leftPad / 2}" y="${height - 4}" text-anchor="middle" font-weight="600">Invoiced Amount (NGN)</text>${entries.map(([segment, total], index) => { const y = pad + index * rowHeight + 4; const barWidth = Math.max((total / max) * maxBarWidth, 2); return `<text class="chart-label" x="${pad}" y="${y + 13}">${segment}</text><rect class="client-bar" x="${leftPad}" y="${y}" width="${barWidth}" height="${Math.max(rowHeight - 10, 8)}" rx="4" style="fill:${colors[segment] || '#5a9ed3'}"><title>${segment}: ${money(total)}</title></rect><text class="client-value" x="${leftPad + 8 + barWidth}" y="${y + 13}">${moneyCompact(total)}</text>`; }).join("")}</svg>` : `<div class="empty">No invoiced amount data by segment.</div>`;
 }
 
 function renderSegmentTable(segments) {
@@ -2254,7 +2288,7 @@ const dictionary = [
   { term: "Orders", source: "Odoo sale.order", definition: "Source of truth for sales orders. Fields: name, date_order, partner_id, user_id, state, amount_total." },
   { term: "Invoices", source: "Odoo account.move", definition: "Posted customer invoices matched to partners with Web Orders. Fields: name, invoice_date, invoice_origin, partner_id, amount_total." },
   { term: "Drop Off", source: "Odoo sale.order", definition: "Client engagement status derived from each partner's latest Web Order and latest non-Web Order." },
-  { term: "Product Lines", source: "Odoo sale.order.line", definition: "Order line items used for product KPIs. Fields: order_id, product_id, product_uom_qty, qty_invoiced, price_subtotal." },
+  { term: "Product Lines", source: "Odoo sale.order.line", definition: "Order line items used for product KPIs. Fields: order_id, product_id, product_uom_qty, qty_invoiced, price_unit, price_subtotal." },
   // Orders columns
   { term: "Order Number", source: "Orders", definition: "Unique sales order identifier (e.g., SO158232)." },
   { term: "Order Date", source: "Orders", definition: "Date the sales order was created." },
@@ -2287,16 +2321,18 @@ const dictionary = [
   // Executive Summary KPIs
   { term: "App Orders", source: "KPI", definition: "Distinct Order Number where SalesRep = Web Order." },
   { term: "App Demand", source: "KPI", definition: "Sum of Order Amount where SalesRep = Web Order." },
-  { term: "App Revenue", source: "KPI", definition: "Sum of posted Web Order invoice totals linked to confirmed Web Orders with amount > ₦0, net of delivery-fee lines, dated within the selected Friday–Thursday reporting week. Saturday activity is included; Sunday, future-dated, draft/cancelled and zero-amount records are excluded." },
-  { term: "Lost Sale", source: "KPI", definition: "App Demand minus App Revenue. Represents web order value that has not yet been invoiced." },
-  { term: "Fulfilment Rate", source: "KPI", definition: "App Revenue divided by App Demand, expressed as a percentage." },
+  { term: "Invoiced Amount", source: "KPI", definition: "Sum of posted Web Order invoice totals linked to confirmed Web Orders with amount > ₦0, net of delivery-fee lines, dated within the selected Friday–Thursday reporting week. Saturday activity is included; Sunday, future-dated, draft/cancelled and zero-amount records are excluded." },
+  { term: "Fulfilled Amount", source: "KPI", definition: "Sum of unit price × invoiced quantity across Web Order product lines where invoiced quantity > 0. Delivery-fee product lines, Sunday activity, future-dated records and draft/cancelled orders are excluded." },
+  { term: "Unit Price", source: "Product Line", definition: "Per-unit price of the order line (Odoo price_unit; derived as line Total ÷ Quantity in the workbook)." },
+  { term: "Lost Sale", source: "KPI", definition: "App Demand minus Invoiced Amount. Represents web order value that has not yet been invoiced." },
+  { term: "Fulfilment Rate", source: "KPI", definition: "Invoiced Amount divided by App Demand, expressed as a percentage." },
   { term: "B2B Contribution", source: "KPI", definition: "Web Order Amount divided by Total Order Amount." },
   { term: "App Order Share", source: "KPI", definition: "App Orders divided by B2B Orders Processed, expressed as a percentage." },
-  { term: "Target Achieved", source: "KPI", definition: "Current week revenue divided by the ₦40,000,000 weekly target, expressed as a percentage." },
+  { term: "Target Achieved", source: "KPI", definition: "Current week invoiced amount divided by the ₦40,000,000 weekly target, expressed as a percentage." },
   { term: "B2B Orders Processed", source: "KPI", definition: "Distinct count of Order Number on the Orders tab after filters." },
   { term: "Clients Invoiced", source: "KPI", definition: "Distinct partner_id on matched posted Odoo invoices." },
   { term: "Clients Ordering", source: "KPI", definition: "Distinct partner_id on Odoo sale.order records assigned to Web Order." },
-  { term: "Average Basket Size", source: "KPI", definition: "App Revenue divided by Clients Invoiced." },
+  { term: "Average Basket Size", source: "KPI", definition: "Invoiced Amount divided by Clients Invoiced." },
   // Client Analysis KPIs
   { term: "Total App Users", source: "KPI", definition: "Count of Client rows in the Drop Off sheet." },
   { term: "Total Active Client", source: "KPI", definition: "Drop Off rows where Status is Active." },
@@ -2323,7 +2359,7 @@ const dictionary = [
   { term: "Sporadic Buyers", source: "KPI", definition: "Clients with a single app order or whose average gap between consecutive app orders is greater than 90 days." },
   { term: "Segmented Customers", source: "KPI", definition: "Distinct clients with at least one app order (SalesRep = Web Order)." },
   { term: "Dominant Segment", source: "KPI", definition: "Customer segment with the highest count of clients." },
-  { term: "Highest Value Segment", source: "KPI", definition: "Customer segment with the highest total invoiced revenue." },
+  { term: "Highest Value Segment", source: "KPI", definition: "Customer segment with the highest total invoiced amount." },
   { term: "Avg Orders / Customer", source: "KPI", definition: "Average number of distinct orders per segmented client." },
   { term: "Customer Segmentation", source: "KPI", definition: "Classification of app-ordering clients based on the average number of days between their consecutive orders." }
 ];

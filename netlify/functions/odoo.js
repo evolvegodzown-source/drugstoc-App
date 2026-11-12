@@ -41,7 +41,7 @@ function searchRead(uid, model, domain, fields, limit, offset) {
 
 const ORDER_FIELDS = ["name", "date_order", "create_date", "partner_id", "user_id", "state", "amount_total"];
 const INVOICE_FIELDS = ["name", "invoice_date", "create_date", "invoice_origin", "partner_id", "invoice_user_id", "amount_total"];
-const ORDER_LINE_FIELDS = ["order_id", "create_date", "product_id", "product_uom_qty", "qty_invoiced", "price_subtotal"];
+const ORDER_LINE_FIELDS = ["order_id", "create_date", "product_id", "product_uom_qty", "qty_invoiced", "price_unit", "price_subtotal"];
 const EXCLUDED_ORDER_STATES = ["draft", "cancel"];
 
 function jsonResponse(statusCode, payload) {
