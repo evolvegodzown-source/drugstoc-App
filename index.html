@@ -1039,8 +1039,8 @@ async function loadFromOdoo() {
   const query = "date_from=2026-01-01"; // partners: 2026 only
   const orderHistoryQuery = "date_from=2025-01-01"; // orders & invoices: full 2025 + 2026 history
   const orderLinesFrom = new Date();
-  orderLinesFrom.setDate(orderLinesFrom.getDate() - 30);
-  const orderLinesQuery = `date_from=${dateInputValue(orderLinesFrom)}`; // order lines: past 30 days only
+  orderLinesFrom.setDate(orderLinesFrom.getDate() - 120);
+  const orderLinesQuery = `date_from=${dateInputValue(orderLinesFrom)}`; // order lines: past 120 days, so deliveries validated late in Odoo are still picked up
   await loadClientClasses();
   // Serve the previous pull from cache instantly, then refresh live in the background.
   const cached = await loadOdooCache();
