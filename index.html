@@ -365,6 +365,16 @@ const fulfilledMatchesFilters = row => {
          selectedExecutiveWeek({ Week: row.Week, date }) &&
          dateMatchesRange(row["Order Date"], esStartDate.value, esEndDate.value);
 };
+// Order-line data only spans the fetch window, so any ratio of App Demand to
+// App Revenue must bound demand to the same window to stay like-for-like.
+const orderLineCoverageStart = () => {
+  let min = null;
+  state.productRows.forEach(row => {
+    const date = parseDate(row["Order Date"]);
+    if (date && (!min || date < min)) min = date;
+  });
+  return min;
+};
 
 function populateFilters() {
   const years = [...new Set(state.rows.map(row => row.Year).filter(Boolean))].sort((a, b) => b - a);
@@ -521,7 +531,11 @@ function render() {
   appRevenue.textContent = state.revenueRows.length ? moneyCompact(revenueTotal) : "Unavailable";
   fulfilledAmount.textContent = state.productRows.length ? moneyCompact(fulfilledTotal) : "Unavailable";
   lostSale.textContent = state.revenueRows.length ? moneyCompact(currentLostSale) : "Unavailable";
-  revenueRate.textContent = state.productRows.length && fulfilledTotal ? percent((webDemand / fulfilledTotal) * 100) : "Unavailable";
+  const coverageStart = orderLineCoverageStart();
+  const rateDemand = coverageStart
+    ? webRows.filter(row => { const date = parseDate(row["Order Date"]); return date && date >= coverageStart; }).reduce((sum, row) => sum + (Number(row["Order Amount"]) || 0), 0)
+    : webDemand;
+  revenueRate.textContent = state.productRows.length && fulfilledTotal ? percent((rateDemand / fulfilledTotal) * 100) : "Unavailable";
   b2bContribution.textContent = currentB2B ? percent(currentB2B) : "Unavailable";
   appOrderShare.textContent = currentAppOrderShare ? percent(currentAppOrderShare) : "Unavailable";
   targetAchieved.textContent = currentRevenue ? percent((currentRevenue / 40000000) * 100) : "Unavailable";
@@ -544,7 +558,7 @@ function render() {
   fulfilmentRateChange.innerHTML = wowText(currentFulfilmentRate, previousFulfilmentRate);
   targetAchievedChange.innerHTML = wowText(currentRevenue / 40000000, previousRevenue / 40000000);
 
-  const fulfilment = fulfilledTotal ? (webDemand / fulfilledTotal) * 100 : 0;
+  const fulfilment = fulfilledTotal ? (rateDemand / fulfilledTotal) * 100 : 0;
   fulfilmentDonut.style.setProperty("--fulfilment", `${Math.min(fulfilment, 100)}%`);
   fulfilmentValue.textContent = state.productRows.length ? percent(fulfilment) : "--";
   renderWowAnalysis(weekInfo);
@@ -670,17 +684,23 @@ function renderVsCompare() {
     if (week !== "all" && getReportingWeek(date) !== Number(week)) return false;
     return true;
   };
+  const vsCoverageStart = orderLineCoverageStart();
   const aggregate = year => {
     const demand = state.rows
       .filter(row => row.Year === year && isWebOrder(row.SalesRep) && inPeriod(row["Order Date"], year))
       .reduce((total, row) => total + (Number(row["Order Amount"]) || 0), 0);
+    const matchedDemand = vsCoverageStart
+      ? state.rows
+          .filter(row => row.Year === year && isWebOrder(row.SalesRep) && inPeriod(row["Order Date"], year) && parseDate(row["Order Date"]) >= vsCoverageStart)
+          .reduce((total, row) => total + (Number(row["Order Amount"]) || 0), 0)
+      : demand;
     const revenue = state.revenueRows
       .filter(row => row.Year === year && inPeriod(getInvoiceDateValue(row), year))
       .reduce((total, row) => total + (Number(row["Invoice Total"]) || 0), 0);
     const appRevenue = state.productRows
       .filter(row => row.Year === year && inPeriod(row["Order Date"], year))
       .reduce((total, row) => total + fulfilledLineAmount(row), 0);
-    return { demand, revenue, appRevenue, fulfilment: appRevenue ? (demand / appRevenue) * 100 : null };
+    return { demand, matchedDemand, revenue, appRevenue, fulfilment: appRevenue ? (matchedDemand / appRevenue) * 100 : null };
   };
   const y25 = aggregate(2025), y26 = aggregate(2026);
   const rows = [
@@ -734,6 +754,10 @@ function renderYtdKpiTable() {
   const webDemandYtd = ytdWebOrders.reduce((sum, row) => sum + (Number(row["Order Amount"]) || 0), 0);
   const revenueYtd = ytdInvoices.reduce((sum, row) => sum + (Number(row["Invoice Total"]) || 0), 0);
   const appRevenueYtd = state.productRows.filter(row => isYtd(row["Order Date"])).reduce((sum, row) => sum + fulfilledLineAmount(row), 0);
+  const ytdCoverageStart = orderLineCoverageStart();
+  const matchedDemandYtd = ytdCoverageStart
+    ? ytdWebOrders.filter(row => { const d = parseDate(row["Order Date"]); return d && d >= ytdCoverageStart; }).reduce((sum, row) => sum + (Number(row["Order Amount"]) || 0), 0)
+    : webDemandYtd;
   const clientsOrderingYtd = distinctCount(ytdWebOrders, "Client");
   const clientsInvoicedYtd = distinctCount(ytdInvoices, "Partner ID");
   const rows = [
@@ -748,7 +772,7 @@ function renderYtdKpiTable() {
     ["Invoiced Amount", "Sum of Web Order invoice amount_total", moneyCompact(revenueYtd)],
     ["Lost Sale", "App Demand - Invoiced Amount", moneyCompact(webDemandYtd - revenueYtd)],
     ["Average Basket Size", "Invoiced Amount / Clients Invoiced", clientsInvoicedYtd ? moneyCompact(revenueYtd / clientsInvoicedYtd) : "--"],
-    ["Fulfilment Rate", "App Demand / App Revenue", appRevenueYtd ? percent((webDemandYtd / appRevenueYtd) * 100) : "--"],
+    ["Fulfilment Rate", "App Demand / App Revenue (demand matched to the order-line window)", appRevenueYtd ? percent((matchedDemandYtd / appRevenueYtd) * 100) : "--"],
     ["Target Achieved", "YTD revenue / (40M x elapsed weeks)", percent((revenueYtd / (40000000 * Math.max(getReportingWeek(endDate), 1))) * 100)]
   ];
   ytdKpiNote.textContent = `${year} YTD through ${dateText(endDate)} | ${ytdInvoices.length.toLocaleString()} Web Order invoices`;
@@ -2408,7 +2432,7 @@ const dictionary = [
   { term: "Fulfilment Reconciliation", source: "KPI", definition: "Bridge from Web order-line value (untaxed, all statuses) to App Revenue (lines with invoiced quantity > 0, valued at unit price x invoiced quantity) to posted Web invoices (net of delivery fees, shown untaxed via an indicative 7.5% VAT removal). The residual is App Revenue not yet covered by posted invoices, reflecting invoice timing across reporting weeks." },
   { term: "Unit Price", source: "Product Line", definition: "Per-unit price of the order line (Odoo price_unit; derived as line Total ÷ Quantity in the workbook)." },
   { term: "Lost Sale", source: "KPI", definition: "App Demand minus Invoiced Amount. Represents web order value that has not yet been invoiced." },
-  { term: "Fulfilment Rate", source: "KPI", definition: "App Demand divided by App Revenue, expressed as a percentage." },
+  { term: "Fulfilment Rate", source: "KPI", definition: "App Demand divided by App Revenue, expressed as a percentage. App Demand is bounded to the order-line coverage window so both sides of the ratio cover the same period." },
   { term: "B2B Contribution", source: "KPI", definition: "Web Order Amount divided by Total Order Amount." },
   { term: "App Order Share", source: "KPI", definition: "App Orders divided by B2B Orders Processed, expressed as a percentage." },
   { term: "Target Achieved", source: "KPI", definition: "Current week invoiced amount divided by the ₦40,000,000 weekly target, expressed as a percentage." },
