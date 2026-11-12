@@ -51,9 +51,9 @@
 <div id="dashboardPage" class="page">
 <section class="intro"><div><h1>Drugstoc App Performance Dashboard <span class="year-badge">2026</span></h1><p>Live visibility into pharmacy commerce performance, powered by Odoo and shaped for quick decisions.</p></div><div class="intro-side"><div class="fulfilment-panel"><div class="panel-head"><div><h2>Fulfilment rate</h2><div class="caption">Fulfilled Invoiced Amount versus App Demand</div></div></div><div class="fulfilment-content"><div class="donut" id="fulfilmentDonut" role="img" aria-label="Fulfilment rate: fulfilled Invoiced Amount as a share of App Demand"><div><strong id="fulfilmentValue">--</strong><span>Fulfilment rate</span></div></div></div></div></div></section>
 <section class="filters"><label>Year <select id="yearFilter"><option value="all">All years</option></select></label><label>Month <select id="monthFilter"><option value="all">All months</option></select></label><label>Week <select id="weekFilter"><option value="all">All weeks</option></select></label><label>From <input id="esStartDate" type="date"></label><label>To <input id="esEndDate" type="date"></label><label>Search <input id="searchFilter" type="search" placeholder="Order, client, status..."></label><button id="resetBtn" type="button">Reset filters</button></section>
-<section class="kpis"><article class="kpi"><div class="kpi-label">App Orders</div><div class="kpi-value" id="webTotal">--</div><div class="kpi-note">Distinct Order Number where SalesRep = Web Order</div><div class="kpi-change" id="ordersChange">WoW --</div></article><article class="kpi"><div class="kpi-label">B2B Orders Processed</div><div class="kpi-value" id="orderCount">--</div><div class="kpi-note">Distinct Order Number on Orders tab</div><div class="kpi-change" id="orderCountChange">WoW --</div></article><article class="kpi"><div class="kpi-label">App Order Share</div><div class="kpi-value" id="appOrderShare">--</div><div class="kpi-note">App Orders / B2B Orders Processed</div><div class="kpi-change" id="appOrderShareChange">WoW --</div></article><article class="kpi"><div class="kpi-label">B2B Contribution</div><div class="kpi-value" id="b2bContribution">--</div><div class="kpi-note">Web Order Amount / Total Order Amount</div><div class="kpi-change" id="b2bContributionChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Clients Ordering</div><div class="kpi-value" id="clientsOrdering">--</div><div class="kpi-note">Distinct Client in Orders where SalesRep = Web Order</div><div class="kpi-change" id="clientsOrderingChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Clients Invoiced</div><div class="kpi-value" id="clientsInvoiced">--</div><div class="kpi-note">Distinct Client Name in Revenue</div><div class="kpi-change" id="clientsInvoicedChange">WoW --</div></article><article class="kpi demand"><div class="kpi-label">App Demand</div><div class="kpi-value" id="appDemand">--</div><div class="kpi-note">Sum of Order Amount where SalesRep = Web Order</div><div class="kpi-change" id="demandChange">WoW --</div></article><article class="kpi revenue"><div class="kpi-label">Invoiced Amount</div><div class="kpi-value" id="appRevenue">--</div><div class="kpi-note">Confirmed Web Order invoices > ₦0, excl. delivery fees, Sunday &amp; future dates</div><div class="kpi-change" id="revenueChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Fulfilled Amount</div><div class="kpi-value" id="fulfilledAmount">--</div><div class="kpi-note">Σ untaxed line value × (delivered ÷ ordered qty) on confirmed Web Order lines, excl. delivery fees, Sunday &amp; future dates</div><div class="kpi-change" id="fulfilledAmountChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Lost Sale</div><div class="kpi-value" id="lostSale">--</div><div class="kpi-note">App Demand - Invoiced Amount</div><div class="kpi-change" id="lostSaleChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Average Basket Size</div><div class="kpi-value" id="average">--</div><div class="kpi-note">App Demand / B2B Orders Processed</div><div class="kpi-change" id="averageChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Fulfilment Rate</div><div class="kpi-value" id="revenueRate">--</div><div class="kpi-note">Invoiced Amount / App Demand</div><div class="kpi-change" id="fulfilmentRateChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Target Achieved</div><div class="kpi-value" id="targetAchieved">--</div><div class="kpi-note">Current week invoiced / ₦40M weekly target</div><div class="kpi-change" id="targetAchievedChange">WoW --</div></article></section>
+<section class="kpis"><article class="kpi"><div class="kpi-label">App Orders</div><div class="kpi-value" id="webTotal">--</div><div class="kpi-note">Distinct Order Number where SalesRep = Web Order</div><div class="kpi-change" id="ordersChange">WoW --</div></article><article class="kpi"><div class="kpi-label">B2B Orders Processed</div><div class="kpi-value" id="orderCount">--</div><div class="kpi-note">Distinct Order Number on Orders tab</div><div class="kpi-change" id="orderCountChange">WoW --</div></article><article class="kpi"><div class="kpi-label">App Order Share</div><div class="kpi-value" id="appOrderShare">--</div><div class="kpi-note">App Orders / B2B Orders Processed</div><div class="kpi-change" id="appOrderShareChange">WoW --</div></article><article class="kpi"><div class="kpi-label">B2B Contribution</div><div class="kpi-value" id="b2bContribution">--</div><div class="kpi-note">Web Order Amount / Total Order Amount</div><div class="kpi-change" id="b2bContributionChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Clients Ordering</div><div class="kpi-value" id="clientsOrdering">--</div><div class="kpi-note">Distinct Client in Orders where SalesRep = Web Order</div><div class="kpi-change" id="clientsOrderingChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Clients Invoiced</div><div class="kpi-value" id="clientsInvoiced">--</div><div class="kpi-note">Distinct Client Name in Revenue</div><div class="kpi-change" id="clientsInvoicedChange">WoW --</div></article><article class="kpi demand"><div class="kpi-label">App Demand</div><div class="kpi-value" id="appDemand">--</div><div class="kpi-note">Sum of Order Amount where SalesRep = Web Order</div><div class="kpi-change" id="demandChange">WoW --</div></article><article class="kpi revenue"><div class="kpi-label">Invoiced Amount</div><div class="kpi-value" id="appRevenue">--</div><div class="kpi-note">Confirmed Web Order invoices > ₦0, excl. delivery fees, Sunday &amp; future dates</div><div class="kpi-change" id="revenueChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Fulfilled Amount</div><div class="kpi-value" id="fulfilledAmount">--</div><div class="kpi-note">Σ unit price × qty invoiced on Web Order lines where invoiced qty > 0 (unit price = line total ÷ invoiced qty)</div><div class="kpi-change" id="fulfilledAmountChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Lost Sale</div><div class="kpi-value" id="lostSale">--</div><div class="kpi-note">App Demand - Invoiced Amount</div><div class="kpi-change" id="lostSaleChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Average Basket Size</div><div class="kpi-value" id="average">--</div><div class="kpi-note">App Demand / B2B Orders Processed</div><div class="kpi-change" id="averageChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Fulfilment Rate</div><div class="kpi-value" id="revenueRate">--</div><div class="kpi-note">Invoiced Amount / App Demand</div><div class="kpi-change" id="fulfilmentRateChange">WoW --</div></article><article class="kpi"><div class="kpi-label">Target Achieved</div><div class="kpi-value" id="targetAchieved">--</div><div class="kpi-note">Current week invoiced / ₦40M weekly target</div><div class="kpi-change" id="targetAchievedChange">WoW --</div></article></section>
 <section class="grid" style="grid-template-columns:1fr"><article class="panel"><div class="panel-head"><div><h2 id="chartTitle">Weekly Invoiced Amount</h2><div class="caption" id="chartCaption">Posted Odoo invoice total, NGN</div></div><div><select id="chartMetric" aria-label="Chart metric"><option value="revenue">Invoiced Amount</option><option value="demand">App Demand</option><option value="orders">App Orders</option></select><select id="chartMode" aria-label="Chart drill level"><option value="week">Weekly</option><option value="month">Monthly</option></select><div class="caption" id="rangeNote">All available history</div></div></div><div class="chart" id="chart"></div></article></section>
-<section class="panel" style="margin-bottom:18px"><div class="panel-head"><div><h2>Demand → Fulfilled → Invoiced</h2><div class="caption">Reconciliation of confirmed Web demand to fulfilled value and posted invoices for the selected cohort. Delivery-fee lines excluded throughout. Demand &amp; fulfilled figures cover the order-line fetch window (past 120 days); invoices cover the full selected period, so widen to a single recent week for a like-for-like bridge.</div></div></div><div class="table-wrap"><table style="min-width:540px"><thead><tr><th>Component</th><th style="text-align:right">Amount (NGN)</th></tr></thead><tbody id="reconBody"></tbody></table></div></section>
+<section class="panel" style="margin-bottom:18px"><div class="panel-head"><div><h2>Demand → Fulfilled → Invoiced</h2><div class="caption">Reconciliation of Web order-line value to fulfilled (invoiced) value and posted invoices for the selected cohort. Web Order lines only; the Fulfilled Amount KPI applies no further exclusions. Order-line figures cover the order-line fetch window (past 120 days); invoices cover the full selected period, so widen to a single recent week for a like-for-like bridge.</div></div></div><div class="table-wrap"><table style="min-width:540px"><thead><tr><th>Component</th><th style="text-align:right">Amount (NGN)</th></tr></thead><tbody id="reconBody"></tbody></table></div></section>
 <section class="panel"><div class="panel-head"><div><h2>WoW Analysis</h2><div class="caption" id="wowAnalysisNote">Current week vs previous week</div></div></div><div class="table-wrap"><table><thead><tr><th>Metric</th><th style="text-align:right">Current Week</th><th style="text-align:right">Previous Week</th><th style="text-align:right">WoW Change</th></tr></thead><tbody id="wowAnalysisBody"></tbody></table></div></section>
 <section class="panel" id="mixpanelSection"><div class="panel-head"><div><h2>Mixpanel Activities</h2><div class="caption" id="mixpanelCaption">Checkouts and abandoned carts from Mixpanel</div></div><div style="display:flex;gap:12px;align-items:center"><label style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.8px">From <input id="mpStartDate" type="date"></label><label style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.8px">To <input id="mpEndDate" type="date"></label></div></div><div class="kpis" style="grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:16px"><article class="kpi"><div class="kpi-label">Checkouts</div><div class="kpi-value" id="mpCheckouts">--</div><div class="kpi-note" id="mpCheckoutsNote">Mixpanel checkout events in range</div></article><article class="kpi"><div class="kpi-label">Abandoned Carts</div><div class="kpi-value" id="mpAbandoned">--</div><div class="kpi-note" id="mpAbandonedNote">Mixpanel abandoned cart events in range</div></article></div><div class="chart" id="mpChart"></div></section>
 <section class="panel"><div class="panel-head"><div><h2>2025 vs 2026</h2><div class="caption" id="vsCompareNote">Invoiced amount, demand and fulfilment rate by year</div></div><div style="display:flex;gap:12px;align-items:center"><label style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.8px">Month <select id="vsMonthFilter"></select></label><label style="display:flex;align-items:center;gap:6px;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.8px">Week <select id="vsWeekFilter"></select></label></div></div><div class="table-wrap"><table><thead><tr><th>Metric</th><th style="text-align:right">2025</th><th style="text-align:right">2026</th><th style="text-align:right">Change (2026 vs 2025)</th></tr></thead><tbody id="vsCompareBody"></tbody></table></div></section>
@@ -344,18 +344,15 @@ const revenueMatchesFilters = row => {
          selectedExecutiveWeek({ Week: row.Week, date }) &&
          invoiceMatchesDateRange(row, esStartDate.value, esEndDate.value);
 };
-// Fulfilled Amount rules: untaxed value of confirmed Web Order lines scaled by the
-// delivered share (delivered qty / ordered qty). Delivery-fee lines, Sunday activity,
-// future-dated records and draft/cancelled orders are excluded.
+// Fulfilled (Invoiced) Value rules: Web Order lines where the invoiced quantity is
+// positive, valued at unit price x invoiced quantity with unit price derived as
+// line total / invoiced quantity. No other exclusions apply.
 const fulfilledLineAmount = row => {
   if (!isWebOrder(row.Salesperson)) return 0;
-  if (/delivery/i.test(row.Product || "")) return 0;
-  if (isExcludedOrderState(row.Status)) return 0;
-  if (!isCountableRevenueDate(row["Order Date"])) return 0;
-  const ordered = Number(row["Quantity"]) || 0;
-  if (ordered <= 0) return 0;
-  const delivered = Number(row["Delivered Quantity"]) || 0;
-  return (Number(row["Total"]) || 0) * (delivered / ordered);
+  const invoiced = Number(row["Invoiced Quantity"]) || 0;
+  if (invoiced <= 0) return 0;
+  const unitPrice = (Number(row["Total"]) || 0) / invoiced;
+  return unitPrice * invoiced;
 };
 const fulfilledMatchesFilters = row => {
   const date = parseDate(row["Order Date"]);
@@ -565,36 +562,31 @@ function renderReconciliation() {
     body.innerHTML = `<tr><td colspan="2" class="empty">No demand or invoice data available for the selected cohort.</td></tr>`;
     return;
   }
-  // Same cohort as the KPIs, but kept gross so the bridge can show what the KPI rules remove.
+  // Same cohort as the Fulfilled Amount KPI: Web Order lines matching the period
+  // filters, with no further exclusions.
   const matches = row => {
     const date = parseDate(row["Order Date"]);
     return (yearFilter.value === "all" || String(row.Year) === yearFilter.value) &&
            (monthFilter.value === "all" || (date && date.getMonth() + 1 === Number(monthFilter.value))) &&
            selectedExecutiveWeek({ Week: row.Week, date }) &&
            dateMatchesRange(row["Order Date"], esStartDate.value, esEndDate.value) &&
-           isWebOrder(row.Salesperson) && !isExcludedOrderState(row.Status) &&
-           !/delivery/i.test(row.Product || "");
+           isWebOrder(row.Salesperson);
   };
-  let demand = 0, undelivered = 0, sundayFuture = 0;
+  let lineValue = 0, notInvoiced = 0;
   state.productRows.filter(matches).forEach(row => {
     const total = Number(row["Total"]) || 0;
-    const ordered = Number(row["Quantity"]) || 0;
-    if (ordered <= 0) return;
-    const share = Math.min((Number(row["Delivered Quantity"]) || 0) / ordered, 1);
-    demand += total;
-    if (isCountableRevenueDate(row["Order Date"])) undelivered += total * (1 - share);
-    else sundayFuture += total;
+    lineValue += total;
+    if (!(Number(row["Invoiced Quantity"]) > 0)) notInvoiced += total;
   });
-  const fulfilled = demand - undelivered - sundayFuture;
+  const fulfilled = lineValue - notInvoiced;
   const invoices = state.revenueRows.filter(revenueMatchesFilters).reduce((sum, row) => sum + (Number(row["Invoice Total"]) || 0), 0);
   const vat = invoices - invoices / 1.075;
   const invoicedUntaxed = invoices / 1.075;
   const rowHtml = (label, value, strong) => `<tr><td${strong ? ' style="font-weight:700"' : ""}>${label}</td><td class="amount"${strong ? ' style="font-weight:700"' : ""}>${moneyCompact(value)}</td></tr>`;
   body.innerHTML = [
-    rowHtml("Confirmed Web demand (untaxed line value)", demand),
-    rowHtml("− Not yet delivered (undelivered share of ordered lines)", -undelivered),
-    rowHtml("− Sunday &amp; future-dated activity (KPI exclusion)", -sundayFuture),
-    rowHtml("= Fulfilled Amount (untaxed, KPI basis)", fulfilled, true),
+    rowHtml("Web order-line value (untaxed, incl. delivery fees)", lineValue),
+    rowHtml("− Lines with no invoiced quantity", -notInvoiced),
+    rowHtml("= Fulfilled Amount (KPI basis)", fulfilled, true),
     rowHtml("Posted Web invoices (net of delivery fees, incl. VAT)", invoices),
     rowHtml("− Indicative VAT (7.5%)", -vat),
     rowHtml("= Invoiced value on untaxed basis", invoicedUntaxed, true),
@@ -1276,7 +1268,7 @@ function processOdooPayloads(ordersData, invoicesData, orderLinesData) {
     Year: toYear(row.order_date),
     Month: (() => { const date = toDate(row.order_date); return date && !Number.isNaN(date.getTime()) ? date.getMonth() + 1 : null; })(),
     Week: (() => { const date = toDate(row.order_date); return date && !Number.isNaN(date.getTime()) ? getReportingWeek(date) : null; })()
-  })).filter(row => [2025, 2026].includes(row.Year) && !/delivery/i.test(row.Product || ""));
+  })).filter(row => [2025, 2026].includes(row.Year));
   setLoader(`${state.rows.length.toLocaleString()} Odoo orders loaded | ${state.revenueRows.length.toLocaleString()} posted Web Order invoices loaded | ${state.productRows.length.toLocaleString()} Odoo order lines loaded`);
   sourceText.textContent = "Live Odoo API | Web Orders + Web Order invoices connected";
   applyFilters();
@@ -2376,8 +2368,8 @@ const dictionary = [
   { term: "App Orders", source: "KPI", definition: "Distinct Order Number where SalesRep = Web Order." },
   { term: "App Demand", source: "KPI", definition: "Sum of Order Amount where SalesRep = Web Order." },
   { term: "Invoiced Amount", source: "KPI", definition: "Sum of posted Web Order invoice totals linked to confirmed Web Orders with amount > ₦0, net of delivery-fee lines, dated within the selected Friday–Thursday reporting week. Saturday activity is included; Sunday, future-dated, draft/cancelled and zero-amount records are excluded." },
-  { term: "Fulfilled Amount", source: "KPI", definition: "Sum of untaxed Web Order line value (price_subtotal) scaled by the delivered share of each line: line total × (qty delivered ÷ qty ordered). Confirmed Web Order lines only; delivery-fee product lines, Sunday activity and future-dated records are excluded. Workbook uploads fall back to invoiced quantity as the delivered quantity." },
-  { term: "Fulfilment Reconciliation", source: "KPI", definition: "Bridge from confirmed Web demand (untaxed line value) to Fulfilled Amount (delivered share, net of Sunday/future exclusions) to posted Web invoices (net of delivery fees). Invoices are gross, so an indicative 7.5% VAT is removed to compare on an untaxed basis. The residual is fulfilled value not yet invoiced, reflecting invoice timing across reporting weeks." },
+  { term: "Fulfilled Amount", source: "KPI", definition: "Invoiced value of Web Order lines: unit price x invoiced quantity, where unit price = order line total / invoiced quantity, counted only where invoiced quantity > 0. No other exclusions apply; Web Order lines and dashboard period filters define the cohort." },
+  { term: "Fulfilment Reconciliation", source: "KPI", definition: "Bridge from Web order-line value (untaxed, all statuses) to Fulfilled Amount (lines with invoiced quantity > 0, valued at unit price x invoiced quantity) to posted Web invoices (net of delivery fees, shown untaxed via an indicative 7.5% VAT removal). The residual is fulfilled value not yet covered by posted invoices, reflecting invoice timing across reporting weeks." },
   { term: "Unit Price", source: "Product Line", definition: "Per-unit price of the order line (Odoo price_unit; derived as line Total ÷ Quantity in the workbook)." },
   { term: "Lost Sale", source: "KPI", definition: "App Demand minus Invoiced Amount. Represents web order value that has not yet been invoiced." },
   { term: "Fulfilment Rate", source: "KPI", definition: "Invoiced Amount divided by App Demand, expressed as a percentage." },
