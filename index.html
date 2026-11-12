@@ -1252,7 +1252,12 @@ function processOdooPayloads(ordersData, invoicesData, orderLinesData) {
   populateCustomerSegmentFilters();
   state.filtered = state.rows;
   const orderStateByName = new Map((ordersData || []).map(order => [String(order.name ?? "").trim(), order.state || ""]));
-  state.productRows = (orderLinesData || []).map(row => ({
+  // Bin every line to its parent order's date_order (the reporting "Order Date"),
+  // falling back to the line date only when the order is missing from the pull.
+  const orderDateByName = new Map((ordersData || []).map(order => [String(order.name ?? "").trim(), order.date_order || order.create_date || ""]));
+  state.productRows = (orderLinesData || []).map(row => {
+    const orderDate = orderDateByName.get(String(row.order_name ?? "").trim()) || row.order_date || "";
+    return {
     "Order Reference": row.order_name || "",
     Customer: toPartner(row.partner_id),
     Salesperson: webOrderNames.has(row.order_name) ? "Web Order" : toPartner(row.user_id),
@@ -1263,12 +1268,13 @@ function processOdooPayloads(ordersData, invoicesData, orderLinesData) {
     Total: Number(row.price_subtotal) || 0,
     "Unit Price": Number(row.price_unit) || (Number(row.product_uom_qty) > 0 ? (Number(row.price_subtotal) || 0) / Number(row.product_uom_qty) : 0),
     Status: orderStateByName.get(String(row.order_name ?? "").trim()) ?? "",
-    "Order Date": row.order_date || "",
-    Date: toDate(row.order_date),
-    Year: toYear(row.order_date),
-    Month: (() => { const date = toDate(row.order_date); return date && !Number.isNaN(date.getTime()) ? date.getMonth() + 1 : null; })(),
-    Week: (() => { const date = toDate(row.order_date); return date && !Number.isNaN(date.getTime()) ? getReportingWeek(date) : null; })()
-  })).filter(row => [2025, 2026].includes(row.Year));
+    "Order Date": orderDate,
+    Date: toDate(orderDate),
+    Year: toYear(orderDate),
+    Month: (() => { const date = toDate(orderDate); return date && !Number.isNaN(date.getTime()) ? date.getMonth() + 1 : null; })(),
+    Week: (() => { const date = toDate(orderDate); return date && !Number.isNaN(date.getTime()) ? getReportingWeek(date) : null; })()
+    };
+  }).filter(row => [2025, 2026].includes(row.Year));
   setLoader(`${state.rows.length.toLocaleString()} Odoo orders loaded | ${state.revenueRows.length.toLocaleString()} posted Web Order invoices loaded | ${state.productRows.length.toLocaleString()} Odoo order lines loaded`);
   sourceText.textContent = "Live Odoo API | Web Orders + Web Order invoices connected";
   applyFilters();
@@ -2368,7 +2374,7 @@ const dictionary = [
   { term: "App Orders", source: "KPI", definition: "Distinct Order Number where SalesRep = Web Order." },
   { term: "App Demand", source: "KPI", definition: "Sum of Order Amount where SalesRep = Web Order." },
   { term: "Invoiced Amount", source: "KPI", definition: "Sum of posted Web Order invoice totals linked to confirmed Web Orders with amount > ₦0, net of delivery-fee lines, dated within the selected Friday–Thursday reporting week. Saturday activity is included; Sunday, future-dated, draft/cancelled and zero-amount records are excluded." },
-  { term: "Fulfilled Amount", source: "KPI", definition: "Invoiced value of Web Order lines: unit price x invoiced quantity, where unit price = order line total / invoiced quantity, counted only where invoiced quantity > 0. No other exclusions apply; Web Order lines and dashboard period filters define the cohort." },
+  { term: "Fulfilled Amount", source: "KPI", definition: "Invoiced value of Web Order lines: unit price x invoiced quantity, where unit price = order line total / invoiced quantity, counted only where invoiced quantity > 0. No other exclusions apply; Web Order lines and dashboard period filters define the cohort. Lines are binned to the parent order's Order Date." },
   { term: "Fulfilment Reconciliation", source: "KPI", definition: "Bridge from Web order-line value (untaxed, all statuses) to Fulfilled Amount (lines with invoiced quantity > 0, valued at unit price x invoiced quantity) to posted Web invoices (net of delivery fees, shown untaxed via an indicative 7.5% VAT removal). The residual is fulfilled value not yet covered by posted invoices, reflecting invoice timing across reporting weeks." },
   { term: "Unit Price", source: "Product Line", definition: "Per-unit price of the order line (Odoo price_unit; derived as line Total ÷ Quantity in the workbook)." },
   { term: "Lost Sale", source: "KPI", definition: "App Demand minus Invoiced Amount. Represents web order value that has not yet been invoiced." },
